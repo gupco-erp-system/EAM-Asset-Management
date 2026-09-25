@@ -997,7 +997,6 @@ textarea {
                 <input
                     id="assetLocation"
                     type="text"
-                    value=""
                     placeholder="Asset Location">
 
             </td>
@@ -1466,6 +1465,61 @@ textarea {
                     type="text"
                     value="WO-2026-9941">
 
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ASSET REORGANIZATION
+    ====================================================== -->
+
+    <div class="section-title">
+        Asset Reorganization & Transfer
+        / إعادة تنظيم ونقل الأصل
+    </div>
+
+    <div class="pm-panel" style="background: var(--bg-yellow); border-color: var(--warning-color);">
+
+        <div class="pm-panel-header">
+            <strong style="color: var(--warning-color);">
+                Reorganization Details / تفاصيل النقل وإعادة الهيكلة
+            </strong>
+        </div>
+
+        <div class="pm-grid">
+
+            <div class="pm-field">
+                <label>New Parent Asset / الأصل الرئيسي الجديد</label>
+                <input id="reorgNewParentInput" type="text" placeholder="e.g. PARENT-001">
+            </div>
+
+            <div class="pm-field">
+                <label>New Location / الموقع الجديد</label>
+                <input id="reorgNewLocationInput" type="text" placeholder="e.g. SITE-B / SEC-2">
+            </div>
+
+            <div class="pm-field">
+                <label>Transfer Date / تاريخ النقل</label>
+                <input id="reorgTransferDateInput" type="date">
+            </div>
+
+            <div class="pm-field">
+                <label>Reason / سبب إعادة الهيكلة</label>
+                <select id="reorgReasonSelect">
+                    <option value="">-- اختر السبب / Select Reason --</option>
+                    <option value="RELOCATION">Relocation / نقل موقع</option>
+                    <option value="RESTRUCTURING">Hierarchy Restructuring / إعادة هيكلة شجرية</option>
+                    <option value="UPGRADE">System Upgrade / تحديث النظام</option>
+                    <option value="OTHER">Other / سبب آخر</option>
+                </select>
+            </div>
+
+            <div class="pm-field full">
+                <label>Reorganization Remarks / ملاحظات عملية النقل</label>
+                <textarea id="reorgRemarksInput" placeholder="Enter transfer authorization details or notes..."></textarea>
             </div>
 
         </div>
@@ -2727,17 +2781,7 @@ textarea {
 
 /* ============================================================
    PM DATABASE
-   ============================================================
-
-   For Phase 1 the PM data is embedded directly in JavaScript.
-
-   Later this can be replaced by:
-
-       data/assets.json
-
-   without changing the QR URL structure.
-
-============================================================ */
+   ============================================================ */
 
 let pmDatabase = {};
 
@@ -2784,7 +2828,7 @@ function switchTab(tabId, btnElement) {
    DIAGNOSTICS
 ============================================================ */
 
-function showDiagnostics(type, title, items = []) {
+function showDiagnostics(type, title, items = [], pmId = null) {
 
     const box =
         document.getElementById("diagnostics");
@@ -2801,19 +2845,29 @@ function showDiagnostics(type, title, items = []) {
     titleEl.textContent =
         title;
 
-    if (items.length === 0) {
+    let content = "";
 
-        bodyEl.innerHTML = "";
-
-        return;
+    if (items.length > 0) {
+        content +=
+            "<ul>" +
+            items
+                .map(item => `<li>${escapeHTML(item)}</li>`)
+                .join("") +
+            "</ul>";
     }
 
-    bodyEl.innerHTML =
-        "<ul>" +
-        items
-            .map(item => `<li>${escapeHTML(item)}</li>`)
-            .join("") +
-        "</ul>";
+    // Add asset image in the green "PM Data Loaded Successfully" area
+    if (title === "PM Data Loaded Successfully" && pmId) {
+        content += `
+            <div style="margin-top: 10px;">
+                <img src="images/${pmId}.jpg" alt="Asset Image (${pmId})" 
+                     style="max-width: 150px; max-height: 150px; border-radius: 4px; border: 1px solid #86efac; display: block; background: white; padding: 2px;"
+                     onerror="this.onerror=function(){this.style.display='none';}; this.src='images/${pmId}.png';">
+            </div>
+        `;
+    }
+
+    bodyEl.innerHTML = content;
 }
 
 
@@ -2873,10 +2927,6 @@ function getPMIdentifierFromURL() {
     };
 }
 
-
-/* ============================================================
-   FIND PM
-============================================================ */
 
 /* ============================================================
    FIND PM
@@ -3050,6 +3100,23 @@ function populatePM(pm) {
     );
 
 
+    /* Asset Reorganization Defaults (if defined in PM object) */
+
+    if (pm.reorganization) {
+
+        setValue("reorgNewParentInput", pm.reorganization.newParent);
+
+        setValue("reorgNewLocationInput", pm.reorganization.newLocation);
+
+        setValue("reorgTransferDateInput", pm.reorganization.transferDate);
+
+        setValue("reorgReasonSelect", pm.reorganization.reason);
+
+        setValue("reorgRemarksInput", pm.reorganization.remarks);
+
+    }
+
+
     /* Inspection */
 
     setValue(
@@ -3106,7 +3173,8 @@ function populatePM(pm) {
             "Location: " + pm.assetLocation,
             "Job Plan: " + pm.jobPlan,
             "Frequency: " + pm.frequency
-        ]
+        ],
+        pm.pmId
     );
 
 }
@@ -3263,6 +3331,7 @@ async function loadPMDatabase() {
         );
     }
 }
+
 /* ============================================================
    LOAD PM FROM URL
 ============================================================ */
@@ -3706,6 +3775,14 @@ function saveExecutionLocally() {
         departmentHead:
             getValue("departmentHead"),
 
+        reorganization: {
+            newParent: getValue("reorgNewParentInput"),
+            newLocation: getValue("reorgNewLocationInput"),
+            transferDate: getValue("reorgTransferDateInput"),
+            reason: getValue("reorgReasonSelect"),
+            remarks: getValue("reorgRemarksInput")
+        },
+
         checklist:
             collectChecklistData()
 
@@ -3840,7 +3917,12 @@ function clearExecutionForm() {
         "oilPressReading",
         "waterTempReading",
         "tachReading",
-        "oilTempReading"
+        "oilTempReading",
+        "reorgNewParentInput",
+        "reorgNewLocationInput",
+        "reorgTransferDateInput",
+        "reorgReasonSelect",
+        "reorgRemarksInput"
 
     ];
 
@@ -4003,9 +4085,6 @@ window.addEventListener(
 document.addEventListener("DOMContentLoaded", function() {
     initializeDate();
     initializeExecutionDefaults();
-
-    // Load PM records from JSON first.
-    // loadPMFromURL() will be called after the JSON is loaded.
     loadPMDatabase();
 });
 
@@ -4013,4 +4092,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
-
