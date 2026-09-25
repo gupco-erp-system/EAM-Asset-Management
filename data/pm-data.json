@@ -1,0 +1,405 @@
+{
+  "2803": {
+    "pmId": "2803",
+    "equipmentType": "ENGINE",
+    "assetLocation": "RBKR",
+    "asset": "PM For Ras Bakr Gas Comp. Engine No 1",
+    "assetTag": "RBKR-CA-10",
+    "failureClass": "CEGE",
+    "responsibility": "RS-RECIP-NORTH",
+    "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+    "jobPlan": "GSI70421",
+    "frequency": "6 Months",
+    "status": "OPERATIONAL",
+    "manufacturer": "Waukesha",
+    "model": "L7042GSI",
+    "serial": "C-15420/1",
+    "installationDate": "2018-05-12",
+    "criticality": "HIGH",
+    "pmFrequencySummary": "6 Months / 750 hrs",
+    "lastPMDate": "2026-08-20",
+    "nextPMDueDate": "2027-02-20",
+    "assignedGroup": "RS-RECIP-NORTH",
+    "workOrder": "WO-2026-9941",
+    "notes": "PM loaded automatically from QR-linked PM record.",
+
+    "engineParameters": {
+      "ratedPower": "1480 HP / 1100 KW",
+      "operatingSpeed": "1200 RPM",
+      "fuelType": "Natural Gas / LPG",
+      "lubeOilCapacity": "340 Liters",
+      "coolingCapacity": "450 Liters",
+      "currentHourMeter": "42,850 hrs",
+      "lastOverhaulMeter": "35,000 hrs",
+      "avgRunningHours": "24 hrs",
+      "targetOilTemp": "180 - 195 °F",
+      "targetOilPress": "45 ±5 PSI"
+    },
+
+    "materials": [
+      {
+        "quantity": 12,
+        "unit": "EA",
+        "itemNo": "185792",
+        "description": "Coil ignition shielded",
+        "descriptionAr": "ترانسات"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "321618",
+        "description": "Oil chevron HDax 7200",
+        "descriptionAr": "زيت شيفرون"
+      },
+      {
+        "quantity": 14,
+        "unit": "EA",
+        "itemNo": "110298",
+        "description": "Oil filter element",
+        "descriptionAr": "فلاتر زيت"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "110303",
+        "description": "Element Air filter",
+        "descriptionAr": "فلتر الهواء"
+      },
+      {
+        "quantity": 12,
+        "unit": "EA",
+        "itemNo": "125815",
+        "description": "Spark plug 4 gap",
+        "descriptionAr": "بوجيهات"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "115779",
+        "description": "Carberature Diaphragm",
+        "descriptionAr": "ديفرام كربراتير"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "098711",
+        "description": "Main water pump v-belts",
+        "descriptionAr": "سيور طلمبة مياه رئيسية"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "109877",
+        "description": "Aux. water pump v-belts",
+        "descriptionAr": "سيور طلمبة مياه مساعدة"
+      }
+    ]
+  },
+
+  "123456": {
+    "pmId": "123456",
+    "equipmentType": "PUMP",
+    "assetLocation": "RBKR",
+    "asset": "Crude Oil Transfer Pump No 2",
+    "assetTag": "RBKR-PMP-02",
+    "failureClass": "PUMP",
+    "responsibility": "RS-PUMP-NORTH",
+    "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P1",
+    "jobPlan": "JP-PUMP-6M",
+    "frequency": "6 Months",
+    "status": "OPERATIONAL",
+    "manufacturer": "C.O.P Gulden",
+    "model": "AX200",
+    "serial": "P-98412/A",
+    "installationDate": "2020-03-15",
+    "criticality": "HIGH",
+    "assignedGroup": "RS-PUMP-NORTH",
+    "workOrder": "WO-2026-1042",
+    "notes": "PM loaded automatically from QR-linked PM record.",
+    "pmFrequencySummary": "6 Months / 1000 hrs",
+    "lastPMDate": "2026-07-10",
+    "nextPMDueDate": "2027-01-10",
+
+    "pumpParameters": {
+      "pumpType": "Centrifugal / Multi-stage",
+      "fluidHandled": "Crude Oil",
+      "flowRate": "250 m³/h (1100 GPM)",
+      "totalDynamicHead": "120 Meters",
+      "suctionPressure": "30 PSI",
+      "dischargePressure": "180 PSI",
+      "operatingSpeed": "2950 RPM",
+      "impellerDiameter": "210 mm",
+      "sealType": "Double Mechanical Seal",
+      "npshRequired": "3.5 Meters",
+      "bearingLubeType": "ISO VG 68 Oil"
+    },
+
+    "materials": [
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "402911",
+        "description": "Mechanical Seal Kit AX200",
+        "descriptionAr": "طقم مانع تسرب ميكانيكي"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "408112",
+        "description": "Bearing SKF 6314 C3",
+        "descriptionAr": "رولمان بلي"
+      }
+    ]
+  },
+
+  "78910": {
+    "pmId": "78910",
+    "equipmentType": "GAS COMPRESSOR",
+    "assetLocation": "RBKR",
+    "asset": "Reciprocating Gas Compressor Unit 1",
+    "assetTag": "RBKR-CMP-01",
+    "failureClass": "COMP",
+    "responsibility": "RS-RECIP-NORTH",
+    "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+    "jobPlan": "JP-COMP-3M",
+    "frequency": "3 Months",
+    "status": "OPERATIONAL",
+    "manufacturer": "Ariel",
+    "model": "JJG/4",
+    "serial": "F-44102",
+    "installationDate": "2019-11-01",
+    "criticality": "HIGH",
+    "assignedGroup": "RS-RECIP-NORTH",
+    "workOrder": "WO-2026-8820",
+    "notes": "PM loaded automatically from QR-linked PM record.",
+    "pmFrequencySummary": "3 Months / 500 hrs",
+    "lastPMDate": "2026-09-01",
+    "nextPMDueDate": "2026-12-01",
+
+    "compressorParameters": {
+      "compressorType": "Reciprocating Gas",
+      "numberOfStages": 2,
+      "gasCapacity": "5.5 MMSCFD",
+      "firstStageSuctionPress": "20 PSI",
+      "firstStageDischargePress": "85 PSI",
+      "secondStageSuctionPress": "80 PSI",
+      "secondStageDischargePress": "320 PSI",
+      "suctionTemperature": "85 °F",
+      "dischargeTemperature": "220 °F",
+      "rodLoad": "24,000 lbs",
+      "valveType": "Concentric Ring Valves",
+      "frameLubePressure": "55 PSI"
+    },
+
+    "materials": [
+      {
+        "quantity": 4,
+        "unit": "EA",
+        "itemNo": "501192",
+        "description": "Suction Valve Assembly",
+        "descriptionAr": "صمامات سحب"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "509122",
+        "description": "Piston Ring Set 1st Stage",
+        "descriptionAr": "طقم شنابر بستم"
+      }
+    ]
+  },
+
+  "2235": {
+    "pmId": "2235",
+    "equipmentType": "ENGINE",
+    "assetLocation": "RBKR",
+    "asset": "PM For Ras Bakr Gas Comp. Engine No 2",
+    "assetTag": "RBKR-CA-20",
+    "failureClass": "CEGE",
+    "responsibility": "RS-RECIP-NORTH",
+    "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+    "jobPlan": "GSI70421",
+    "frequency": "6 Months",
+    "status": "OPERATIONAL",
+    "manufacturer": "Waukesha",
+    "model": "L7042GSI",
+    "serial": "C-15420/2",
+    "installationDate": "2018-05-12",
+    "criticality": "HIGH",
+    "pmFrequencySummary": "6 Months / 750 hrs",
+    "lastPMDate": "2026-08-20",
+    "nextPMDueDate": "2027-02-20",
+    "assignedGroup": "RS-RECIP-NORTH",
+    "workOrder": "WO-2026-9942",
+    "notes": "PM loaded automatically from QR-linked PM record.",
+
+    "engineParameters": {
+      "ratedPower": "1480 HP / 1100 KW",
+      "operatingSpeed": "1200 RPM",
+      "fuelType": "Natural Gas / LPG",
+      "lubeOilCapacity": "340 Liters",
+      "coolingCapacity": "450 Liters",
+      "currentHourMeter": "41,200 hrs",
+      "lastOverhaulMeter": "34,000 hrs",
+      "avgRunningHours": "24 hrs",
+      "targetOilTemp": "180 - 195 °F",
+      "targetOilPress": "45 ±5 PSI"
+    },
+
+    "materials": [
+      {
+        "quantity": 12,
+        "unit": "EA",
+        "itemNo": "185792",
+        "description": "Coil ignition shielded",
+        "descriptionAr": "ترانسات"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "321618",
+        "description": "Oil chevron HDax 7200",
+        "descriptionAr": "زيت شيفرون"
+      },
+      {
+        "quantity": 14,
+        "unit": "EA",
+        "itemNo": "110298",
+        "description": "Oil filter element",
+        "descriptionAr": "فلاتر زيت"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "110303",
+        "description": "Element Air filter",
+        "descriptionAr": "فلتر الهواء"
+      },
+      {
+        "quantity": 12,
+        "unit": "EA",
+        "itemNo": "125815",
+        "description": "Spark plug 4 gap",
+        "descriptionAr": "بوجيهات"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "115779",
+        "description": "Carberature Diaphragm",
+        "descriptionAr": "ديفرام كربراتير"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "098711",
+        "description": "Main water pump v-belts",
+        "descriptionAr": "سيور طلمبة مياه رئيسية"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "109877",
+        "description": "Aux. water pump v-belts",
+        "descriptionAr": "سيور طلمبة مياه مساعدة"
+      }
+    ]
+  },
+
+  "2236": {
+    "pmId": "2236",
+    "equipmentType": "ENGINE",
+    "assetLocation": "RBKR",
+    "asset": "PM For Ras Bakr Gas Comp. Engine No 3",
+    "assetTag": "RBKR-CA-30",
+    "failureClass": "CEGE",
+    "responsibility": "RS-RECIP-NORTH",
+    "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+    "jobPlan": "GSI70421",
+    "frequency": "6 Months",
+    "status": "OPERATIONAL",
+    "manufacturer": "Waukesha",
+    "model": "L7042GSI",
+    "serial": "C-15420/3",
+    "installationDate": "2018-05-12",
+    "criticality": "HIGH",
+    "pmFrequencySummary": "6 Months / 750 hrs",
+    "lastPMDate": "2026-08-20",
+    "nextPMDueDate": "2027-02-20",
+    "assignedGroup": "RS-RECIP-NORTH",
+    "workOrder": "WO-2026-9943",
+    "notes": "PM loaded automatically from QR-linked PM record.",
+
+    "engineParameters": {
+      "ratedPower": "1480 HP / 1100 KW",
+      "operatingSpeed": "1200 RPM",
+      "fuelType": "Natural Gas / LPG",
+      "lubeOilCapacity": "340 Liters",
+      "coolingCapacity": "450 Liters",
+      "currentHourMeter": "39,500 hrs",
+      "lastOverhaulMeter": "32,000 hrs",
+      "avgRunningHours": "24 hrs",
+      "targetOilTemp": "180 - 195 °F",
+      "targetOilPress": "45 ±5 PSI"
+    },
+
+    "materials": [
+      {
+        "quantity": 12,
+        "unit": "EA",
+        "itemNo": "185792",
+        "description": "Coil ignition shielded",
+        "descriptionAr": "ترانسات"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "321618",
+        "description": "Oil chevron HDax 7200",
+        "descriptionAr": "زيت شيفرون"
+      },
+      {
+        "quantity": 14,
+        "unit": "EA",
+        "itemNo": "110298",
+        "description": "Oil filter element",
+        "descriptionAr": "فلاتر زيت"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "110303",
+        "description": "Element Air filter",
+        "descriptionAr": "فلتر الهواء"
+      },
+      {
+        "quantity": 12,
+        "unit": "EA",
+        "itemNo": "125815",
+        "description": "Spark plug 4 gap",
+        "descriptionAr": "بوجيهات"
+      },
+      {
+        "quantity": 2,
+        "unit": "EA",
+        "itemNo": "115779",
+        "description": "Carberature Diaphragm",
+        "descriptionAr": "ديفرام كربراتير"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "098711",
+        "description": "Main water pump v-belts",
+        "descriptionAr": "سيور طلمبة مياه رئيسية"
+      },
+      {
+        "quantity": 1,
+        "unit": "SET",
+        "itemNo": "109877",
+        "description": "Aux. water pump v-belts",
+        "descriptionAr": "سيور طلمبة مياه مساعدة"
+      }
+    ]
+  }
+}
