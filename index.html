@@ -42,7 +42,7 @@ body {
     background: #e5e7eb;
     color: var(--text-color);
     font-family: Arial, Tahoma, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
 }
@@ -60,10 +60,10 @@ textarea {
     width: 100%;
     border: 1px solid #94a3b8;
     border-radius: 4px;
-    padding: 7px 8px;
+    padding: 9px 10px;
     background: white;
     color: #111827;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 input:focus,
@@ -74,7 +74,7 @@ textarea:focus {
 }
 
 textarea {
-    min-height: 70px;
+    min-height: 80px;
     resize: vertical;
 }
 
@@ -101,14 +101,14 @@ textarea {
 
 .app-title h1 {
     margin: 0 0 4px 0;
-    font-size: 21px;
+    font-size: 22px;
     color: var(--primary-color);
 }
 
 .app-title p {
     margin: 0;
     color: var(--muted-color);
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .qr-status {
@@ -119,7 +119,7 @@ textarea {
     border: 1px solid var(--soft-border);
     border-radius: 6px;
     padding: 8px 12px;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .qr-status.loaded {
@@ -141,8 +141,8 @@ textarea {
 }
 
 .status-dot {
-    width: 9px;
-    height: 9px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #94a3b8;
 }
@@ -179,11 +179,11 @@ textarea {
     border: none;
     background: #e5e7eb;
     color: #334155;
-    padding: 11px 14px;
+    padding: 12px 14px;
     cursor: pointer;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 14px;
     transition: 0.2s;
 }
 
@@ -226,10 +226,10 @@ textarea {
 .section-title {
     background: var(--primary-color);
     color: white;
-    padding: 9px 11px;
-    font-size: 15px;
+    padding: 10px 12px;
+    font-size: 16px;
     font-weight: bold;
-    margin: 12px 0 8px 0;
+    margin: 14px 0 10px 0;
     border-radius: 3px;
 }
 
@@ -239,7 +239,7 @@ textarea {
 
 .section-subtitle {
     color: #475569;
-    font-size: 11px;
+    font-size: 12px;
     margin-top: -4px;
     margin-bottom: 8px;
 }
@@ -251,25 +251,26 @@ textarea {
 .meta-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .meta-table td,
 .meta-table th {
     border: 1px solid var(--border-color);
-    padding: 5px;
+    padding: 7px;
     vertical-align: middle;
 }
 
 .meta-table th {
     background: var(--bg-header);
     text-align: right;
-    width: 17%;
-    font-size: 12px;
+    width: 18%;
+    font-size: 13px;
 }
 
 .meta-table td {
-    width: 33%;
+    width: 32%;
+    font-size: 13px;
 }
 
 /* ================================
@@ -279,26 +280,26 @@ textarea {
 .asset-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
 }
 
 .asset-card {
     border: 1px solid var(--border-color);
-    padding: 8px;
+    padding: 10px;
     background: white;
 }
 
 .asset-card h3 {
-    margin: -8px -8px 8px -8px;
-    padding: 6px 8px;
+    margin: -10px -10px 10px -10px;
+    padding: 8px 10px;
     background: var(--bg-header);
     border-bottom: 1px solid var(--border-color);
-    font-size: 13px;
+    font-size: 14px;
     color: #1e293b;
 }
 
 .field-group {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .field-group:last-child {
@@ -307,9 +308,9 @@ textarea {
 
 .field-label {
     display: block;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     color: #334155;
 }
 
@@ -325,8 +326,8 @@ textarea {
 .pm-panel {
     border: 2px solid var(--primary-color);
     background: var(--bg-blue);
-    padding: 9px;
-    margin-bottom: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
     border-radius: 4px;
 }
 
@@ -340,24 +341,24 @@ textarea {
 
 .pm-panel-header strong {
     color: var(--primary-color);
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .pm-source {
-    font-size: 11px;
+    font-size: 12px;
     color: #475569;
 }
 
 .pm-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 7px;
+    gap: 8px;
 }
 
 .pm-field {
     background: white;
     border: 1px solid #bfdbfe;
-    padding: 6px;
+    padding: 7px;
     border-radius: 3px;
 }
 
@@ -367,7 +368,7 @@ textarea {
 
 .pm-field label {
     display: block;
-    font-size: 10px;
+    font-size: 11px;
     color: #475569;
     font-weight: bold;
     margin-bottom: 3px;
@@ -375,6 +376,7 @@ textarea {
 
 .pm-field input {
     border-color: #cbd5e1;
+    font-size: 13px;
 }
 
 /* ================================
@@ -388,14 +390,14 @@ textarea {
 .materials-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 8px;
-    font-size: 11px;
+    margin-bottom: 10px;
+    font-size: 12px;
 }
 
 .materials-table th,
 .materials-table td {
     border: 1px solid #000;
-    padding: 5px;
+    padding: 6px;
     text-align: center;
     vertical-align: middle;
 }
@@ -412,7 +414,7 @@ textarea {
 
 .materials-total {
     text-align: left;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: bold;
     color: #334155;
 }
@@ -422,7 +424,7 @@ textarea {
 ================================ */
 
 .notes-box {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 /* ================================
@@ -432,14 +434,14 @@ textarea {
 .inspection-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 8px;
-    font-size: 10px;
+    margin-top: 10px;
+    font-size: 11.5px;
 }
 
 .inspection-table th,
 .inspection-table td {
     border: 1px solid #000;
-    padding: 4px;
+    padding: 6px;
     vertical-align: middle;
 }
 
@@ -447,6 +449,7 @@ textarea {
     background: var(--bg-header);
     font-weight: bold;
     text-align: center;
+    font-size: 12px;
 }
 
 .inspection-table .num {
@@ -461,6 +464,7 @@ textarea {
 
 .inspection-table .item {
     width: 43%;
+    line-height: 1.3;
 }
 
 .inspection-table .reading {
@@ -468,31 +472,32 @@ textarea {
 }
 
 .inspection-table input[type="checkbox"] {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
 }
 
 .reading-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3px;
+    gap: 4px;
 }
 
 .reading-cell {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
 }
 
 .reading-cell span {
-    font-size: 9px;
+    font-size: 11px;
     white-space: nowrap;
+    font-weight: bold;
 }
 
 .reading-cell input {
-    padding: 3px;
-    font-size: 10px;
+    padding: 4px;
+    font-size: 11px;
     min-width: 0;
 }
 
@@ -504,8 +509,8 @@ textarea {
 
 .cylinder-grid input {
     width: 100%;
-    padding: 3px;
-    font-size: 9px;
+    padding: 4px;
+    font-size: 10px;
     text-align: center;
 }
 
@@ -516,13 +521,14 @@ textarea {
 .inspector-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 12px;
+    margin-top: 14px;
 }
 
 .inspector-table td,
 .inspector-table th {
     border: 1px solid #000;
-    padding: 5px;
+    padding: 7px;
+    font-size: 13px;
 }
 
 .inspector-table th {
@@ -531,54 +537,26 @@ textarea {
 }
 
 /* ================================
-   EXECUTION PANEL
-================================ */
-
-.execution-panel {
-    border: 1px solid #94a3b8;
-    background: #f8fafc;
-    padding: 8px;
-    margin-top: 10px;
-}
-
-.execution-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 7px;
-}
-
-.execution-field label {
-    display: block;
-    font-size: 10px;
-    font-weight: bold;
-    margin-bottom: 3px;
-}
-
-.execution-field.full {
-    grid-column: span 4;
-}
-
-/* ================================
    BUTTONS
 ================================ */
 
 .actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 15px;
-    padding-top: 10px;
+    padding-top: 12px;
     border-top: 1px dashed #94a3b8;
 }
 
 .btn {
     border: none;
     border-radius: 5px;
-    padding: 9px 16px;
+    padding: 10px 18px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .btn-primary {
@@ -619,8 +597,9 @@ textarea {
     margin: 0 auto 12px auto;
     display: none;
     border-radius: 6px;
-    padding: 10px 12px;
+    padding: 12px 15px;
     border: 1px solid;
+    font-size: 13px;
 }
 
 .diagnostics.show {
@@ -654,6 +633,7 @@ textarea {
 .diagnostics-title {
     font-weight: bold;
     margin-bottom: 5px;
+    font-size: 14px;
 }
 
 .diagnostics ul {
@@ -701,10 +681,10 @@ textarea {
 ================================ */
 
 .form-footer {
-    margin-top: 8px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
-    font-size: 9px;
+    font-size: 11px;
     color: #334155;
 }
 
@@ -808,28 +788,18 @@ textarea {
         grid-column: span 2;
     }
 
-    .execution-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .execution-field.full {
-        grid-column: span 2;
-    }
-
     .inspection-table {
-        font-size: 9px;
+        font-size: 10px;
     }
 }
 
 @media (max-width: 550px) {
 
-    .pm-grid,
-    .execution-grid {
+    .pm-grid {
         grid-template-columns: 1fr;
     }
 
-    .pm-field.full,
-    .execution-field.full {
+    .pm-field.full {
         grid-column: span 1;
     }
 
@@ -1465,61 +1435,6 @@ textarea {
                     type="text"
                     value="WO-2026-9941">
 
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         ASSET REORGANIZATION
-    ====================================================== -->
-
-    <div class="section-title">
-        Asset Reorganization & Transfer
-        / إعادة تنظيم ونقل الأصل
-    </div>
-
-    <div class="pm-panel" style="background: var(--bg-yellow); border-color: var(--warning-color);">
-
-        <div class="pm-panel-header">
-            <strong style="color: var(--warning-color);">
-                Reorganization Details / تفاصيل النقل وإعادة الهيكلة
-            </strong>
-        </div>
-
-        <div class="pm-grid">
-
-            <div class="pm-field">
-                <label>New Parent Asset / الأصل الرئيسي الجديد</label>
-                <input id="reorgNewParentInput" type="text" placeholder="e.g. PARENT-001">
-            </div>
-
-            <div class="pm-field">
-                <label>New Location / الموقع الجديد</label>
-                <input id="reorgNewLocationInput" type="text" placeholder="e.g. SITE-B / SEC-2">
-            </div>
-
-            <div class="pm-field">
-                <label>Transfer Date / تاريخ النقل</label>
-                <input id="reorgTransferDateInput" type="date">
-            </div>
-
-            <div class="pm-field">
-                <label>Reason / سبب إعادة الهيكلة</label>
-                <select id="reorgReasonSelect">
-                    <option value="">-- اختر السبب / Select Reason --</option>
-                    <option value="RELOCATION">Relocation / نقل موقع</option>
-                    <option value="RESTRUCTURING">Hierarchy Restructuring / إعادة هيكلة شجرية</option>
-                    <option value="UPGRADE">System Upgrade / تحديث النظام</option>
-                    <option value="OTHER">Other / سبب آخر</option>
-                </select>
-            </div>
-
-            <div class="pm-field full">
-                <label>Reorganization Remarks / ملاحظات عملية النقل</label>
-                <textarea id="reorgRemarksInput" placeholder="Enter transfer authorization details or notes..."></textarea>
             </div>
 
         </div>
@@ -2529,122 +2444,6 @@ textarea {
 
 
     <!-- =====================================================
-         PM EXECUTION
-    ====================================================== -->
-
-    <div class="section-title">
-        PM Execution Data
-        / بيانات تنفيذ الصيانة
-    </div>
-
-    <div class="execution-panel">
-
-        <div class="execution-grid">
-
-            <div class="execution-field">
-
-                <label>
-                    Technician / الفني
-                </label>
-
-                <input
-                    id="technicianInput"
-                    type="text"
-                    placeholder="Technician">
-
-            </div>
-
-
-            <div class="execution-field">
-
-                <label>
-                    Start Time / بداية العمل
-                </label>
-
-                <input
-                    id="startTimeInput"
-                    type="datetime-local">
-
-            </div>
-
-
-            <div class="execution-field">
-
-                <label>
-                    Finish Time / نهاية العمل
-                </label>
-
-                <input
-                    id="finishTimeInput"
-                    type="datetime-local">
-
-            </div>
-
-
-            <div class="execution-field">
-
-                <label>
-                    PM Status / الحالة
-                </label>
-
-                <select id="pmExecutionStatus">
-
-                    <option value="PLANNED">
-                        PLANNED / مخطط
-                    </option>
-
-                    <option value="IN_PROGRESS">
-                        IN PROGRESS / جاري
-                    </option>
-
-                    <option value="COMPLETED">
-                        COMPLETED / مكتمل
-                    </option>
-
-                    <option value="PARTIAL">
-                        PARTIAL / جزئي
-                    </option>
-
-                    <option value="CANCELLED">
-                        CANCELLED / ملغي
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="execution-field full">
-
-                <label>
-                    Findings / الملاحظات والنتائج
-                </label>
-
-                <textarea
-                    id="findingsInput"
-                    placeholder="Enter inspection findings"></textarea>
-
-            </div>
-
-
-            <div class="execution-field full">
-
-                <label>
-                    Corrective Action / الإجراء التصحيحي
-                </label>
-
-                <textarea
-                    id="correctiveActionInput"
-                    placeholder="Enter corrective action"></textarea>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
          INSPECTOR TABLE
     ====================================================== -->
 
@@ -2847,24 +2646,39 @@ function showDiagnostics(type, title, items = [], pmId = null) {
 
     let content = "";
 
-    if (items.length > 0) {
-        content +=
-            "<ul>" +
-            items
-                .map(item => `<li>${escapeHTML(item)}</li>`)
-                .join("") +
-            "</ul>";
-    }
-
-    // Add asset image in the green "PM Data Loaded Successfully" area
     if (title === "PM Data Loaded Successfully" && pmId) {
+        content = `
+            <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                <div style="flex: 0 0 auto;">
+                    <img src="images/${pmId}.jpg" alt="Asset Image (${pmId})" 
+                         style="width: 260px; height: 260px; object-fit: cover; border-radius: 6px; border: 2px solid #86efac; display: block; background: white; padding: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);"
+                         onerror="this.onerror=function(){this.parentElement.style.display='none';}; this.src='images/${pmId}.png';">
+                </div>
+                <div style="flex: 1; min-width: 220px;">
+        `;
+        
+        if (items.length > 0) {
+            content +=
+                "<ul style=\"margin-top: 5px;\">" +
+                items
+                    .map(item => `<li style="margin-bottom: 5px; font-size: 13.5px;">${escapeHTML(item)}</li>`)
+                    .join("") +
+                "</ul>";
+        }
+
         content += `
-            <div style="margin-top: 10px;">
-                <img src="images/${pmId}.jpg" alt="Asset Image (${pmId})" 
-                     style="max-width: 150px; max-height: 150px; border-radius: 4px; border: 1px solid #86efac; display: block; background: white; padding: 2px;"
-                     onerror="this.onerror=function(){this.style.display='none';}; this.src='images/${pmId}.png';">
+                </div>
             </div>
         `;
+    } else {
+        if (items.length > 0) {
+            content +=
+                "<ul>" +
+                items
+                    .map(item => `<li>${escapeHTML(item)}</li>`)
+                    .join("") +
+                "</ul>";
+        }
     }
 
     bodyEl.innerHTML = content;
@@ -3100,23 +2914,6 @@ function populatePM(pm) {
     );
 
 
-    /* Asset Reorganization Defaults (if defined in PM object) */
-
-    if (pm.reorganization) {
-
-        setValue("reorgNewParentInput", pm.reorganization.newParent);
-
-        setValue("reorgNewLocationInput", pm.reorganization.newLocation);
-
-        setValue("reorgTransferDateInput", pm.reorganization.transferDate);
-
-        setValue("reorgReasonSelect", pm.reorganization.reason);
-
-        setValue("reorgRemarksInput", pm.reorganization.remarks);
-
-    }
-
-
     /* Inspection */
 
     setValue(
@@ -3303,12 +3100,6 @@ async function loadPMDatabase() {
             "records"
         );
 
-        console.log(
-            "Available PMs:",
-            Object.keys(pmDatabase)
-        );
-
-        // Now load the PM specified in the URL
         loadPMFromURL();
 
     } catch (error) {
@@ -3341,12 +3132,10 @@ function loadPMFromURL() {
     const identifier =
         getPMIdentifierFromURL();
 
-
     const hasParameter =
         identifier.pm ||
         identifier.id ||
         identifier.asset;
-
 
     if (!hasParameter) {
 
@@ -3368,10 +3157,8 @@ function loadPMFromURL() {
         return;
     }
 
-
     const pm =
         findPM(identifier);
-
 
     if (!pm) {
 
@@ -3398,7 +3185,6 @@ function loadPMFromURL() {
         return;
     }
 
-
     populatePM(pm);
 
 }
@@ -3409,9 +3195,7 @@ function loadPMFromURL() {
 ============================================================ */
 
 function printActiveTab() {
-
     window.print();
-
 }
 
 
@@ -3428,7 +3212,6 @@ function saveAssetPDF() {
         return;
     }
 
-
     const pmId =
         document.getElementById("pmIdInput").value ||
         "Unknown";
@@ -3437,35 +3220,26 @@ function saveAssetPDF() {
         document.getElementById("assetTag").value ||
         "Asset";
 
-
     const fileName =
         `EAM_Asset_PM_${pmId}_${sanitizeFileName(asset)}.pdf`;
 
-
     const opt = {
-
         margin: 5,
-
         filename: fileName,
-
         image: {
             type: "jpeg",
             quality: 0.98
         },
-
         html2canvas: {
             scale: 2,
             useCORS: true
         },
-
         jsPDF: {
             unit: "mm",
             format: "a4",
             orientation: "portrait"
         }
-
     };
-
 
     html2pdf()
         .set(opt)
@@ -3488,7 +3262,6 @@ function saveInspectionPDF() {
         return;
     }
 
-
     const unitNo =
         document.getElementById("unitInput").value ||
         "Unspecified";
@@ -3501,70 +3274,52 @@ function saveInspectionPDF() {
         document.getElementById("inspectionPMId").value ||
         "Unknown";
 
-
     const fileName =
         `Engine_Inspection_PM_${pmId}_${sanitizeFileName(unitNo)}_${dateVal}.pdf`;
 
-
     const actions =
         element.querySelector(".actions");
-
 
     if (actions) {
         actions.style.display = "none";
     }
 
-
     const opt = {
-
         margin: 5,
-
         filename: fileName,
-
         image: {
             type: "jpeg",
             quality: 0.98
         },
-
         html2canvas: {
             scale: 2,
             useCORS: true
         },
-
         jsPDF: {
             unit: "mm",
             format: "a4",
             orientation: "portrait"
         }
-
     };
-
 
     html2pdf()
         .set(opt)
         .from(element)
         .save()
         .then(() => {
-
             if (actions) {
                 actions.style.display = "flex";
             }
-
         })
         .catch(error => {
-
             if (actions) {
                 actions.style.display = "flex";
             }
-
             showDiagnostics(
                 "error",
                 "PDF Generation Error",
-                [
-                    error.message
-                ]
+                [error.message]
             );
-
         });
 
 }
@@ -3582,11 +3337,9 @@ function sendFormViaEmail() {
     const actionsDiv =
         element.querySelector(".actions");
 
-
     if (actionsDiv) {
         actionsDiv.style.display = "none";
     }
-
 
     const unitNo =
         document.getElementById("unitInput").value ||
@@ -3604,39 +3357,29 @@ function sendFormViaEmail() {
         document.getElementById("inspectionPMId").value ||
         "Unknown";
 
-
     const fileName =
         `Engine_Inspection_PM_${pmId}_${sanitizeFileName(unitNo)}_${dateVal}.pdf`;
-
 
     document.getElementById("modalFileName")
         .textContent =
         fileName;
 
-
     const opt = {
-
         margin: 5,
-
         filename: fileName,
-
         image: {
             type: "jpeg",
             quality: 0.98
         },
-
         html2canvas: {
             scale: 2
         },
-
         jsPDF: {
             unit: "mm",
             format: "a4",
             orientation: "portrait"
         }
-
     };
-
 
     html2pdf()
         .set(opt)
@@ -3648,38 +3391,25 @@ function sendFormViaEmail() {
                 actionsDiv.style.display = "flex";
             }
 
-
             const subject =
                 encodeURIComponent(
                     `Engine Inspection Checklist - PM ${pmId} - Unit: ${unitNo}`
                 );
 
-
             const body =
                 encodeURIComponent(
-
                     `Dear Team,\n\n` +
-
                     `Please find attached the Engine Inspection & Maintenance Checklist (Form 440-1-G).\n\n` +
-
                     `Details:\n` +
-
                     `- PM ID: ${pmId}\n` +
-
                     `- Location: ${locVal}\n` +
-
                     `- Unit No: ${unitNo}\n` +
-
                     `- Date: ${dateVal}\n\n` +
-
                     `Best regards,`
-
                 );
-
 
             window.location.href =
                 `mailto:?subject=${subject}&body=${body}`;
-
 
             document.getElementById("mailModal")
                 .style.display =
@@ -3695,9 +3425,7 @@ function sendFormViaEmail() {
             showDiagnostics(
                 "error",
                 "PDF Generation Error",
-                [
-                    error.message
-                ]
+                [error.message]
             );
 
         });
@@ -3710,11 +3438,9 @@ function sendFormViaEmail() {
 ============================================================ */
 
 function closeModal() {
-
     document.getElementById("mailModal")
         .style.display =
         "none";
-
 }
 
 
@@ -3728,85 +3454,23 @@ function saveExecutionLocally() {
         document.getElementById("inspectionPMId").value ||
         "Unknown";
 
-
     const execution = {
-
         pmId: pmId,
-
-        timestamp:
-            new Date().toISOString(),
-
-        location:
-            getValue("locInput"),
-
-        unitNo:
-            getValue("unitInput"),
-
-        serial:
-            getValue("serialInspectionInput"),
-
-        hourMeter:
-            getValue("hourMeterInput"),
-
-        date:
-            getValue("dateInput"),
-
-        technician:
-            getValue("technicianInput"),
-
-        startTime:
-            getValue("startTimeInput"),
-
-        finishTime:
-            getValue("finishTimeInput"),
-
-        status:
-            getValue("pmExecutionStatus"),
-
-        findings:
-            getValue("findingsInput"),
-
-        correctiveAction:
-            getValue("correctiveActionInput"),
-
-        inspector:
-            getValue("inspectionInspector"),
-
-        departmentHead:
-            getValue("departmentHead"),
-
-        reorganization: {
-            newParent: getValue("reorgNewParentInput"),
-            newLocation: getValue("reorgNewLocationInput"),
-            transferDate: getValue("reorgTransferDateInput"),
-            reason: getValue("reorgReasonSelect"),
-            remarks: getValue("reorgRemarksInput")
-        },
-
-        checklist:
-            collectChecklistData()
-
+        timestamp: new Date().toISOString(),
+        location: getValue("locInput"),
+        unitNo: getValue("unitInput"),
+        serial: getValue("serialInspectionInput"),
+        hourMeter: getValue("hourMeterInput"),
+        date: getValue("dateInput"),
+        inspector: getValue("inspectionInspector"),
+        departmentHead: getValue("departmentHead"),
+        checklist: collectChecklistData()
     };
 
-
-    const key =
-        "eam_pm_execution";
-
-
-    const existing =
-        JSON.parse(
-            localStorage.getItem(key) || "[]"
-        );
-
-
+    const key = "eam_pm_execution";
+    const existing = JSON.parse(localStorage.getItem(key) || "[]");
     existing.push(execution);
-
-
-    localStorage.setItem(
-        key,
-        JSON.stringify(existing)
-    );
-
+    localStorage.setItem(key, JSON.stringify(existing));
 
     showDiagnostics(
         "success",
@@ -3815,7 +3479,6 @@ function saveExecutionLocally() {
             "PM ID: " + pmId,
             "Unit: " + execution.unitNo,
             "Date: " + execution.date,
-            "Status: " + execution.status,
             "Stored in browser localStorage."
         ]
     );
@@ -3831,34 +3494,16 @@ function collectChecklistData() {
 
     const data = [];
 
-
     for (let i = 1; i <= 27; i++) {
-
-        const checkbox =
-            document.getElementById("check" + i);
-
-        const result =
-            document.getElementById("result" + i);
-
+        const checkbox = document.getElementById("check" + i);
+        const result = document.getElementById("result" + i);
 
         data.push({
-
             item: i,
-
-            completed:
-                checkbox
-                    ? checkbox.checked
-                    : false,
-
-            result:
-                result
-                    ? result.value
-                    : ""
-
+            completed: checkbox ? checkbox.checked : false,
+            result: result ? result.value : ""
         });
-
     }
-
 
     return data;
 
@@ -3877,39 +3522,23 @@ function clearExecutionForm() {
             "Asset and PM master data will not be deleted."
         );
 
-
     if (!confirmed) {
         return;
     }
 
-
     for (let i = 1; i <= 27; i++) {
-
-        const checkbox =
-            document.getElementById("check" + i);
-
+        const checkbox = document.getElementById("check" + i);
         if (checkbox) {
             checkbox.checked = false;
         }
 
-
-        const result =
-            document.getElementById("result" + i);
-
+        const result = document.getElementById("result" + i);
         if (result) {
             result.value = "";
         }
-
     }
 
-
     const fields = [
-
-        "technicianInput",
-        "startTimeInput",
-        "finishTimeInput",
-        "findingsInput",
-        "correctiveActionInput",
         "inspectionInspector",
         "departmentHead",
         "crankcasePressure",
@@ -3917,35 +3546,15 @@ function clearExecutionForm() {
         "oilPressReading",
         "waterTempReading",
         "tachReading",
-        "oilTempReading",
-        "reorgNewParentInput",
-        "reorgNewLocationInput",
-        "reorgTransferDateInput",
-        "reorgReasonSelect",
-        "reorgRemarksInput"
-
+        "oilTempReading"
     ];
 
-
     fields.forEach(id => {
-
-        const element =
-            document.getElementById(id);
-
+        const element = document.getElementById(id);
         if (element) {
             element.value = "";
         }
-
     });
-
-
-    const status =
-        document.getElementById("pmExecutionStatus");
-
-    if (status) {
-        status.value = "PLANNED";
-    }
-
 
     showDiagnostics(
         "info",
@@ -3964,14 +3573,8 @@ function clearExecutionForm() {
 ============================================================ */
 
 function getValue(id) {
-
-    const element =
-        document.getElementById(id);
-
-    return element
-        ? element.value
-        : "";
-
+    const element = document.getElementById(id);
+    return element ? element.value : "";
 }
 
 
@@ -3980,11 +3583,9 @@ function getValue(id) {
 ============================================================ */
 
 function getToday() {
-
     return new Date()
         .toISOString()
         .split("T")[0];
-
 }
 
 
@@ -3993,11 +3594,9 @@ function getToday() {
 ============================================================ */
 
 function sanitizeFileName(value) {
-
     return String(value)
         .replace(/[<>:"/\\|?*]+/g, "_")
         .replace(/\s+/g, "_");
-
 }
 
 
@@ -4006,52 +3605,10 @@ function sanitizeFileName(value) {
 ============================================================ */
 
 function initializeDate() {
-
-    const dateInput =
-        document.getElementById("dateInput");
-
-    if (
-        dateInput &&
-        !dateInput.value
-    ) {
-
-        dateInput.value =
-            getToday();
-
+    const dateInput = document.getElementById("dateInput");
+    if (dateInput && !dateInput.value) {
+        dateInput.value = getToday();
     }
-
-}
-
-
-/* ============================================================
-   AUTO START TIME
-============================================================ */
-
-function initializeExecutionDefaults() {
-
-    const start =
-        document.getElementById("startTimeInput");
-
-    if (
-        start &&
-        !start.value
-    ) {
-
-        const now =
-            new Date();
-
-        const local =
-            new Date(
-                now.getTime() -
-                now.getTimezoneOffset() * 60000
-            )
-            .toISOString()
-            .slice(0, 16);
-
-        start.value =
-            local;
-    }
-
 }
 
 
@@ -4062,18 +3619,10 @@ function initializeExecutionDefaults() {
 window.addEventListener(
     "click",
     function(event) {
-
-        const modal =
-            document.getElementById("mailModal");
-
-        if (
-            event.target === modal
-        ) {
-
+        const modal = document.getElementById("mailModal");
+        if (event.target === modal) {
             closeModal();
-
         }
-
     }
 );
 
@@ -4084,7 +3633,6 @@ window.addEventListener(
 
 document.addEventListener("DOMContentLoaded", function() {
     initializeDate();
-    initializeExecutionDefaults();
     loadPMDatabase();
 });
 
