@@ -3186,7 +3186,7 @@ async function fetchGitHubAttachments(pmId) {
     const statusBox = document.getElementById("attachmentsStatus");
     const tbody = document.getElementById("attachmentsBody");
 
-    const targetFolder = pmId ? `Attachments/${pmId}` : "Attachments";
+    const targetFolder = pmId ? `attachments/${pmId}` : "Attachments";
     statusBox.textContent = `جاري جلب المرفقات من المجلد: ${targetFolder}...`;
 
     const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${targetFolder}`;
