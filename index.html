@@ -2670,16 +2670,17 @@ textarea {
 
 /* ============================================================
    GITHUB CONFIGURATION
+   تأكد من ضبط اسم المستودع واسم المستخدم بدقة
 ============================================================ */
 
 const GITHUB_CONFIG = {
-    owner: "OWNER_NAME", // Replace with your GitHub username or organization
-    repo: "REPO_NAME"     // Replace with your repository name
+    owner: "OWNER_NAME", // استبدل بـ اسم المستخدم على GitHub (مثل binary-codesoft)
+    repo: "REPO_NAME"     // استبدل بـ اسم المستودع (Repository Name)
 };
 
 /* ============================================================
    PM DATABASE
-   ============================================================ */
+============================================================ */
 
 let pmDatabase = {};
 
@@ -2723,7 +2724,7 @@ function switchTab(tabId, btnElement) {
 
 
 /* ============================================================
-   DIAGNOSTICS (Image on Left, Filling the box area)
+   DIAGNOSTICS
 ============================================================ */
 
 function showDiagnostics(type, title, items = [], pmId = null) {
@@ -3184,52 +3185,97 @@ function renderMaterials(materials) {
 
 
 /* ============================================================
-   GITHUB ATTACHMENTS FETCHING
+   GITHUB ATTACHMENTS FETCHING (المُحسّنة لطلب المجلد)
 ============================================================ */
 
 async function fetchGitHubAttachments(pmId) {
     const statusBox = document.getElementById("attachmentsStatus");
     const tbody = document.getElementById("attachmentsBody");
 
-    const targetFolder = pmId ? `Attachments/${pmId}` : "Attachments";
-    statusBox.textContent = `جاري جلب المرفقات من المجلد: ${targetFolder}...`;
+    if (GITHUB_CONFIG.owner === "OWNER_NAME" || GITHUB_CONFIG.repo === "REPO_NAME") {
+        statusBox.textContent = "تنبيه: يُرجى تعديل كود JS وتحديد OWNER_NAME و REPO_NAME الخاصين بمستودعك على GitHub.";
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--danger-color);">لم يتم ضبط إعدادات المستودع (GITHUB_CONFIG) بشكل صحيح.</td></tr>`;
+        return;
+    }
 
-    const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${targetFolder}`;
+    const targetSubFolder = pmId ? String(pmId).trim() : "";
+    statusBox.textContent = `جاري جلب المرفقات من GitHub بالنسبة لـ PM: ${targetSubFolder || 'غير محدد'}...`;
 
     try {
-        const response = await fetch(apiUrl);
+        // الخطوة 1: فحص المجلد الرئيسي المسمى Attachments أو attachments
+        const rootApiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents`;
+        const rootResponse = await fetch(rootApiUrl);
 
-        if (!response.ok) {
-            if (response.status === 404) {
-                statusBox.textContent = `تنبيه: برجاء وضع المجلد ${targetFolder}/ في المستودع الخاص بك على GitHub.`;
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--danger-color);">لم يتم العثور على مجلد المرفقات (${targetFolder})</td></tr>`;
-            } else {
-                statusBox.textContent = `خطأ في الاتصال بـ GitHub REST API (${response.status})`;
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">حدث خطأ أثناء جلب الملفات.</td></tr>`;
-            }
+        if (!rootResponse.ok) {
+            statusBox.textContent = `خطأ في الاتصال بالمستودع عبر API (${rootResponse.status}). تحقق من اسم المستودع والمستخدم.`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">تعذر الوصول للمستودع على GitHub.</td></tr>`;
             return;
         }
 
-        const files = await response.json();
+        const rootContents = await rootResponse.json();
+        
+        // البحث عن مجلد المرفقات مع تجاوز اختلاف حالة الأحرف (attachments / Attachments)
+        const attachmentsDir = rootContents.find(item => 
+            item.type === "dir" && item.name.toLowerCase() === "attachments"
+        );
 
-        const filteredFiles = files.filter(file => {
+        if (!attachmentsDir) {
+            statusBox.textContent = `تنبيه: لم يتم العثور على مجلد باسم Attachments في المستودع الرئيسي.`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--danger-color);">المجلد Attachments غير موجود بالمستودع.</td></tr>`;
+            return;
+        }
+
+        // الخطوة 2: فحص المجلدات الفرعية داخل Attachments
+        const attachmentsApiUrl = attachmentsDir.url;
+        const attachmentsResponse = await fetch(attachmentsApiUrl);
+        
+        if (!attachmentsResponse.ok) {
+            statusBox.textContent = `تعذر فتح مجلد ${attachmentsDir.name}.`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">خطأ في قراءة المجلد.</td></tr>`;
+            return;
+        }
+
+        const subContents = await attachmentsResponse.json();
+
+        // البحث عن المجلد الخاص برقم الـ PM (مثلاً 11296)
+        let pmDir = subContents.find(item => 
+            item.type === "dir" && item.name.toLowerCase() === targetSubFolder.toLowerCase()
+        );
+
+        let filesToDisplay = [];
+
+        if (pmDir) {
+            // جلب ملفات المجلد الفرعي الخاص بـ PM
+            const filesResponse = await fetch(pmDir.url);
+            if (filesResponse.ok) {
+                filesToDisplay = await filesResponse.json();
+            }
+        } else {
+            // في حال عدم وجود مجلد فرعي بنفس الرقم، نقوم بعرض كافة الملفات الموجودة مباشرة داخل Attachments
+            filesToDisplay = subContents.filter(item => item.type === "file");
+        }
+
+        // تصفية الملفات وإظهار الصور والمستندات فقط
+        const filteredFiles = filesToDisplay.filter(file => {
             if (file.type !== "file") return false;
             const ext = file.name.split('.').pop().toLowerCase();
-            return ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext);
+            return ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'doc', 'docx', 'xls', 'xlsx'].includes(ext);
         });
 
         if (filteredFiles.length === 0) {
-            statusBox.textContent = `المجلد ${targetFolder} لا يحتوي على أي ملفات PDF أو صور.`;
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">لا توجد ملفات مرفقة متاحة.</td></tr>`;
+            const folderPathShow = pmDir ? `${attachmentsDir.name}/${pmDir.name}` : attachmentsDir.name;
+            statusBox.textContent = `المجلد (${folderPathShow}) لا يحتوي على أي ملفات مرفقة.`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">لا توجد ملفات مرفقة داخل المجلد (${escapeHTML(folderPathShow)}).</td></tr>`;
             return;
         }
 
-        statusBox.textContent = `تم العثور على ${filteredFiles.length} ملف (ملفات) داخل ${targetFolder}`;
+        const currentFolderPath = pmDir ? `${attachmentsDir.name}/${pmDir.name}` : attachmentsDir.name;
+        statusBox.textContent = `تم العثور على ${filteredFiles.length} ملف (ملفات) داخل المجلد: ${currentFolderPath}`;
         tbody.innerHTML = "";
 
         filteredFiles.forEach((file, index) => {
             const ext = file.name.split('.').pop().toUpperCase();
-            const sizeKB = (file.size / 1024).toFixed(1) + " KB";
+            const sizeKB = file.size ? (file.size / 1024).toFixed(1) + " KB" : "---";
             
             const tr = document.createElement("tr");
             tr.innerHTML = `
