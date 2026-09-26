@@ -2858,6 +2858,11 @@ function findPM(identifier) {
         return pmDatabase[identifier.id];
     }
 
+    if (identifier.asset) {
+        const key = Object.keys(pmDatabase).find(k => k.toLowerCase() === identifier.asset.toLowerCase());
+        if (key) return pmDatabase[key];
+    }
+
     if (identifier.assetLocation) {
         const matchingPM = Object.values(pmDatabase).find(
             pm => pm.assetLocation === identifier.assetLocation
@@ -3186,7 +3191,7 @@ async function fetchGitHubAttachments(pmId) {
     const statusBox = document.getElementById("attachmentsStatus");
     const tbody = document.getElementById("attachmentsBody");
 
-    const targetFolder = pmId ? `attachments/${pmId}` : "Attachments";
+    const targetFolder = pmId ? `Attachments/${pmId}` : "Attachments";
     statusBox.textContent = `جاري جلب المرفقات من المجلد: ${targetFolder}...`;
 
     const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${targetFolder}`;
@@ -3351,7 +3356,7 @@ function loadPMFromURL() {
             ]
         );
 
-        fetchGitHubAttachments(identifier.pm || identifier.id);
+        fetchGitHubAttachments(identifier.pm || identifier.id || identifier.asset);
         return;
     }
 
