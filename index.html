@@ -420,49 +420,6 @@ textarea {
 }
 
 /* ================================
-   ATTACHMENTS TABLE & LIST
-================================ */
-
-.attachments-list {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 13px;
-}
-
-.attachments-list th,
-.attachments-list td {
-    border: 1px solid var(--border-color);
-    padding: 10px;
-    text-align: right;
-}
-
-.attachments-list th {
-    background: var(--bg-header);
-    font-weight: bold;
-}
-
-.attachments-list td a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.attachments-list td a:hover {
-    text-decoration: underline;
-}
-
-.attachments-status-box {
-    padding: 12px;
-    border-radius: 6px;
-    background: var(--bg-blue);
-    border: 1px solid #93c5fd;
-    color: var(--primary-color);
-    font-size: 13px;
-    margin-bottom: 10px;
-}
-
-/* ================================
    NOTES
 ================================ */
 
@@ -732,6 +689,83 @@ textarea {
 }
 
 /* ================================
+   ATTACHMENTS
+================================ */
+
+.attachments-panel {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #f8fafc;
+    overflow: hidden;
+}
+
+.attachments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #eff6ff;
+    border-bottom: 1px solid #bfdbfe;
+}
+
+.attachments-header strong {
+    color: var(--primary-color);
+}
+
+.attachments-status {
+    color: var(--muted-color);
+    font-size: 12px;
+}
+
+.attachments-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.attachments-list li {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.attachments-list li:last-child {
+    border-bottom: none;
+}
+
+.attachment-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 600;
+    background: white;
+}
+
+.attachment-link:hover {
+    background: #eff6ff;
+    text-decoration: underline;
+}
+
+.attachment-icon {
+    flex: 0 0 24px;
+    text-align: center;
+}
+
+.attachments-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--muted-color);
+    background: white;
+}
+
+@media print {
+    .attachments-panel {
+        border: 1px solid #000;
+    }
+}
+\n/* ================================
    PRINT
 ================================ */
 
@@ -787,8 +821,7 @@ textarea {
     }
 
     .materials-table,
-    .inspection-table,
-    .attachments-list {
+    .inspection-table {
         break-inside: auto;
     }
 
@@ -917,7 +950,7 @@ textarea {
 
     <button
         class="tab-btn"
-        onclick="switchTab('tab-attachments', this)">
+        onclick="switchTab('tab-attachments', this); loadCurrentPMAttachments();">
         3. المرفقات / Attachments
     </button>
 
@@ -2592,37 +2625,50 @@ textarea {
 
 <div id="tab-attachments" class="tab-content">
 
-<div class="sheet-container">
+<div id="attachments-form" class="sheet-container">
 
     <div class="section-title">
-        Attachments & Documents
+        PM Attachments
         <span style="float:left;">
-            المرفقات والوثائق
+            مرفقات الصيانة الوقائية
         </span>
     </div>
 
-    <div id="attachmentsStatus" class="attachments-status-box">
-        Loading attachments...
+    <div class="pm-panel">
+
+        <div class="pm-panel-header">
+            <strong>
+                Attachment Files / ملفات المرفقات
+            </strong>
+
+            <span id="attachmentsPMSource" class="pm-source">
+                PM ID: ---
+            </span>
+        </div>
+
+        <div class="attachments-panel">
+
+            <div class="attachments-header">
+                <strong>
+                    Files in attachments/&lt;PM ID&gt;/
+                </strong>
+
+                <span id="attachmentsStatus" class="attachments-status">
+                    Loading...
+                </span>
+            </div>
+
+            <ul id="attachmentsList" class="attachments-list">
+                <li class="attachments-empty">
+                    Select a PM record to load its attachments.
+                </li>
+            </ul>
+
+        </div>
+
     </div>
 
-    <table class="attachments-list">
-        <thead>
-            <tr>
-                <th style="width: 10%;">#</th>
-                <th style="width: 50%;">اسم الملف / File Name</th>
-                <th style="width: 20%;">الحجم / Size</th>
-                <th style="width: 20%;">النوع / Type</th>
-            </tr>
-        </thead>
-        <tbody id="attachmentsBody">
-            <tr>
-                <td colspan="4" style="text-align: center;">جاري التحميل...</td>
-            </tr>
-        </tbody>
-    </table>
-
 </div>
-
 </div>
 
 
@@ -2669,18 +2715,8 @@ textarea {
 <script>
 
 /* ============================================================
-   GITHUB CONFIGURATION
-   تأكد من ضبط اسم المستودع واسم المستخدم بدقة
-============================================================ */
-
-const GITHUB_CONFIG = {
-    owner: "OWNER_NAME", // استبدل بـ اسم المستخدم على GitHub (مثل binary-codesoft)
-    repo: "REPO_NAME"     // استبدل بـ اسم المستودع (Repository Name)
-};
-
-/* ============================================================
    PM DATABASE
-============================================================ */
+   ============================================================ */
 
 let pmDatabase = {};
 
@@ -2724,7 +2760,7 @@ function switchTab(tabId, btnElement) {
 
 
 /* ============================================================
-   DIAGNOSTICS
+   DIAGNOSTICS (Image on Left, Filling the box area)
 ============================================================ */
 
 function showDiagnostics(type, title, items = [], pmId = null) {
@@ -2857,11 +2893,6 @@ function findPM(identifier) {
 
     if (identifier.id && pmDatabase[identifier.id]) {
         return pmDatabase[identifier.id];
-    }
-
-    if (identifier.asset) {
-        const key = Object.keys(pmDatabase).find(k => k.toLowerCase() === identifier.asset.toLowerCase());
-        if (key) return pmDatabase[key];
     }
 
     if (identifier.assetLocation) {
@@ -3059,6 +3090,9 @@ function populatePM(pm) {
 
     renderMaterials(pm.materials);
 
+    // Prepare the third tab for the newly loaded PM.
+    loadPMAttachments(pm.pmId);
+
 
     updateQRStatus(
         "loaded",
@@ -3079,7 +3113,6 @@ function populatePM(pm) {
         pm.pmId
     );
 
-    fetchGitHubAttachments(pm.pmId);
 }
 
 
@@ -3183,117 +3216,324 @@ function renderMaterials(materials) {
 
 }
 
-
 /* ============================================================
-   GITHUB ATTACHMENTS FETCHING (المُحسّنة لطلب المجلد)
-============================================================ */
+   ATTACHMENTS
+   Lists files from attachments/<pmId>/ and opens each file
+   in a new browser tab.
+   ============================================================ */
 
-async function fetchGitHubAttachments(pmId) {
-    const statusBox = document.getElementById("attachmentsStatus");
-    const tbody = document.getElementById("attachmentsBody");
+/*
+ * Optional configuration for custom-domain deployments:
+ *
+ * window.EAM_GITHUB_REPOSITORY = "OWNER/REPOSITORY";
+ *
+ * When the application is hosted directly on GitHub Pages,
+ * the repository is inferred from the github.io URL.
+ */
+const ATTACHMENTS_FOLDER = "attachments";
 
-    if (GITHUB_CONFIG.owner === "OWNER_NAME" || GITHUB_CONFIG.repo === "REPO_NAME") {
-        statusBox.textContent = "تنبيه: يُرجى تعديل كود JS وتحديد OWNER_NAME و REPO_NAME الخاصين بمستودعك على GitHub.";
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--danger-color);">لم يتم ضبط إعدادات المستودع (GITHUB_CONFIG) بشكل صحيح.</td></tr>`;
+function getGitHubRepository() {
+    if (window.EAM_GITHUB_REPOSITORY) {
+        return String(window.EAM_GITHUB_REPOSITORY).trim();
+    }
+
+    const host = window.location.hostname;
+    const pathParts = window.location.pathname
+        .split("/")
+        .filter(Boolean);
+
+    if (!host.endsWith(".github.io")) {
+        return null;
+    }
+
+    const owner = host.split(".")[0];
+
+    /*
+     * User/organization Pages:
+     *   https://owner.github.io/
+     * normally maps to owner/owner.github.io
+     *
+     * Project Pages:
+     *   https://owner.github.io/repository/
+     * maps to owner/repository
+     */
+    const repo = pathParts.length > 0
+        ? pathParts[0]
+        : owner + ".github.io";
+
+    return owner + "/" + repo;
+}
+
+function getAttachmentURL(pmId, fileName) {
+    return (
+        "./" +
+        ATTACHMENTS_FOLDER +
+        "/" +
+        encodeURIComponent(String(pmId)) +
+        "/" +
+        encodeURIComponent(String(fileName))
+    );
+}
+
+function renderAttachmentsMessage(message) {
+    const list = document.getElementById("attachmentsList");
+
+    if (!list) {
         return;
     }
 
-    const targetSubFolder = pmId ? String(pmId).trim() : "";
-    statusBox.textContent = `جاري جلب المرفقات من GitHub بالنسبة لـ PM: ${targetSubFolder || 'غير محدد'}...`;
+    list.innerHTML = `
+        <li class="attachments-empty">
+            ${escapeHTML(message)}
+        </li>
+    `;
+}
+
+function renderAttachments(files, pmId) {
+    const list = document.getElementById("attachmentsList");
+    const status = document.getElementById("attachmentsStatus");
+
+    if (!list || !status) {
+        return;
+    }
+
+    list.innerHTML = "";
+
+    if (!files || files.length === 0) {
+        status.textContent = "0 files";
+        renderAttachmentsMessage(
+            "No attachment files found for PM " + pmId + "."
+        );
+        return;
+    }
+
+    const sortedFiles = [...files].sort((a, b) =>
+        String(a.name).localeCompare(
+            String(b.name),
+            undefined,
+            {
+                numeric: true,
+                sensitivity: "base"
+            }
+        )
+    );
+
+    sortedFiles.forEach(file => {
+        const li = document.createElement("li");
+
+        const link = document.createElement("a");
+        link.className = "attachment-link";
+        link.href = file.url || getAttachmentURL(pmId, file.name);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.title = "Open " + file.name + " in a new page";
+
+        const icon = document.createElement("span");
+        icon.className = "attachment-icon";
+        icon.textContent = "📎";
+
+        const name = document.createElement("span");
+        name.textContent = file.name;
+
+        link.appendChild(icon);
+        link.appendChild(name);
+        li.appendChild(link);
+        list.appendChild(li);
+    });
+
+    status.textContent =
+        sortedFiles.length +
+        (sortedFiles.length === 1 ? " file" : " files");
+}
+
+async function fetchAttachmentsFromGitHub(pmId) {
+    const repository = getGitHubRepository();
+
+    if (!repository || !repository.includes("/")) {
+        throw new Error(
+            "GitHub repository could not be determined."
+        );
+    }
+
+    const apiURL =
+        "https://api.github.com/repos/" +
+        repository +
+        "/contents/" +
+        ATTACHMENTS_FOLDER +
+        "/" +
+        encodeURIComponent(String(pmId));
+
+    const response = await fetch(apiURL, {
+        headers: {
+            "Accept": "application/vnd.github+json"
+        },
+        cache: "no-store"
+    });
+
+    if (!response.ok) {
+        throw new Error(
+            "GitHub API HTTP " + response.status
+        );
+    }
+
+    const entries = await response.json();
+
+    if (!Array.isArray(entries)) {
+        throw new Error(
+            "The attachment path is not a directory."
+        );
+    }
+
+    return entries
+        .filter(entry => entry.type === "file")
+        .map(entry => ({
+            name: entry.name,
+            /*
+             * Use the actual GitHub Pages file URL instead of
+             * the API download URL, so the file opens on the
+             * same deployed application when possible.
+             */
+            url: getAttachmentURL(pmId, entry.name)
+        }));
+}
+
+async function fetchAttachmentsFromManifest(pmId) {
+    const manifestURL =
+        "./" +
+        ATTACHMENTS_FOLDER +
+        "/" +
+        encodeURIComponent(String(pmId)) +
+        "/index.json?v=" +
+        Date.now();
+
+    const response = await fetch(manifestURL, {
+        cache: "no-store"
+    });
+
+    if (!response.ok) {
+        throw new Error(
+            "Attachment manifest HTTP " + response.status
+        );
+    }
+
+    const data = await response.json();
+
+    /*
+     * Supported formats:
+     *   ["file1.pdf", "file2.jpg"]
+     * or
+     *   { "files": ["file1.pdf", "file2.jpg"] }
+     */
+    const names = Array.isArray(data)
+        ? data
+        : Array.isArray(data.files)
+            ? data.files
+            : [];
+
+    return names
+        .filter(name =>
+            typeof name === "string" &&
+            name.trim() !== ""
+        )
+        .map(name => ({
+            name: name,
+            url: getAttachmentURL(pmId, name)
+        }));
+}
+
+async function loadPMAttachments(pmId) {
+    const status =
+        document.getElementById("attachmentsStatus");
+
+    const source =
+        document.getElementById("attachmentsPMSource");
+
+    if (!pmId) {
+        if (source) {
+            source.textContent = "PM ID: ---";
+        }
+
+        if (status) {
+            status.textContent = "No PM selected";
+        }
+
+        renderAttachmentsMessage(
+            "No PM ID is currently loaded."
+        );
+
+        return;
+    }
+
+    if (source) {
+        source.textContent = "PM ID: " + pmId;
+    }
+
+    if (status) {
+        status.textContent = "Loading...";
+    }
+
+    renderAttachmentsMessage(
+        "Loading attachments for PM " + pmId + "..."
+    );
 
     try {
-        // الخطوة 1: فحص المجلد الرئيسي المسمى Attachments أو attachments
-        const rootApiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents`;
-        const rootResponse = await fetch(rootApiUrl);
+        /*
+         * Preferred method for GitHub Pages:
+         * query the repository contents directly.
+         */
+        const files =
+            await fetchAttachmentsFromGitHub(pmId);
 
-        if (!rootResponse.ok) {
-            statusBox.textContent = `خطأ في الاتصال بالمستودع عبر API (${rootResponse.status}). تحقق من اسم المستودع والمستخدم.`;
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">تعذر الوصول للمستودع على GitHub.</td></tr>`;
-            return;
-        }
+        renderAttachments(files, pmId);
 
-        const rootContents = await rootResponse.json();
-        
-        // البحث عن مجلد المرفقات مع تجاوز اختلاف حالة الأحرف (attachments / Attachments)
-        const attachmentsDir = rootContents.find(item => 
-            item.type === "dir" && item.name.toLowerCase() === "attachments"
+    } catch (githubError) {
+
+        console.warn(
+            "GitHub attachment listing failed:",
+            githubError
         );
 
-        if (!attachmentsDir) {
-            statusBox.textContent = `تنبيه: لم يتم العثور على مجلد باسم Attachments في المستودع الرئيسي.`;
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--danger-color);">المجلد Attachments غير موجود بالمستودع.</td></tr>`;
-            return;
-        }
+        try {
+            /*
+             * Fallback for custom domains or repositories
+             * where the GitHub API cannot be used.
+             */
+            const files =
+                await fetchAttachmentsFromManifest(pmId);
 
-        // الخطوة 2: فحص المجلدات الفرعية داخل Attachments
-        const attachmentsApiUrl = attachmentsDir.url;
-        const attachmentsResponse = await fetch(attachmentsApiUrl);
-        
-        if (!attachmentsResponse.ok) {
-            statusBox.textContent = `تعذر فتح مجلد ${attachmentsDir.name}.`;
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">خطأ في قراءة المجلد.</td></tr>`;
-            return;
-        }
+            renderAttachments(files, pmId);
 
-        const subContents = await attachmentsResponse.json();
+        } catch (manifestError) {
 
-        // البحث عن المجلد الخاص برقم الـ PM (مثلاً 11296)
-        let pmDir = subContents.find(item => 
-            item.type === "dir" && item.name.toLowerCase() === targetSubFolder.toLowerCase()
-        );
+            console.error(
+                "Attachment manifest loading failed:",
+                manifestError
+            );
 
-        let filesToDisplay = [];
-
-        if (pmDir) {
-            // جلب ملفات المجلد الفرعي الخاص بـ PM
-            const filesResponse = await fetch(pmDir.url);
-            if (filesResponse.ok) {
-                filesToDisplay = await filesResponse.json();
+            if (status) {
+                status.textContent = "Unable to list files";
             }
-        } else {
-            // في حال عدم وجود مجلد فرعي بنفس الرقم، نقوم بعرض كافة الملفات الموجودة مباشرة داخل Attachments
-            filesToDisplay = subContents.filter(item => item.type === "file");
+
+            renderAttachmentsMessage(
+                "No attachment listing is available for PM " +
+                pmId +
+                ". Add attachments/" +
+                pmId +
+                "/index.json or configure EAM_GITHUB_REPOSITORY."
+            );
         }
-
-        // تصفية الملفات وإظهار الصور والمستندات فقط
-        const filteredFiles = filesToDisplay.filter(file => {
-            if (file.type !== "file") return false;
-            const ext = file.name.split('.').pop().toLowerCase();
-            return ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'doc', 'docx', 'xls', 'xlsx'].includes(ext);
-        });
-
-        if (filteredFiles.length === 0) {
-            const folderPathShow = pmDir ? `${attachmentsDir.name}/${pmDir.name}` : attachmentsDir.name;
-            statusBox.textContent = `المجلد (${folderPathShow}) لا يحتوي على أي ملفات مرفقة.`;
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">لا توجد ملفات مرفقة داخل المجلد (${escapeHTML(folderPathShow)}).</td></tr>`;
-            return;
-        }
-
-        const currentFolderPath = pmDir ? `${attachmentsDir.name}/${pmDir.name}` : attachmentsDir.name;
-        statusBox.textContent = `تم العثور على ${filteredFiles.length} ملف (ملفات) داخل المجلد: ${currentFolderPath}`;
-        tbody.innerHTML = "";
-
-        filteredFiles.forEach((file, index) => {
-            const ext = file.name.split('.').pop().toUpperCase();
-            const sizeKB = file.size ? (file.size / 1024).toFixed(1) + " KB" : "---";
-            
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td style="text-align:center;">${index + 1}</td>
-                <td><a href="${file.html_url}" target="_blank" rel="noopener noreferrer">${escapeHTML(file.name)} ↗</a></td>
-                <td style="text-align:center;">${sizeKB}</td>
-                <td style="text-align:center;">${ext}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-    } catch (error) {
-        console.error("Error fetching GitHub attachments:", error);
-        statusBox.textContent = "حدث خطأ أثناء الاتصال بـ GitHub API.";
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">تعذر الاتصال بـ GitHub API.</td></tr>`;
     }
 }
 
+function loadCurrentPMAttachments() {
+    const pmId =
+        currentPM?.pmId ||
+        document.getElementById("pmIdInput")?.value ||
+        document.getElementById("inspectionPMId")?.value ||
+        "";
+
+    loadPMAttachments(pmId);
+}
 
 async function loadPMDatabase() {
     try {
@@ -3338,7 +3578,6 @@ async function loadPMDatabase() {
                 "Error: " + error.message
             ]
         );
-        fetchGitHubAttachments(null);
     }
 }
 
@@ -3373,7 +3612,6 @@ function loadPMFromURL() {
             ]
         );
 
-        fetchGitHubAttachments(null);
         return;
     }
 
@@ -3402,7 +3640,6 @@ function loadPMFromURL() {
             ]
         );
 
-        fetchGitHubAttachments(identifier.pm || identifier.id || identifier.asset);
         return;
     }
 
