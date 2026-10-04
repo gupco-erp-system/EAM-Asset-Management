@@ -1,0 +1,228 @@
+{
+  "pmId": "11275",
+  "equipmentType": "PUMP",
+  "assetLocation": "Ras Bakr",
+  "asset": "Pump - Crude Oil Pump Package No 6",
+  "assetTag": "RBKR-P-11275",
+  "failureClass": "PUMP",
+  "responsibility": "RS-PUMP-ONSHORE",
+  "glAccount": "03-92012060M9-MM000:46P0-MM000:4600-P0",
+  "jobPlan": "PUGE-06M",
+  "frequency": "6 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "BINGHAM",
+  "model": "6x10x12.5",
+  "serial": "",
+  "installationDate": "",
+  "criticality": "HIGH",
+  "assignedGroup": "RS-PUMP-ONSHORE",
+  "workOrder": "WO-PM-11275",
+  "notes": "PM loaded automatically from QR-linked PM record.",
+  "pmFrequencySummary": "6 Months / 1600 hrs",
+  "lastPMDate": "",
+  "nextPMDueDate": "",
+  "pumpParameters": {
+    "pumpType": "Centrifugal Pump",
+    "fluidHandled": "Water",
+    "flowRate": "2042 GPM (70000 BPD)",
+    "totalDynamicHead": "1650 Head",
+    "suctionPressure": "6 PSI",
+    "dischargePressure": "220 PSI",
+    "operatingSpeed": "3400 RPM",
+    "impellerDiameter": "12.5 in",
+    "sealType": "",
+    "npshRequired": "",
+    "bearingLubeType": ""
+  },
+  "materials": [
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "109639",
+      "description": "COMPLETE J.C. TYPE T-8B1-O , SIZE 3-7/8\" ,SHAFT SIZE 3.260\" ,MAT.CODE X01510581 , DWG.NO.: HSP-37908-1 (REF. DWG.: CF-",
+      "descriptionAr": "مانع تسرب ميكانيكي كامل"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165067",
+      "description": "IMPELLER, STAGE 3 ITEM NO. 247 PN:1512013",
+      "descriptionAr": "ساقية المرحلة 3"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165061",
+      "description": "SLEEVE, SHAFT CENTER ITEM NO. 214",
+      "descriptionAr": "جلبة عمود مركزية"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165063",
+      "description": "IMPELLER, STAGE 1 ITEM NO. 220",
+      "descriptionAr": "ساقية المرحلة 1"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165065",
+      "description": "IMPELLER, STAGE 2 ITEM NO. 237",
+      "descriptionAr": "ساقية المرحلة 2"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165074",
+      "description": "KEY, IMPELLER AND CENTER SLEEVE ITEM NO. 258",
+      "descriptionAr": "خابور الساقية والجلبة المركزية"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165051",
+      "description": "RING, SERIES, CASE ITEM NO. 203 SHOULD BE ITEM 202",
+      "descriptionAr": "حلقة هوزنج"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165052",
+      "description": "PIECE, STAGE 1,2, ITEM # 204",
+      "descriptionAr": "قطعة المرحلة 1و2"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165055",
+      "description": "BUSHING, THROTTLE ITEM NO. 207",
+      "descriptionAr": "جلبة اختناق"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165059",
+      "description": "RING, IMPELLER SERIES ITEM NO. 211",
+      "descriptionAr": "حلقة الساقية"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165060",
+      "description": "SLEEVE, SHAFT BTWN. 1 AND 2 ITEM NO. 213 MATERIAL 440A 450/525 B",
+      "descriptionAr": "جلبة عمود بين المرحلة 1 و 2"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165049",
+      "description": "RING, CASE STAGE 1 ITEM NO. 201",
+      "descriptionAr": "حلقة الهوزنج المرحلة 1"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165050",
+      "description": "RING, CASE STAGE 1 ITEM NO. 202",
+      "descriptionAr": "حلقة الهوزنج المرحلة 1"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165077",
+      "description": "BEARING, JOURNAL ASSY. DRIVE END ITEM NO. 303A",
+      "descriptionAr": "رولمان بلي جزيئي جانب المحرك"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "164958",
+      "description": "O-RING,",
+      "descriptionAr": "حلقة دائرية O-Ring"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110107",
+      "description": "COUPLING, FLEXIBOX METASTREAM, MODEL 100 T WITH 9\" STANDARD SPACER INSTALLED ON BINGHAM PUMP TYPE MSD-D S/N 1A627.",
+      "descriptionAr": "كوبلن فلنسبوكس"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "177624",
+      "description": "GASKET, CASE ITEM NO. 117 \"A NON ASBESTOS ALTERNATIVE IS REQUIRED\" O A R",
+      "descriptionAr": "جوان الهوزنج غير اسبستوس"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165047",
+      "description": "PIN, LOCK ITEM NO. 113",
+      "descriptionAr": "بين قفل"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165082",
+      "description": "DISC, DEFLECTOR ITEM NO. 333 OLD P/N. 1580B30190-21",
+      "descriptionAr": "قرص حماية / عاكس"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165054",
+      "description": "PIECE, STAGE CENTER ITEM NO. 206",
+      "descriptionAr": "قطعة مرحلة مركزية"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165072",
+      "description": "KEY, STAGE 1 ITEM NO. 254",
+      "descriptionAr": "خابور المرحلة 1"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165087",
+      "description": "O-RING, BEARING COVER END PLATES ITEM NO. 208-2",
+      "descriptionAr": "حلقة دائرية لغطاء كرسي التحميل"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "109629",
+      "description": "OPERATOR REPAIR KIT, PARTS FOR PNEUMATIC ACTUATOR P/N T520/SR, Manfacture: BETTIS.",
+      "descriptionAr": "طقم إصلاح مشغل نيوماتيك بكتس"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165081",
+      "description": "RING, OIL JOURNAL BRG. ITEM NO. 332",
+      "descriptionAr": "حلقة زيت لكرسي التحميل"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165056",
+      "description": "BUSHING, THROTTLE ITEM NO. 208",
+      "descriptionAr": "جلبة اختناق"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "165070",
+      "description": "RING, THRUST IMPELLER AND SLEEVE ITEM NO. 252",
+      "descriptionAr": "حلقة دفع الساقية والجلبة"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "164899",
+      "description": "Complete thrust bearing 5 JHJ (steel), Drawing no. FJHJ050AY-001, Cage code 75333, KINGSBURY manufacturer.",
+      "descriptionAr": "كرسي تحميل محوري كامل كينجسبري"
+    }
+  ]
+}

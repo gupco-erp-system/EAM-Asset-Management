@@ -1,0 +1,54 @@
+{
+  "pmId": "78910",
+  "equipmentType": "GAS COMPRESSOR",
+  "assetLocation": "RBKR",
+  "asset": "Reciprocating Gas Compressor Unit 1",
+  "assetTag": "RBKR-CMP-01",
+  "failureClass": "COMP",
+  "responsibility": "RS-RECIP-NORTH",
+  "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+  "jobPlan": "JP-COMP-3M",
+  "frequency": "3 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "Ariel",
+  "model": "JJG/4",
+  "serial": "F-44102",
+  "installationDate": "2019-11-01",
+  "criticality": "HIGH",
+  "assignedGroup": "RS-RECIP-NORTH",
+  "workOrder": "WO-2026-8820",
+  "notes": "PM loaded automatically from QR-linked PM record.",
+  "pmFrequencySummary": "3 Months / 500 hrs",
+  "lastPMDate": "2026-09-01",
+  "nextPMDueDate": "2026-12-01",
+  "compressorParameters": {
+    "compressorType": "Reciprocating Gas",
+    "numberOfStages": 2,
+    "gasCapacity": "5.5 MMSCFD",
+    "firstStageSuctionPress": "20 PSI",
+    "firstStageDischargePress": "85 PSI",
+    "secondStageSuctionPress": "80 PSI",
+    "secondStageDischargePress": "320 PSI",
+    "suctionTemperature": "85 °F",
+    "dischargeTemperature": "220 °F",
+    "rodLoad": "24,000 lbs",
+    "valveType": "Concentric Ring Valves",
+    "frameLubePressure": "55 PSI"
+  },
+  "materials": [
+    {
+      "quantity": 4,
+      "unit": "EA",
+      "itemNo": "501192",
+      "description": "Suction Valve Assembly",
+      "descriptionAr": "صمامات سحب"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "509122",
+      "description": "Piston Ring Set 1st Stage",
+      "descriptionAr": "طقم شنابر بستم"
+    }
+  ]
+}

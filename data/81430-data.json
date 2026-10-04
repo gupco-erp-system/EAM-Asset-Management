@@ -1,0 +1,79 @@
+{
+  "pmId": "81430",
+  "equipmentType": "AIR COMPRESSOR",
+  "assetLocation": "RBKR",
+  "asset": "Air Compressor - Rotary Compressor - Instrument Air Package No 1",
+  "assetTag": "RBKR-C-7520",
+  "failureClass": "COMP",
+  "responsibility": "RS-RECIP-NORTH",
+  "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+  "jobPlan": "JP-COMP-6M",
+  "frequency": "6 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "INGERSOLL RAND",
+  "model": "Rotary Screw Air Compressor",
+  "serial": "",
+  "installationDate": "",
+  "criticality": "HIGH",
+  "pmFrequencySummary": "6 Months / 4000 hrs",
+  "lastPMDate": "",
+  "nextPMDueDate": "",
+  "assignedGroup": "RS-RECIP-NORTH",
+  "workOrder": "WO-PM-81430",
+  "notes": "PM loaded automatically from QR-linked PM record. Compressor technical parameters are provisional and should be confirmed against the OEM nameplate/manual.",
+  "compressorParameters": {
+    "compressorType": "Rotary Screw",
+    "application": "Instrument Air",
+    "ratedPower": "75 HP / 55 KW",
+    "airCapacity": "Approximately 300 CFM",
+    "ratedDischargePressure": "125 PSI",
+    "maximumWorkingPressure": "150 PSI",
+    "operatingSpeed": "Variable / OEM dependent",
+    "airReceiverCapacity": "1000 Liters",
+    "airOutletTemperature": "Ambient + 10 °C (typical)",
+    "lubricantType": "OEM-approved rotary screw compressor oil",
+    "oilCapacity": "Approximately 15 Liters",
+    "coolingType": "Air Cooled",
+    "motorVoltage": "400 V AC",
+    "motorFrequency": "50 Hz",
+    "phase": "3 Phase",
+    "instrumentAirDewPoint": "≤ -20 °C after air treatment (package dependent)"
+  },
+  "materials": [
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "",
+      "description": "Air filter element",
+      "descriptionAr": "شمعة فلتر هواء"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "",
+      "description": "Oil filter element",
+      "descriptionAr": "فلتر زيت"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "",
+      "description": "Oil separator element",
+      "descriptionAr": "فاصل زيت"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "",
+      "description": "Air/Oil separator service kit",
+      "descriptionAr": "طقم صيانة فاصل الزيت"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "",
+      "description": "Rotary screw compressor oil service kit",
+      "descriptionAr": "طقم زيت صيانة كمبروسر حلزوني"
+    }
+  ]
+}

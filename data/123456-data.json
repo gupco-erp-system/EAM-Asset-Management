@@ -1,0 +1,53 @@
+{
+  "pmId": "123456",
+  "equipmentType": "PUMP",
+  "assetLocation": "RBKR",
+  "asset": "Crude Oil Transfer Pump No 2",
+  "assetTag": "RBKR-PMP-02",
+  "failureClass": "PUMP",
+  "responsibility": "RS-PUMP-NORTH",
+  "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P1",
+  "jobPlan": "JP-PUMP-6M",
+  "frequency": "6 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "C.O.P Gulden",
+  "model": "AX200",
+  "serial": "P-98412/A",
+  "installationDate": "2020-03-15",
+  "criticality": "HIGH",
+  "assignedGroup": "RS-PUMP-NORTH",
+  "workOrder": "WO-2026-1042",
+  "notes": "PM loaded automatically from QR-linked PM record.",
+  "pmFrequencySummary": "6 Months / 1000 hrs",
+  "lastPMDate": "2026-07-10",
+  "nextPMDueDate": "2027-01-10",
+  "pumpParameters": {
+    "pumpType": "Centrifugal / Multi-stage",
+    "fluidHandled": "Crude Oil",
+    "flowRate": "250 m³/h (1100 GPM)",
+    "totalDynamicHead": "120 Meters",
+    "suctionPressure": "30 PSI",
+    "dischargePressure": "180 PSI",
+    "operatingSpeed": "2950 RPM",
+    "impellerDiameter": "210 mm",
+    "sealType": "Double Mechanical Seal",
+    "npshRequired": "3.5 Meters",
+    "bearingLubeType": "ISO VG 68 Oil"
+  },
+  "materials": [
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "402911",
+      "description": "Mechanical Seal Kit AX200",
+      "descriptionAr": "طقم مانع تسرب ميكانيكي"
+    },
+    {
+      "quantity": 2,
+      "unit": "EA",
+      "itemNo": "408112",
+      "description": "Bearing SKF 6314 C3",
+      "descriptionAr": "رولمان بلي"
+    }
+  ]
+}

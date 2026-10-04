@@ -1,0 +1,325 @@
+{
+  "pmId": "1017",
+  "equipmentType": "ENGINE",
+  "assetLocation": "RBKR",
+  "asset": "PM For Ras Bakr Diesel Generator Engine",
+  "assetTag": "RBKR-GD-7700",
+  "failureClass": "CEDE",
+  "responsibility": "RS-RECIP-NORTH",
+  "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+  "jobPlan": "D3406-1",
+  "frequency": "6 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "CATERPILLAR",
+  "model": "CAT D-3406",
+  "serial": "C-15420/1",
+  "installationDate": "",
+  "criticality": "HIGH",
+  "pmFrequencySummary": "6 Months / 1600 hrs",
+  "lastPMDate": "2026-08-20",
+  "nextPMDueDate": "2027-02-20",
+  "assignedGroup": "RS-RECIP-NORTH",
+  "workOrder": "WO-PM-1017",
+  "notes": "PM loaded automatically from QR-linked PM record.",
+  "engineParameters": {
+    "ratedPower": "1480 HP / 1100 KW",
+    "operatingSpeed": "1200 RPM",
+    "fuelType": "Diesel",
+    "lubeOilCapacity": "340 Liters",
+    "coolingCapacity": "450 Liters",
+    "currentHourMeter": "42,850 hrs",
+    "lastOverhaulMeter": "35,000 hrs",
+    "avgRunningHours": "24 hrs",
+    "targetOilTemp": "180 - 195 °F",
+    "targetOilPress": "45 ±5 PSI"
+  },
+  "materials": [
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "131955",
+      "description": "GASKET, OIL PAN PLATE",
+      "descriptionAr": "جوان كارتيرة الزيت"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "302990",
+      "description": "Elbow GP- Exhaust , 1/EA P.N: 8N1184 ELBOW , 1/EA P.N: 9L5839 COUPLING , 10/EA P.N: 5L8854 RING",
+      "descriptionAr": "كوع عادم مجتمع"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110288",
+      "description": "FILTER, OIL,\"DONALDSON\" Wix 51791 (12EA/PKG.)",
+      "descriptionAr": "فلتر زيت دونالدسون"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "106790",
+      "description": "DNR (Don't Reorder)",
+      "descriptionAr": "لا يتم إعادة الطلب"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "115955",
+      "description": "GASKET, WATER PUMP COVER",
+      "descriptionAr": "جوان غطاء طلمبة المياه"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "116034",
+      "description": "O-RING for main water pump for Waukesha engine model L7042GSI P.No. # 169616-B (Don't Substitute) Reference catalog For",
+      "descriptionAr": "أورينج طلمبة المياه الرئيسية"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "160961",
+      "description": "CLAMP, WATER JACKET AFTERCOOLER AND EXHAUST ELBOW",
+      "descriptionAr": "أفيز مبرد وقفيز كوع العادم"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "160964",
+      "description": "RING, SEALING EXHAUST ELBOW FOR WATER COOLED MANIFOLD SHIELD",
+      "descriptionAr": "حلقة منع تسريب كوع العادم"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161393",
+      "description": "GASKET, TURBO 4.525 IN. X 2.838 IN. X 0.058 IN. STAINLESS STEEL WITH CORBESTOS",
+      "descriptionAr": "جوان تربو استانلس ستيل"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110327",
+      "description": "FILTER, ASSY.",
+      "descriptionAr": "مجموعة فلتر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110289",
+      "description": "FILTER,WIX 51792 OR EQUIVALENT P/N. FRAM PH-3335 @ STD. PKG.6------P/N. B-99",
+      "descriptionAr": "فلتر ويكس أو ما يعادله"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "116483",
+      "description": "V-BELT, ASSY. WATER PUMP (2 EA = 1 ST )",
+      "descriptionAr": "طقم سيور طلمبة مياه"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "131629",
+      "description": "FLANGE, FOR EXHAUST FITTING GROUP",
+      "descriptionAr": "فلنشة توصيلات العادم"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "135028",
+      "description": "GASKET, 6\" 150 FULL FACE.",
+      "descriptionAr": "جوان 6 بوصة 150"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "109846",
+      "description": "V-BELT, AUTOMOTIVE TYPE RAW EDGE-NETURAL CORD OC:55.626 IN TW:0.469 IN \"GEN.MOT.\" OR EQUI",
+      "descriptionAr": "سير V للسيارات"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "145354",
+      "description": "ADAPTER,",
+      "descriptionAr": "أدابتور / وصلة تحويل"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "131358",
+      "description": "NECK, FILLER, SURGE TANK",
+      "descriptionAr": "رقبة ملء خزان التمدد"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161416",
+      "description": "GASKET, FOR MANIFOLD",
+      "descriptionAr": "جوان المجمع / المانفولد"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161424",
+      "description": "GASKET, FOR CYLINDER HEAD COVER",
+      "descriptionAr": "جوان غطاء وش السلندر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "160999",
+      "description": "CAP, PRESSURE, EXPANSION TANK",
+      "descriptionAr": "غطاء ضغط خزان التمدد"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "160947",
+      "description": "ELEMENT, GROUP SERVICE FOR AIR CLEANER EQUIV.(AF333), (THIS ITEM TO BE SUPPLIED FROM ORIGINAL MANUFACTURER &",
+      "descriptionAr": "شمعة فلتر هواء"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110286",
+      "description": "FILTER AS,FUEL, P/N: 1P2299, P/F: CATERPILLER DIESEL ENGINE, MODEL: 3116, S/N: 2BK10074, ARR/NO: 4P2816, OF GARBAGE TRUC",
+      "descriptionAr": "مجموعة فلتر جاز كاتربلر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161536",
+      "description": "SILENCER, EXHAUST MODEL MAXUM MSA 1 AMF 8\"22\" DIAMETER 56\" LENGTH \"REF. RILEY BEAR ID INC\"",
+      "descriptionAr": "شكمان / كاتم صوت العادم"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161254",
+      "description": "DRIVE, GROUP FOR MOTOR GROUP",
+      "descriptionAr": "مجموعة محرك تشغيل"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161105",
+      "description": "FITTING, GROUP VERTICAL EXHAUST",
+      "descriptionAr": "وصلات العادم الرأسي"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161282",
+      "description": "LINE, ASSY. FOR LINES GROUP",
+      "descriptionAr": "خط توصيل مجتمع"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161042",
+      "description": "GASKET, 1-7/8\" OD X 57/64\" ID X 0.194\" PRECOMBUSTION CHAMBER",
+      "descriptionAr": "جوان غرفة الإحتراق الأولي"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161440",
+      "description": "CHAMBER, ASSY. PRECOMB FOR CYLINDER HEAD & VALVE MECHANISM",
+      "descriptionAr": "غرفة إحتراق أولي لوش السلندر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110324",
+      "description": "ELEMENT, \"A\" FUEL FILTER <CATEPILLAR DO NOT SUBSTITUTE) @ STD. PKG. 12",
+      "descriptionAr": "شمعة فلتر جاز كاتربلر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "241163",
+      "description": "OIL CAT DEO ENGINE 3E-9848used for Caterpillar engine model 3512 , Genset S/N:LY700385",
+      "descriptionAr": "زيت محرك كاتربلر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "222434",
+      "description": "BELT, AMERICAN FAN COMPANY P/N A-54.",
+      "descriptionAr": "سير مروحة"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110269",
+      "description": "ELEMENT, FG-36 FOR PECO GAS FILTER FOR GENERATORS SERIES 85 MODEL 85-3-FG-36 S/N. 11685 south turbines and mech maint di",
+      "descriptionAr": "شمعة فلتر غاز بيكو"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110322",
+      "description": "ELEMENT, FILTER (DO NOT SUBSTITUTE) \" CATERPILLER\" @ STD. PKG. 12",
+      "descriptionAr": "شمعة فلتر كاتربلر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161504",
+      "description": "SHUT OFF GROUP, ELECTRIC 24 VOLTS CONSISTS OF: - CAPSCREW P/NO. 9F6580 - SOLENOID P/NO.",
+      "descriptionAr": "مجموعة إيقاف تشغيل كهربائية 24 فولت"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "132630",
+      "description": "DRIVE, ASSY. MOTOR",
+      "descriptionAr": "مجموعة محرك تشغيل / مارش"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161200",
+      "description": "MOTOR, GROUP BASIC FOR ELECTRIC STARTING MOTOR",
+      "descriptionAr": "موتور مارش كهربائي"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161244",
+      "description": "PICK-UP, MAGNETIC",
+      "descriptionAr": "حساس سرعة مغناطيسي"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "160837",
+      "description": "O-RING, SEAL 0.812\" ID X 0.188\" DIA",
+      "descriptionAr": "أورينج منع تسريب"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "160876",
+      "description": "SEAL, ASSY 9/16\" ID FOR FUEL INJECTION VALVES",
+      "descriptionAr": "أولسيه / مانع تسريب فونية الجاز"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "161044",
+      "description": "BODY, FUEL VALVE (MODEL-D398) For caterpillar D398",
+      "descriptionAr": "جسم صمام الوقود كاتربلر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110323",
+      "description": "ELEMENT, FILTER FOR CATERPILLAR ENGINE MODEL 3412 PART NO. 9M2342",
+      "descriptionAr": "شمعة فلتر محرك كاتربلر"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "pmId": "11296",
+  "equipmentType": "PUMP",
+  "assetLocation": "MWF",
+  "asset": " Pump - Injection Charge Pump - From Dearator To P4",
+  "assetTag": "MWF-P-3B",
+  "failureClass": "PUMP",
+  "responsibility": "RS-PUMP-ONSHORE",
+  "glAccount": "03-92012060M9-MM000:46P0-MM000:4600-P0",
+  "jobPlan": "PUGE-06M",
+  "frequency": "6 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "Flowserve/Ingersoll Rand 10X14 SD",
+  "model": "",
+  "serial": "0672-674",
+  "installationDate": "",
+  "criticality": "HIGH",
+  "assignedGroup": "RS-PUMP-ONSHORE",
+  "workOrder": "WO-PM-11296",
+  "notes": "PM loaded automatically from QR-linked PM record.",
+  "pmFrequencySummary": "6 Months / 1600 hrs",
+  "lastPMDate": "",
+  "nextPMDueDate": "",
+  "pumpParameters": {
+    "pumpType": "Horizontal Centrifugal",
+    "fluidHandled": "Water",
+    "flowRate": "947.16 m³/h (4170 GPM)",
+    "totalDynamicHead": "",
+    "suctionPressure": "6.5 PSI",
+    "dischargePressure": "74 PSI",
+    "operatingSpeed": "1800 RPM",
+    "impellerDiameter": "",
+    "sealType": "",
+    "npshRequired": "",
+    "bearingLubeType": ""
+  },
+  "materials": [
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "402911",
+      "description": "Mechanical Seal Kit AX200",
+      "descriptionAr": "طقم مانع تسرب ميكانيكي"
+    },
+    {
+      "quantity": 2,
+      "unit": "EA",
+      "itemNo": "408112",
+      "description": "Bearing SKF 6314 C3",
+      "descriptionAr": "رولمان بلي"
+    }
+  ]
+}

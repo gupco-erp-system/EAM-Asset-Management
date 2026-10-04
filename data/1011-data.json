@@ -1,0 +1,94 @@
+{
+  "pmId": "1011",
+  "equipmentType": "ENGINE",
+  "assetLocation": "RBKR",
+  "asset": "PM For Ras Bakr Gas Engine Generator No 3",
+  "assetTag": "RBKR-GA-7360",
+  "failureClass": "CEGE",
+  "responsibility": "RS-RECIP-NORTH",
+  "glAccount": "03-90002060M9-RSBKR:4100-RSBKR:4100-P0",
+  "jobPlan": "GSI70421",
+  "frequency": "6 Months",
+  "status": "OPERATIONAL",
+  "manufacturer": "Waukesha",
+  "model": "L7042GSI",
+  "serial": "C-15420/1011",
+  "installationDate": "2018-05-12",
+  "criticality": "HIGH",
+  "pmFrequencySummary": "6 Months / 1600 hrs",
+  "lastPMDate": "2026-08-20",
+  "nextPMDueDate": "2027-02-20",
+  "assignedGroup": "RS-RECIP-NORTH",
+  "workOrder": "WO-PM-1011",
+  "notes": "PM loaded automatically from QR-linked PM record.",
+  "engineParameters": {
+    "ratedPower": "1480 HP / 1100 KW",
+    "operatingSpeed": "1200 RPM",
+    "fuelType": "Natural Gas / LPG",
+    "lubeOilCapacity": "340 Liters",
+    "coolingCapacity": "450 Liters",
+    "currentHourMeter": "42,850 hrs",
+    "lastOverhaulMeter": "35,000 hrs",
+    "avgRunningHours": "24 hrs",
+    "targetOilTemp": "180 - 195 °F",
+    "targetOilPress": "45 ±5 PSI"
+  },
+  "materials": [
+    {
+      "quantity": 12,
+      "unit": "EA",
+      "itemNo": "185792",
+      "description": "Coil ignition shielded",
+      "descriptionAr": "ترانسات"
+    },
+    {
+      "quantity": 2,
+      "unit": "EA",
+      "itemNo": "321618",
+      "description": "Oil chevron HDax 7200",
+      "descriptionAr": "زيت شيفرون"
+    },
+    {
+      "quantity": 14,
+      "unit": "EA",
+      "itemNo": "110298",
+      "description": "Oil filter element",
+      "descriptionAr": "فلاتر زيت"
+    },
+    {
+      "quantity": 2,
+      "unit": "EA",
+      "itemNo": "110303",
+      "description": "Element Air filter",
+      "descriptionAr": "فلتر الهواء"
+    },
+    {
+      "quantity": 12,
+      "unit": "EA",
+      "itemNo": "125815",
+      "description": "Spark plug 4 gap",
+      "descriptionAr": "بوجيهات"
+    },
+    {
+      "quantity": 2,
+      "unit": "EA",
+      "itemNo": "115779",
+      "description": "Carberature Diaphragm",
+      "descriptionAr": "ديفرام كربراتير"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "098711",
+      "description": "Main water pump v-belts",
+      "descriptionAr": "سيور طلمبة مياه رئيسية"
+    },
+    {
+      "quantity": 1,
+      "unit": "SET",
+      "itemNo": "109877",
+      "description": "Aux. water pump v-belts",
+      "descriptionAr": "سيور طلمبة مياه مساعدة"
+    }
+  ]
+}
