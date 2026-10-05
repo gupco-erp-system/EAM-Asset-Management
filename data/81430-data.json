@@ -43,37 +43,198 @@
     {
       "quantity": 1,
       "unit": "EA",
-      "itemNo": "",
-      "description": "Air filter element",
-      "descriptionAr": "شمعة فلتر هواء"
+      "itemNo": "107826",
+      "description": "VALVE, PRESSURE RELIEF CONVENTIONAL, CONS. FLANGED END CONN. 1.5\" 600# RRF X 2\" 150# RF F-ORIFICE (0.307 SQ/IN) C.S.B",
+      "descriptionAr": "صمام تنفيس ضغط تقليدي، توصيلات طرفية ذات فلانشة، 1.5 بوصة 600# RRF × 2 بوصة 150# RF، فتحة F (0.307 بوصة مربعة)، C.S.B"
     },
     {
       "quantity": 1,
       "unit": "EA",
-      "itemNo": "",
-      "description": "Oil filter element",
-      "descriptionAr": "فلتر زيت"
+      "itemNo": "120402",
+      "description": "GASKET, GEAR CASE P/N. 39437637 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "جوان علبة التروس، رقم الجزء 39437637 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
     },
     {
       "quantity": 1,
       "unit": "EA",
-      "itemNo": "",
-      "description": "Oil separator element",
-      "descriptionAr": "فاصل زيت"
+      "itemNo": "292148",
+      "description": "GEAR, SET, P/N 88115753, PARTS FOR ROTARY AIR COMPRESSOR MODEL SSR EP60 (DRIVE MOTOR 75 HP) (INGERSOLL RAND GENUINE PARTS)",
+      "descriptionAr": "طقم تروس، رقم الجزء 88115753، قطع غيار لضاغط الهواء الدوار موديل SSR EP60 (محرك تشغيل 75 حصان) (قطع أصلية من INGERSOLL RAND)"
     },
     {
       "quantity": 1,
-      "unit": "SET",
-      "itemNo": "",
-      "description": "Air/Oil separator service kit",
-      "descriptionAr": "طقم صيانة فاصل الزيت"
+      "unit": "EA",
+      "itemNo": "120505",
+      "description": "CYLINDER PNEUMATIC, P/N. 39589056 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "أسطوانة هوائية، رقم الجزء 39589056 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
     },
     {
       "quantity": 1,
-      "unit": "SET",
-      "itemNo": "",
-      "description": "Rotary screw compressor oil service kit",
-      "descriptionAr": "طقم زيت صيانة كمبروسر حلزوني"
+      "unit": "EA",
+      "itemNo": "120504",
+      "description": "SENSOR, TEMP THERMISTOR P/N. 39586227 P/N. 37952439 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE)",
+      "descriptionAr": "حساس درجة حرارة ثرمستور، رقم الجزء 39586227، ورقم الجزء 37952439 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120497",
+      "description": "HOSE, 1\"X20.5\" P/N. 39572086 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "خرطوم، 1 بوصة × 20.5 بوصة، رقم الجزء 39572086 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120483",
+      "description": "OIL STOP (COOLANT SOLENOID) P/N. 39479548 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE)",
+      "descriptionAr": "صمام إيقاف الزيت (صمام سولينويد سائل التبريد)، رقم الجزء 39479548 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120486",
+      "description": "VALVE 3WAY (SUMP SOLENOID) P/N. 39497672 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "صمام ثلاثي الاتجاهات (سولينويد الحوض)، رقم الجزء 39497672 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120490",
+      "description": "TRAP CONDENSATE, P/N. 39530159 P/N. 39586672 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE)",
+      "descriptionAr": "مصيدة تكاثف، رقم الجزء 39530159، ورقم الجزء 39586672 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "116251",
+      "description": "GASKET, BY BASS",
+      "descriptionAr": "جوان، BY BASS"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "116204",
+      "description": "GASKET, TURBOCHARGER INLET",
+      "descriptionAr": "جوان مدخل الشاحن التوربيني"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "107031",
+      "description": "CAP SCREW, 3/8\" SHANK DIA, 3\" LENGTH BLACK 1040 ST EEL HEX. HD. N.C. THRD.",
+      "descriptionAr": "مسمار رأس سداسي، قطر الساق 3/8 بوصة، طول 3 بوصات، فولاذ أسود 1040، رأس سداسي، سن لولبي N.C."
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120515",
+      "description": "ELEMENT SEPARATOR, P/N. 39894597 NEW P/N. 54601513 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE)",
+      "descriptionAr": "عنصر فاصل، رقم الجزء 39894597، رقم الجزء الجديد 54601513 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "109968",
+      "description": "BEARING, BALL CONRAD TYPE SINGLE ROW RADIAL MEDIUM (300) SERIES ID: 2.5591\" OD: 5.5118\" W: 1.2992\" \"SKF\"",
+      "descriptionAr": "محمل كروي نوع CONRAD، صف واحد، شعاعي، متوسط (سلسلة 300)، القطر الداخلي 2.5591 بوصة، القطر الخارجي 5.5118 بوصة، العرض 1.2992 بوصة، SKF"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120498",
+      "description": "HOSE, 1\"X19\" P/N. 39572896 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "خرطوم، 1 بوصة × 19 بوصة، رقم الجزء 39572896 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110377",
+      "description": "ELEMENT KIT, SEPARATOR (OLD P/N. 39694674) P/N: 42361204",
+      "descriptionAr": "طقم عنصر فاصل، (رقم الجزء القديم 39694674)، رقم الجزء 42361204"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110376",
+      "description": "FILTER, ELEMENT COOLANT P/N: 39460456",
+      "descriptionAr": "عنصر فلتر سائل التبريد، رقم الجزء 39460456"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110289",
+      "description": "FILTER, WIX 51792 OR EQUIVALENT P/N. FRAM PH-3335 @ STD. PKG. 6 ------ P/N. B-99",
+      "descriptionAr": "فلتر WIX 51792 أو ما يعادله، رقم الجزء FRAM PH-3335، العبوة القياسية 6 قطع، رقم الجزء B-99"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110327",
+      "description": "FILTER, ASSY.",
+      "descriptionAr": "مجموعة فلتر"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "107723",
+      "description": "VALVE, BALL, BRONZE 3/4\" NPT 150 S 400 WOG \"SCREWED\" MFG. MC MASTER USA",
+      "descriptionAr": "صمام كروي، برونز، 3/4 بوصة NPT، 150 S، 400 WOG، توصيل ملولب، تصنيع MC MASTER، الولايات المتحدة الأمريكية"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "173778",
+      "description": "PRIMARY AIR FILTER (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "فلتر الهواء الأساسي (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "173779",
+      "description": "SECONDARY AIR FILTER (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "فلتر الهواء الثانوي (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120538",
+      "description": "HOUSING SEAL CF90 P/N. 88142450 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "مانع تسرب غلاف CF90، رقم الجزء 88142450 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120537",
+      "description": "HOUSING SEAL CF90 P/N. 88142427 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "مانع تسرب غلاف CF90، رقم الجزء 88142427 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120517",
+      "description": "TRANSDUCER PRESSURE P/N. 39853809 (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "محول ضغط، رقم الجزء 39853809 (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "109895",
+      "description": "BELTS, 3VX750",
+      "descriptionAr": "سيور، 3VX750"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "120401",
+      "description": "SSR UULTRA-COOLANT, 5 GAL (INGERSOLL RAND GENUINE PARTS, MADE IN USA AND PROVIDE ORIGIN CERTIFICATE, DO NOT SUBSTITUTE)",
+      "descriptionAr": "سائل تبريد SSR UULTRA-COOLANT، سعة 5 جالون (قطعة أصلية من INGERSOLL RAND، مصنعة في الولايات المتحدة الأمريكية ومرفق بها شهادة منشأ، ممنوع الاستبدال)"
+    },
+    {
+      "quantity": 1,
+      "unit": "EA",
+      "itemNo": "110374",
+      "description": "ELEMENT, AIR CLEANER P/N: 39449293",
+      "descriptionAr": "عنصر منظف الهواء، رقم الجزء 39449293"
     }
   ]
 }
