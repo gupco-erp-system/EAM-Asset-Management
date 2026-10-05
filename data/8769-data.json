@@ -1,8 +1,9 @@
 {
+  "8769": {
   "pmId": "8769",
-  "equipmentType": "ENGINE",
+  "equipmentType": "GAS ENGINE",
   "assetLocation": "RBKR",
-  "asset": "PM For Ras Bakr Gas Engine Generator No 1",
+  "asset": "Ras Bakr Gas Engine for C.O.P No 4",
   "assetTag": "RBKR-GA-7330",
   "failureClass": "CEGE",
   "responsibility": "RS-RECIP-NORTH",
@@ -12,14 +13,14 @@
   "status": "OPERATIONAL",
   "manufacturer": "Waukesha",
   "model": "L7042GSI",
-  "serial": "C-15420/8769",
+  "serial": "C-15420/1011",
   "installationDate": "2018-05-12",
   "criticality": "HIGH",
   "pmFrequencySummary": "6 Months / 1600 hrs",
   "lastPMDate": "2026-08-20",
   "nextPMDueDate": "2027-02-20",
   "assignedGroup": "RS-RECIP-NORTH",
-  "workOrder": "WO-PM-8769",
+  "workOrder": "WO-PM-1011",
   "notes": "PM loaded automatically from QR-linked PM record.",
   "engineParameters": {
     "ratedPower": "1480 HP / 1100 KW",
@@ -91,4 +92,5 @@
       "descriptionAr": "سيور طلمبة مياه مساعدة"
     }
   ]
+}
 }
