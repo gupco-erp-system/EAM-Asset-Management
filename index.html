@@ -1003,7 +1003,7 @@ textarea {
     <button
         class="tab-btn"
         onclick="switchTab('tab-checklist', this)">
-        2. قائمة فحص وصيانة المحرك / Form 440-1-G
+        <span id="tabChecklistTitle">2. Equipment Inspection &amp; Preventive Maintenance / فحص وصيانة المعدة</span>
     </button>
 
     <button
@@ -3567,6 +3567,25 @@ function updateEquipmentTypeUI(pm) {
     const config = getEquipmentFormConfig(equipmentType);
 
     setValue("equipmentTypeInput", pm.equipmentType);
+
+    const tabChecklistTitle = document.getElementById("tabChecklistTitle");
+    if (tabChecklistTitle) {
+        const selectedEquipmentType = normalizeEquipmentType(pm.equipmentType || "Equipment");
+
+        const arabicEquipmentTitle = {
+            "GAS ENGINE": "فحص وصيانة المحرك",
+            "DIESEL ENGINE": "فحص وصيانة المحرك",
+            "ELECTRIC MOTOR": "فحص وصيانة المحرك الكهربائي",
+            "PUMP": "فحص وصيانة الطلمبة",
+            "GAS COMPRESSOR": "فحص وصيانة ضاغط الغاز",
+            "AIR COMPRESSOR": "فحص وصيانة ضاغط الهواء",
+            "GENERATOR": "فحص وصيانة المولد"
+        };
+
+        tabChecklistTitle.textContent =
+            selectedEquipmentType + " Inspection & P M / " +
+            (arabicEquipmentTitle[selectedEquipmentType] || "فحص وصيانة المعدة");
+    }
 
     const technicalCard = findNearestEquipmentCard("ratedPowerInput");
     const meterCard = findNearestEquipmentCard("currentHourMeterInput");
