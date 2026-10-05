@@ -97,12 +97,28 @@ textarea {
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+    flex-wrap: nowrap;
+}
+
+.app-logo {
+    width: 92px;
+    height: 72px;
+    object-fit: contain;
+    flex: 0 0 92px;
+}
+
+.app-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: right;
 }
 
 .app-title h1 {
     margin: 0 0 4px 0;
-    font-size: 22px;
+    font-size: 20px;
+    line-height: 1.15;
     color: var(--primary-color);
+    white-space: nowrap;
 }
 
 .app-title p {
@@ -112,7 +128,7 @@ textarea {
 }
 
 .qr-status {
-    display: flex;
+    display: none !important;
     align-items: center;
     gap: 8px;
     background: var(--bg-light);
@@ -235,6 +251,43 @@ textarea {
 
 .section-title:first-child {
     margin-top: 0;
+}
+
+/* TAB 2 inspection header: keep the bilingual title in one stable row
+   and give it enough height so the Arabic/English text never overlaps. */
+.inspection-main-title {
+    min-height: 44px;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    line-height: 1.2;
+    padding: 9px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.inspection-main-title .inspection-title-en {
+    flex: 1 1 auto;
+    text-align: right;
+    direction: ltr;
+}
+
+.inspection-main-title .inspection-title-ar {
+    flex: 0 0 auto;
+    text-align: left;
+    direction: rtl;
+}
+
+@media (max-width: 700px) {
+    .inspection-main-title {
+        height: auto;
+        min-height: 44px;
+        white-space: normal;
+        flex-wrap: wrap;
+    }
 }
 
 .section-subtitle {
@@ -901,18 +954,23 @@ textarea {
 
     <div class="app-header-content">
 
+        <img
+            class="app-logo"
+            src="./images/logo.png"
+            alt="Company Logo"
+        >
+
         <div class="app-title">
-            <h1>EAM Asset Management & Engine Inspection System</h1>
+            <h1>EAM Asset Management &amp; Engine Inspection System</h1>
             <p>
                 Enterprise Asset Management • Preventive Maintenance • Engine Inspection
             </p>
         </div>
 
-        <div id="qrStatus" class="qr-status">
+        <!-- Kept hidden for JavaScript compatibility; the old green status box is no longer displayed. -->
+        <div id="qrStatus" class="qr-status" aria-hidden="true">
             <span class="status-dot"></span>
-            <span id="qrStatusText">
-                Loading PM data...
-            </span>
+            <span id="qrStatusText">Loading PM data...</span>
         </div>
 
     </div>
@@ -1056,7 +1114,23 @@ textarea {
 
         </tr>
 
-    </table>
+
+
+        <tr>
+
+            <th>
+                Equipment Type / نوع المعدة
+            </th>
+
+            <td colspan="3">
+                <input
+                    id="equipmentTypeInput"
+                    type="text"
+                    readonly
+                    placeholder="Equipment Type">
+            </td>
+
+        </tr>    </table>
 
 
     <!-- =====================================================
@@ -1175,7 +1249,7 @@ textarea {
 
         <!-- Equipment Identification -->
 
-        <div class="asset-card">
+        <div class="asset-card" data-equipment-section="identification">
 
             <h3>
                 Equipment Identification
@@ -1264,9 +1338,9 @@ textarea {
 
         <!-- Technical Specifications -->
 
-        <div class="asset-card">
+        <div class="asset-card" data-equipment-section="technical">
 
-            <h3>
+            <h3 id="technicalSpecificationsTitle">
                 Technical Specifications
                 / المواصفات الفنية
             </h3>
@@ -1351,9 +1425,9 @@ textarea {
 
         <!-- Meter -->
 
-        <div class="asset-card">
+        <div class="asset-card" data-equipment-section="meter">
 
-            <h3>
+            <h3 id="meterOperatingTitle">
                 Meter & Operating Parameters
                 / العدادات ومعايير التشغيل
             </h3>
@@ -1526,6 +1600,18 @@ textarea {
 
 
     <!-- =====================================================
+         DYNAMIC EQUIPMENT PARAMETERS
+    ====================================================== -->
+
+    <div id="dynamicEquipmentPanel" class="asset-card" style="display:none;">
+        <h3 id="dynamicEquipmentTitle">
+            Equipment-Specific Parameters / بيانات خاصة بالمعدة
+        </h3>
+        <div id="dynamicEquipmentFields" class="pm-grid"></div>
+    </div>
+
+
+    <!-- =====================================================
          PM MATERIALS
     ====================================================== -->
 
@@ -1672,14 +1758,9 @@ textarea {
 
     <!-- FORM HEADER -->
 
-    <div class="section-title">
-
-        Engine Inspection & Preventive Maintenance
-
-        <span style="float:left;">
-            فحص وصيانة المحرك
-        </span>
-
+    <div class="section-title inspection-main-title" id="inspectionMainTitle">
+        <span class="inspection-title-en">Engine Inspection &amp; Preventive Maintenance</span>
+        <span class="inspection-title-ar">فحص وصيانة المحرك</span>
     </div>
 
 
@@ -1766,15 +1847,33 @@ textarea {
     </table>
 
 
-    <!-- =====================================================
-         CHECKLIST
-    ====================================================== -->
+    <!-- EQUIPMENT-SPECIFIC DYNAMIC INSPECTION LIST -->
 
-    <div class="section-title">
+    <div id="dynamicInspectionPanel" class="pm-panel" style="display:none;">
+        <div class="pm-panel-header">
+            <strong id="dynamicInspectionTitle">Equipment-Specific Inspection / فحص خاص بالمعدة</strong>
+            <span class="pm-source" id="dynamicInspectionSource">Equipment Type</span>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="inspection-table" id="dynamicInspectionTable">
+                <thead>
+                    <tr>
+                        <th class="num">#</th>
+                        <th class="check">Done</th>
+                        <th class="item">Inspection / Maintenance Item</th>
+                        <th class="reading">Reading / Result</th>
+                    </tr>
+                </thead>
+                <tbody id="dynamicInspectionBody"></tbody>
+            </table>
+        </div>
+    </div>
 
-        Form 440-1-G
-        / Engine Inspection Checklist
 
+    <!-- GAS ENGINE — FORM 440-1-G CHECKLIST -->
+
+    <div class="section-title" id="gasEngineChecklistTitle">
+        Form 440-1-G / Engine Inspection Checklist
     </div>
 
 
@@ -2715,10 +2814,29 @@ textarea {
 <script>
 
 /* ============================================================
-   PM DATABASE
-   ============================================================ */
+   PM DATA
+   ============================================================= */
+
+/*
+ * New data arrangement:
+ *
+ *   data/
+ *     2803-data.json
+ *     2804-data.json
+ *     2805-data.json
+ *     ...
+ *
+ * Each PM has its own JSON file:
+ *
+ *   [pmid]-data.json
+ *
+ * Example:
+ *   ?pm=2803
+ *   -> ./data/2803-data.json
+ */
 
 let pmDatabase = {};
+let currentPMFile = "";
 
 /* ============================================================
    GLOBAL STATE
@@ -2895,9 +3013,9 @@ function findPM(identifier) {
         return pmDatabase[identifier.id];
     }
 
-    if (identifier.assetLocation) {
+    if (identifier.asset) {
         const matchingPM = Object.values(pmDatabase).find(
-            pm => pm.assetLocation === identifier.assetLocation
+            pm => pm.assetLocation === identifier.asset
         );
 
         if (matchingPM) {
@@ -2932,179 +3050,638 @@ function updateQRStatus(type, message) {
    POPULATE PM MASTER DATA
 ============================================================ */
 
+function normalizeEquipmentType(value) {
+    let type = String(value ?? "").trim().replace(/\s+/g, " ").toUpperCase();
+
+    const aliases = {
+        "GAS MOTOR": "GAS ENGINE",
+        "GAS ENGINE / GENSET": "GAS ENGINE",
+        "GAS ENGINE GENERATOR": "GAS ENGINE",
+        "DIESEL MOTOR": "DIESEL ENGINE",
+        "DIESEL ENGINE / GENSET": "DIESEL ENGINE",
+        "ELECTRIC MOTOR / MOTOR": "ELECTRIC MOTOR",
+        "MOTOR": "ELECTRIC MOTOR",
+        "CENTRIFUGAL PUMP": "PUMP",
+        "WATER PUMP": "PUMP",
+        "PROCESS PUMP": "PUMP",
+        "COMPRESSOR": "GAS COMPRESSOR",
+        "GAS COMPRESSOR": "GAS COMPRESSOR",
+        "AIR COMPRESSOR": "AIR COMPRESSOR",
+        "RECIPROCATING COMPRESSOR": "GAS COMPRESSOR",
+        "GAS RECIPROCATING COMPRESSOR": "GAS COMPRESSOR",
+        "SCREW COMPRESSOR": "AIR COMPRESSOR",
+        "GENSET": "GENERATOR",
+        "GENERATOR SET": "GENERATOR"
+    };
+
+    return aliases[type] || type;
+}
+
+// Canonical equipment types supported by the application.
+// These are the only checklist keys used by the application.
+const CANONICAL_EQUIPMENT_TYPES = [
+    "GAS ENGINE",
+    "DIESEL ENGINE",
+    "ELECTRIC MOTOR",
+    "PUMP",
+    "GAS COMPRESSOR",
+    "AIR COMPRESSOR",
+    "GENERATOR"
+];
+
+const EQUIPMENT_FORM_CONFIG = {
+    "GAS ENGINE": {
+        technicalTitle: "Gas Engine Technical Specifications / المواصفات الفنية لمحرك الغاز",
+        meterTitle: "Gas Engine Operating Parameters / معايير تشغيل محرك الغاز",
+        checklistTitle: "Gas Engine Inspection & Preventive Maintenance / فحص وصيانة محرك الغاز",
+        showLegacyTechnical: true,
+        showLegacyMeter: true,
+        showLegacyInspection: true
+    },
+    "DIESEL ENGINE": {
+        technicalTitle: "Diesel Engine Specifications / مواصفات محرك الديزل",
+        meterTitle: "Diesel Engine Operating Parameters / معايير تشغيل محرك الديزل",
+        checklistTitle: "Diesel Engine Inspection & Preventive Maintenance / فحص وصيانة محرك الديزل",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    },
+    "ELECTRIC MOTOR": {
+        technicalTitle: "Electric Motor Specifications / مواصفات المحرك الكهربائي",
+        meterTitle: "Electric Motor Operating Parameters / معايير تشغيل المحرك الكهربائي",
+        checklistTitle: "Electric Motor Inspection & Preventive Maintenance / فحص وصيانة المحرك الكهربائي",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    },
+    "PUMP": {
+        technicalTitle: "Pump Specifications / مواصفات الطلمبة",
+        meterTitle: "Pump Operating Parameters / معايير تشغيل الطلمبة",
+        checklistTitle: "Pump Inspection & Preventive Maintenance / فحص وصيانة الطلمبة",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    },
+    "GAS COMPRESSOR": {
+        technicalTitle: "Gas Compressor Specifications / مواصفات ضاغط الغاز",
+        meterTitle: "Gas Compressor Operating Parameters / معايير تشغيل ضاغط الغاز",
+        checklistTitle: "Gas Compressor Inspection & Preventive Maintenance / فحص وصيانة ضاغط الغاز",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    },
+    "AIR COMPRESSOR": {
+        technicalTitle: "Air Compressor Specifications / مواصفات ضاغط الهواء",
+        meterTitle: "Air Compressor Operating Parameters / معايير تشغيل ضاغط الهواء",
+        checklistTitle: "Air Compressor Inspection & Preventive Maintenance / فحص وصيانة ضاغط الهواء",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    },
+    "GENERATOR": {
+        technicalTitle: "Generator Specifications / مواصفات المولد",
+        meterTitle: "Generator Operating Parameters / معايير تشغيل المولد",
+        checklistTitle: "Generator Inspection & Preventive Maintenance / فحص وصيانة المولد",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    }
+};
+
+/*
+ * GAS ENGINE is the reference checklist already present in Form 440-1-G.
+ * The standard templates below use the same maintenance philosophy:
+ * inspection/cleaning -> lubrication -> mechanical condition ->
+ * process/electrical readings -> safety -> leakage -> final functional test.
+ *
+ * Each item is:
+ *   [ "English / Arabic", "unit or reading hint" ]
+ *
+ * Canonical equipment types from the PM JSON are: GAS ENGINE, DIESEL ENGINE,
+ * ELECTRIC MOTOR, PUMP, GAS COMPRESSOR, AIR COMPRESSOR, GENERATOR.
+ *
+ * IMPORTANT: Checklists are application-controlled and are defined only in
+ * EQUIPMENT_CHECKLIST_TEMPLATES below. The PM JSON may provide equipment data,
+ * but inspectionChecklist / inspectionChecks / checklist are intentionally ignored.
+ */
+const EQUIPMENT_CHECKLIST_TEMPLATES = {
+    "GAS ENGINE": [
+        ["Change Oil & Clean Crank Case & Oil Cooler / تغيير الزيت وتنظيف الكارتيرة ومبرد الزيت", ""],
+        ["Change Filter - Check Sealing Washer & O-Ring / تغيير فلتر الزيت وفحص الجوان والحلقة", ""],
+        ["Remove & Clean Air Filter - Change If Needed / تنظيف فلتر الهواء واستبداله إذا لزم", ""],
+        ["Check Belt Wear & Adjust If Needed / فحص تآكل السيور وضبطها", ""],
+        ["Clean Carburetors & Regulators / فحص وتنظيف الكربوراتورات والمنظمات", ""],
+        ["Replace & Check Gap of Sparkplugs / فحص واستبدال البوجيهات وضبط الخلوص", ""],
+        ["Compression Check / فحص ضغط السلندرات", "bar / PSI"],
+        ["Check Valve Adjustment / فحص خلوص التاكيهات", ""],
+        ["Lubricate Synchro Motor & Change Governor Oil / تشحيم محرك السينكرو وتغيير زيت الجافنر", ""],
+        ["Lubricate Fan Bearings / تشحيم كراسي المروحة", ""],
+        ["Check Safety Systems / فحص دائرة الأمان", ""],
+        ["Grease Water Pump Bearings / تشحيم كراسي طلمبة المياه", ""],
+        ["Clean Crankcase Breather / تنظيف هواية الكارتيرة", ""],
+        ["Check Crankcase Pressure / فحص ضغط الكارتيرة", "0 to -1 inH₂O"],
+        ["Check Ignition Timing / فحص توقيت الإشعال", "° BTDC"],
+        ["Check Fuel-Air Ratio / فحص نسبة الوقود إلى الهواء", "inH₂O"],
+        ["Check Turbocharger Air Pressure / فحص ضغط هواء التربينة", "kPa"],
+        ["Check Manifold Pressure / فحص ضغط المانيفولد", "inHg"],
+        ["Check Instruments & Record Readings / فحص الأجهزة وتسجيل القراءات", "Oil PSI / Water °F / RPM / Oil °F"],
+        ["Check For Oil or Water Leaks / فحص تسريب الزيت أو الماء", ""],
+        ["Wipe Down Engine / تنظيف المحرك", ""],
+        ["Clean Radiator Core (External) / تنظيف الردياتير من الخارج", ""],
+        ["Check Cooling Water For Rust or Contamination / فحص مياه التبريد", ""],
+        ["Add Cooling System Treatment If Required / إضافة مادة معالجة مياه التبريد عند الحاجة", ""],
+        ["Change/Check Fuel Filters / فحص واستبدال فلاتر الوقود", ""],
+        ["Check Radiator Cap / فحص غطاء الردياتير", ""],
+        ["Check Overspeed Protection (Generator Application) / فحص حماية السرعة الزائدة", ""]
+    ],
+
+    "DIESEL ENGINE": [
+        ["Change Engine Oil & Clean Crankcase / تغيير زيت المحرك وتنظيف الكارتيرة", ""],
+        ["Replace Engine Oil Filter & Check Sealing / تغيير فلتر الزيت وفحص الجوان", ""],
+        ["Inspect & Clean Air Filter / فحص وتنظيف فلتر الهواء", ""],
+        ["Check Drive Belts, Tension & Wear / فحص السيور والشد والتآكل", ""],
+        ["Inspect Fuel Injection System & Fuel Filters / فحص منظومة حقن الوقود وفلاتر الوقود", ""],
+        ["Inspect Fuel Lines & Connections for Leakage / فحص خطوط وتوصيلات الوقود للتسريب", ""],
+        ["Check Injector Condition / فحص حالة البخاخات", ""],
+        ["Check Valve Clearance / فحص خلوص التاكيهات", ""],
+        ["Check Governor / Speed Control System / فحص الجافنر ونظام التحكم في السرعة", ""],
+        ["Lubricate Fan & Auxiliary Bearings / تشحيم كراسي المروحة والمعدات المساعدة", ""],
+        ["Check Engine Safety Shutdowns / فحص دوائر إيقاف الأمان للمحرك", ""],
+        ["Inspect Water Pump & Cooling System / فحص طلمبة المياه ونظام التبريد", ""],
+        ["Clean Crankcase Breather / تنظيف هواية الكارتيرة", ""],
+        ["Check Crankcase Pressure / فحص ضغط الكارتيرة", ""],
+        ["Check Injection/Engine Timing / فحص توقيت الحقن والمحرك", "°"],
+        ["Check Turbocharger Boost Pressure / فحص ضغط هواء التربينة", "kPa"],
+        ["Check Intake Manifold Pressure / فحص ضغط مانيفولد السحب", "kPa"],
+        ["Check Exhaust Condition & Temperature / فحص العادم ودرجات حرارته", "°C"],
+        ["Record Oil Pressure, Coolant Temperature & RPM / تسجيل ضغط الزيت وحرارة المياه والسرعة", "bar / °C / RPM"],
+        ["Check for Oil, Fuel or Coolant Leaks / فحص تسريب الزيت أو الوقود أو مياه التبريد", ""],
+        ["Inspect Engine Mounts & Vibration / فحص قواعد المحرك والاهتزاز", "mm/s"],
+        ["Clean Radiator Core / تنظيف الردياتير", ""],
+        ["Check Coolant Condition / فحص حالة مياه التبريد", ""],
+        ["Check Coolant Additive Concentration / فحص تركيز إضافات مياه التبريد", "%"],
+        ["Replace/Inspect Fuel Pre-Filters / فحص واستبدال فلاتر الوقود الأولية", ""],
+        ["Check Radiator Cap & Cooling System Pressure / فحص غطاء الردياتير وضغط نظام التبريد", "bar"],
+        ["Check Overspeed Protection / فحص حماية السرعة الزائدة", ""]
+    ],
+
+    "ELECTRIC MOTOR": [
+        ["Inspect Motor Exterior & Clean Cooling Surfaces / فحص جسم المحرك وتنظيف أسطح التبريد", ""],
+        ["Check Motor Terminal Box & Cable Connections / فحص علبة التوصيلات والكابلات", ""],
+        ["Check Insulation Resistance / فحص مقاومة العزل", "MΩ"],
+        ["Check Earthing/Grounding Connection / فحص التأريض", ""],
+        ["Check Bearing Condition & Lubrication / فحص حالة وتشحيم البلي", ""],
+        ["Check Coupling Alignment / فحص محاذاة الكوبلن", ""],
+        ["Check Coupling Guard / فحص واقي الكوبلن", ""],
+        ["Check Shaft Rotation & Abnormal Noise / فحص دوران العمود والأصوات غير الطبيعية", ""],
+        ["Check Motor Vibration / فحص اهتزاز المحرك", "mm/s"],
+        ["Measure DE Bearing Temperature / قياس حرارة بلي جهة القيادة", "°C"],
+        ["Measure NDE Bearing Temperature / قياس حرارة البلي جهة عدم القيادة", "°C"],
+        ["Measure Winding Temperature / قياس حرارة الملفات", "°C"],
+        ["Record Phase-to-Phase Voltage / تسجيل جهد الفازات", "V"],
+        ["Record Phase Current / تسجيل تيار الفازات", "A"],
+        ["Check Current Balance Between Phases / فحص توازن التيار بين الفازات", "%"],
+        ["Check Voltage Balance Between Phases / فحص توازن الجهد بين الفازات", "%"],
+        ["Check Cooling Fan & Airflow / فحص مروحة التبريد وتدفق الهواء", ""],
+        ["Inspect Motor Space Heater if Fitted / فحص سخان المحرك إن وجد", ""],
+        ["Check Protection Relay/Trip Functions / فحص وظائف الحماية والفصل", ""],
+        ["Check for Oil/Grease Leakage / فحص تسريب الزيت أو الشحم", ""],
+        ["Check Foundation & Mounting Bolts / فحص القاعدة ومسامير التثبيت", ""],
+        ["Check Cable Glands & Sealing / فحص الجلاندات والعزل", ""],
+        ["Check Motor Noise / فحص الضوضاء", "dB / condition"],
+        ["Clean Motor Air Inlets/Outlets / تنظيف مداخل ومخارج الهواء", ""],
+        ["Inspect Coupling/Drive Element / فحص عنصر نقل الحركة", ""],
+        ["Record Motor Speed / تسجيل سرعة المحرك", "RPM"],
+        ["Final Functional Test / اختبار التشغيل النهائي", ""]
+    ],
+
+    "PUMP": [
+        ["Inspect Pump Casing & External Condition / فحص جسم الطلمبة والحالة الخارجية", ""],
+        ["Check Mechanical Seal / Packing Condition / فحص الميكانيكال سيل أو الحشو", ""],
+        ["Check Pump Bearing Lubrication / فحص وتشحيم بلي الطلمبة", ""],
+        ["Check Coupling Alignment / فحص محاذاة الكوبلن", ""],
+        ["Check Coupling Guard / فحص واقي الكوبلن", ""],
+        ["Check Shaft Rotation / فحص دوران العمود", ""],
+        ["Check Pump Vibration / فحص اهتزاز الطلمبة", "mm/s"],
+        ["Check Bearing Temperature / فحص حرارة البلي", "°C"],
+        ["Check Suction Pressure / فحص ضغط السحب", "bar"],
+        ["Check Discharge Pressure / فحص ضغط الطرد", "bar"],
+        ["Check Flow Rate / فحص معدل التدفق", "m³/h"],
+        ["Check Motor Current / فحص تيار المحرك", "A"],
+        ["Check Motor/Driver Condition / فحص حالة المحرك أو المشغل", ""],
+        ["Inspect Suction Line & Strainer / فحص خط السحب والمصفاة", ""],
+        ["Inspect Discharge Valve / فحص صمام الطرد", ""],
+        ["Check Non-Return Valve / فحص صمام عدم الرجوع", ""],
+        ["Check Pump Base & Foundation Bolts / فحص قاعدة الطلمبة ومسامير التثبيت", ""],
+        ["Check Coupling Flexible Element / فحص عنصر الكوبلن المرن", ""],
+        ["Check for Process Fluid Leakage / فحص تسريب سائل التشغيل", ""],
+        ["Check for Oil/Grease Leakage / فحص تسريب الزيت أو الشحم", ""],
+        ["Check Abnormal Noise / فحص الأصوات غير الطبيعية", ""],
+        ["Check Lubricant Level / فحص مستوى مادة التشحيم", ""],
+        ["Check Cooling Arrangement if Fitted / فحص نظام التبريد إن وجد", ""],
+        ["Check Pump Rotation Direction / فحص اتجاه دوران الطلمبة", ""],
+        ["Clean Pump & Surrounding Area / تنظيف الطلمبة والمنطقة المحيطة", ""],
+        ["Record Running Hours / تسجيل ساعات التشغيل", "hrs"],
+        ["Final Performance Test / اختبار الأداء النهائي", ""]
+    ],
+
+    "GAS COMPRESSOR": [
+        ["Inspect Gas Compressor Exterior & Guards / فحص الحالة الخارجية وواقيات ضاغط الغاز", ""],
+        ["Check Compressor Lubricating Oil Level / فحص مستوى زيت ضاغط الغاز", ""],
+        ["Inspect/Replace Oil Filter / فحص أو استبدال فلتر الزيت", ""],
+        ["Inspect Gas Inlet Filter/Separator / فحص فلتر أو فاصل دخول الغاز", ""],
+        ["Check Drive Belts/Coupling & Alignment / فحص السيور أو الكوبلن والمحاذاة", ""],
+        ["Check Lubrication System / فحص نظام التشحيم", ""],
+        ["Check Oil Pressure / فحص ضغط الزيت", "bar"],
+        ["Check Gas Suction/Inlet Pressure / فحص ضغط سحب الغاز", "bar"],
+        ["Check Gas Discharge Pressure / فحص ضغط طرد الغاز", "bar"],
+        ["Check Discharge Gas Temperature / فحص درجة حرارة غاز الطرد", "°C"],
+        ["Check Intercooler/Aftercooler / فحص المبرد البيني واللاحق", ""],
+        ["Check Cooling System / فحص نظام التبريد", "°C"],
+        ["Check Compressor Vibration / فحص اهتزاز الضاغط", "mm/s"],
+        ["Check Bearing Temperature / فحص حرارة البلي", "°C"],
+        ["Inspect Suction/Discharge Valves & Check Valves / فحص صمامات السحب والطرد وعدم الرجوع", ""],
+        ["Check Pressure Relief/Safety Valves / فحص صمامات الأمان وتخفيف الضغط", ""],
+        ["Check Unloader/Capacity Control / فحص نظام التفريغ والتحكم في السعة", ""],
+        ["Inspect Gas Piping, Flanges & Supports / فحص مواسير الغاز والفلانشات والدعامات", ""],
+        ["Check Gas Leakage at Connections / فحص تسرب الغاز من التوصيلات", ""],
+        ["Check Seal/Oil Leakage / فحص تسريب الأختام أو الزيت", ""],
+        ["Check Compressor Shutdown & Gas Safety Systems / فحص أنظمة إيقاف الضاغط وأمان الغاز", ""],
+        ["Check Motor/Driver Current / فحص تيار المحرك أو وحدة الإدارة", "A"],
+        ["Check Electrical Protection / فحص الحمايات الكهربائية", ""],
+        ["Check Foundation & Mounting Bolts / فحص القاعدة ومسامير التثبيت", ""],
+        ["Check Unusual Noise / فحص الأصوات غير الطبيعية", ""],
+        ["Record Running Hours / تسجيل ساعات التشغيل", "hrs"],
+        ["Final Functional/Performance Test / اختبار التشغيل والأداء النهائي", ""]
+    ],
+
+    "AIR COMPRESSOR": [
+        ["Inspect Air Compressor Exterior & Guards / فحص الحالة الخارجية وواقيات ضاغط الهواء", ""],
+        ["Check Compressor Oil Level / فحص مستوى زيت ضاغط الهواء", ""],
+        ["Inspect/Replace Oil Filter / فحص أو استبدال فلتر الزيت", ""],
+        ["Inspect & Clean Air Intake Filter / فحص وتنظيف فلتر سحب الهواء", ""],
+        ["Check Drive Belts/Coupling & Alignment / فحص السيور أو الكوبلن والمحاذاة", ""],
+        ["Check Lubrication System / فحص نظام التشحيم", ""],
+        ["Check Oil Pressure / فحص ضغط الزيت", "bar"],
+        ["Check Air Suction/Inlet Pressure / فحص ضغط سحب الهواء", "bar"],
+        ["Check Air Discharge Pressure / فحص ضغط طرد الهواء", "bar"],
+        ["Check Discharge Air Temperature / فحص درجة حرارة هواء الطرد", "°C"],
+        ["Check Intercooler/Aftercooler / فحص المبرد البيني واللاحق", ""],
+        ["Check Cooling Fan/Water Cooling / فحص مروحة أو مياه التبريد", "°C"],
+        ["Check Compressor Vibration / فحص اهتزاز الضاغط", "mm/s"],
+        ["Check Bearing Temperature / فحص حرارة البلي", "°C"],
+        ["Inspect Compressor Valves & Check Valves / فحص صمامات الضاغط وصمامات عدم الرجوع", ""],
+        ["Check Pressure Relief/Safety Valves / فحص صمامات الأمان وتخفيف الضغط", ""],
+        ["Check Unloader/Capacity Control / فحص نظام التفريغ والتحكم في السعة", ""],
+        ["Check Air Receiver Pressure / فحص ضغط خزان الهواء", "bar"],
+        ["Check Air/Oil Leakage / فحص تسريب الهواء أو الزيت", ""],
+        ["Check Drain Traps & Condensate / فحص المصارف والمياه المتكثفة", ""],
+        ["Inspect Compressed-Air Piping & Supports / فحص مواسير الهواء المضغوط والدعامات", ""],
+        ["Check Motor Current / فحص تيار المحرك", "A"],
+        ["Check Electrical Protection / فحص الحمايات الكهربائية", ""],
+        ["Check Foundation & Mounting Bolts / فحص القاعدة ومسامير التثبيت", ""],
+        ["Clean Cooler/Fins / تنظيف المبرد والزعانف", ""],
+        ["Record Running Hours / تسجيل ساعات التشغيل", "hrs"],
+        ["Final Functional/Performance Test / اختبار التشغيل والأداء النهائي", ""]
+    ],
+
+    "GENERATOR": [
+        ["Inspect Generator Exterior / فحص الحالة الخارجية للمولد", ""],
+        ["Check Generator Terminals & Connections / فحص التوصيلات والأطراف", ""],
+        ["Check Excitation System / فحص نظام الإثارة", ""],
+        ["Check AVR / فحص منظم الجهد AVR", ""],
+        ["Check Insulation Resistance / فحص مقاومة العزل", "MΩ"],
+        ["Check Earthing/Grounding / فحص التأريض", ""],
+        ["Check Bearing Condition & Lubrication / فحص وتشحيم البلي", ""],
+        ["Check Coupling Alignment / فحص محاذاة الكوبلن", ""],
+        ["Check Generator Vibration / فحص اهتزاز المولد", "mm/s"],
+        ["Check Bearing Temperature / فحص حرارة البلي", "°C"],
+        ["Record Generator Voltage / تسجيل جهد المولد", "V"],
+        ["Record Generator Current / تسجيل تيار المولد", "A"],
+        ["Record Frequency / تسجيل التردد", "Hz"],
+        ["Check Phase Voltage Balance / فحص توازن جهد الفازات", "%"],
+        ["Check Phase Current Balance / فحص توازن تيار الفازات", "%"],
+        ["Check Power Factor / فحص معامل القدرة", "PF"],
+        ["Inspect Cooling System / فحص نظام التبريد", ""],
+        ["Check Generator Space Heater if Fitted / فحص سخان المولد إن وجد", ""],
+        ["Check Protection & Trip Functions / فحص الحمايات ووظائف الفصل", ""],
+        ["Check Cable Glands & Sealing / فحص الجلاندات والعزل", ""],
+        ["Check for Oil/Grease Leakage / فحص تسريب الزيت أو الشحم", ""],
+        ["Inspect Foundation & Mounting / فحص القاعدة والتثبيت", ""],
+        ["Clean Air Inlets/Outlets / تنظيف مداخل ومخارج الهواء", ""],
+        ["Check Overspeed/Shutdown System / فحص نظام السرعة الزائدة والإيقاف", ""],
+        ["Verify Synchronizing/Control Functions if Fitted / فحص التزامن والتحكم إن وجد", ""],
+        ["Check Exciter/Slip Ring/Brush Condition if Fitted / فحص الإثارة والحلقات والفرش إن وجدت", ""],
+        ["Final Load/Functional Test / اختبار الحمل والتشغيل النهائي", ""]
+    ]
+};
+
+function getEquipmentFormConfig(equipmentType) {
+    const type = normalizeEquipmentType(equipmentType);
+    return EQUIPMENT_FORM_CONFIG[type] || {
+        technicalTitle: "Equipment Technical Specifications / المواصفات الفنية للمعدة",
+        meterTitle: "Equipment Operating Parameters / معايير تشغيل المعدة",
+        checklistTitle: "Equipment Inspection & Preventive Maintenance / فحص وصيانة المعدة",
+        showLegacyTechnical: false,
+        showLegacyMeter: false,
+        showLegacyInspection: false
+    };
+}
+
+function getEquipmentChecklist(equipmentType) {
+    // The checklist is always selected from the application code.
+    // PM JSON checklist fields are intentionally ignored.
+    const type = normalizeEquipmentType(equipmentType);
+    return EQUIPMENT_CHECKLIST_TEMPLATES[type] || [];
+}
+
+function setDisplay(element, visible, displayValue) {
+    if (!element) return;
+    element.style.display = visible ? (displayValue || "") : "none";
+}
+
+function findNearestEquipmentCard(inputId) {
+    const input = document.getElementById(inputId);
+    return input ? input.closest(".asset-card") : null;
+}
+
+function formatDynamicLabel(key) {
+    return String(key)
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]+/g, " ")
+        .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function flattenEquipmentParameters(source, prefix = "", result = []) {
+    if (!source || typeof source !== "object") return result;
+    Object.entries(source).forEach(([key, value]) => {
+        const path = prefix ? prefix + "." + key : key;
+        if (value && typeof value === "object" && !Array.isArray(value)) {
+            flattenEquipmentParameters(value, path, result);
+        } else if (!Array.isArray(value)) {
+            result.push({key: path, value: value});
+        }
+    });
+    return result;
+}
+
+function renderDynamicEquipmentParameters(pm, equipmentType) {
+    const panel = document.getElementById("dynamicEquipmentPanel");
+    const fields = document.getElementById("dynamicEquipmentFields");
+    const title = document.getElementById("dynamicEquipmentTitle");
+    if (!panel || !fields || !title) return;
+
+    fields.innerHTML = "";
+    const parameterSource = pm.engineParameters || pm.equipmentParameters || pm.technicalParameters || pm.parameters || null;
+
+    if (!parameterSource || normalizeEquipmentType(equipmentType) === "GAS ENGINE") {
+        setDisplay(panel, false);
+        return;
+    }
+
+    const flattened = flattenEquipmentParameters(parameterSource);
+    if (!flattened.length) {
+        setDisplay(panel, false);
+        return;
+    }
+
+    title.textContent = (pm.equipmentType || "Equipment") + " Parameters / بيانات المعدة";
+
+    flattened.forEach(item => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "pm-field";
+        const label = document.createElement("label");
+        label.textContent = formatDynamicLabel(item.key);
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = item.value ?? "";
+        input.readOnly = true;
+        input.dataset.jsonPath = item.key;
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+        fields.appendChild(wrapper);
+    });
+
+    setDisplay(panel, true);
+}
+
+function renderDynamicInspection(pm, equipmentType) {
+    const panel = document.getElementById("dynamicInspectionPanel");
+    const body = document.getElementById("dynamicInspectionBody");
+    const title = document.getElementById("dynamicInspectionTitle");
+    const source = document.getElementById("dynamicInspectionSource");
+    if (!panel || !body || !title) return;
+
+    body.innerHTML = "";
+
+    const config = getEquipmentFormConfig(equipmentType);
+    if (config.showLegacyInspection) {
+        setDisplay(panel, false);
+        return;
+    }
+
+    const checks = getEquipmentChecklist(equipmentType);
+    const normalizedType = normalizeEquipmentType(equipmentType);
+    title.textContent = config.checklistTitle || ((pm.equipmentType || "Equipment") +
+        " Inspection & Preventive Maintenance / فحص وصيانة المعدة");
+
+    if (source) {
+        source.textContent = "Standard checklist defined in application code";
+    }
+
+    if (!checks.length) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td colspan="4">
+                No checklist is configured in the application for
+                ${escapeHTML(pm.equipmentType || normalizedType || "this equipment type")}.
+                Please verify that the equipment type matches one of the seven
+                equipment types defined in the application.
+            </td>`;
+        body.appendChild(row);
+        setDisplay(panel, true);
+        return;
+    }
+
+    checks.forEach((item, index) => {
+        const row = document.createElement("tr");
+
+        let label = "";
+        let unit = "";
+        let value = "";
+        let category = "";
+
+        if (Array.isArray(item)) {
+            label = item[0] ?? "";
+            unit = item[1] ?? "";
+            category = item[2] ?? "";
+        } else if (item && typeof item === "object") {
+            label =
+                item.label ??
+                item.description ??
+                item.name ??
+                item.item ??
+                ("Inspection " + (index + 1));
+
+            unit = item.unit ?? item.readingUnit ?? "";
+            value = item.result ?? item.value ?? item.reading ?? "";
+            category = item.category ?? item.section ?? "";
+        } else {
+            label = String(item ?? "");
+        }
+
+        const idBase = "dynamicCheck" + (index + 1);
+
+        const categoryHTML = category
+            ? `<div style="font-size:10px;color:#64748b;font-weight:bold;margin-bottom:2px;">
+                    ${escapeHTML(category)}
+               </div>`
+            : "";
+
+        row.innerHTML = `
+            <td class="num">${index + 1}</td>
+            <td class="check">
+                <input type="checkbox" id="${idBase}" data-equipment-type="${escapeHTML(normalizedType)}">
+            </td>
+            <td class="item">
+                ${categoryHTML}
+                ${escapeHTML(label)}
+            </td>
+            <td>
+                <input
+                    type="text"
+                    id="${idBase}Result"
+                    value="${escapeHTML(value)}"
+                    placeholder="${escapeHTML(unit)}"
+                    data-unit="${escapeHTML(unit)}">
+            </td>`;
+
+        body.appendChild(row);
+    });
+
+    setDisplay(panel, true);
+}
+
+function updateEquipmentTypeUI(pm) {
+    const equipmentType = normalizeEquipmentType(pm.equipmentType || "");
+    const config = getEquipmentFormConfig(equipmentType);
+
+    setValue("equipmentTypeInput", pm.equipmentType);
+
+    const technicalCard = findNearestEquipmentCard("ratedPowerInput");
+    const meterCard = findNearestEquipmentCard("currentHourMeterInput");
+    setDisplay(technicalCard, config.showLegacyTechnical);
+    setDisplay(meterCard, config.showLegacyMeter);
+
+    const technicalTitle = document.getElementById("technicalSpecificationsTitle");
+    const meterTitle = document.getElementById("meterOperatingTitle");
+    if (technicalTitle) technicalTitle.textContent = config.technicalTitle;
+    if (meterTitle) meterTitle.textContent = config.meterTitle;
+
+    const checklistTable = document.querySelector("#tab-checklist > #printable-form > .inspection-table");
+    if (checklistTable) {
+        checklistTable.style.display = config.showLegacyInspection ? "" : "none";
+    }
+
+    const formTitle = document.getElementById("inspectionMainTitle");
+    if (formTitle) {
+        const titleEn = formTitle.querySelector(".inspection-title-en");
+        const titleAr = formTitle.querySelector(".inspection-title-ar");
+
+        if (config.showLegacyInspection) {
+            if (titleEn) titleEn.textContent = "Engine Inspection & Preventive Maintenance";
+            if (titleAr) titleAr.textContent = "فحص وصيانة المحرك";
+        } else {
+            if (titleEn) titleEn.textContent = "Equipment Inspection & Preventive Maintenance";
+            if (titleAr) titleAr.textContent = "فحص وصيانة المعدة";
+        }
+    }
+
+    renderDynamicEquipmentParameters(pm, equipmentType);
+    renderDynamicInspection(pm, equipmentType);
+}
+
 function populatePM(pm) {
 
     currentPM = pm;
 
-
     /* Header */
-
     setValue("assetTag", pm.assetTag);
-
     setValue("assetDescription", pm.asset);
-
     setValue("assetLocation", pm.assetLocation);
-
     setValue("assetStatus", pm.status);
-
+    setValue("equipmentTypeInput", pm.equipmentType);
 
     /* PM */
-
     setValue("pmIdInput", pm.pmId);
-
     setValue("failureClassInput", pm.failureClass);
-
     setValue("responsibilityInput", pm.responsibility);
-
     setValue("glAccountInput", pm.glAccount);
-
     setValue("jobPlanInput", pm.jobPlan);
-
     setValue("frequencyInput", pm.frequency);
 
-
     /* Equipment */
-
     setValue("manufacturerInput", pm.manufacturer);
-
     setValue("modelInput", pm.model);
-
     setValue("serialInput", pm.serial);
-
     setValue("installationDateInput", pm.installationDate);
-
     setValue("criticalityInput", pm.criticality);
 
+    /* New JSON arrangement: equipment parameters are nested. */
+    const equipmentParameters = pm.engineParameters || pm.equipmentParameters || pm.technicalParameters || {};
+    const technical = {...pm, ...equipmentParameters};
 
     /* Technical */
-
-    setValue("ratedPowerInput", pm.ratedPower);
-
-    setValue("speedInput", pm.operatingSpeed);
-
-    setValue("fuelInput", pm.fuelType);
-
-    setValue("oilCapacityInput", pm.lubeOilCapacity);
-
-    setValue("coolingCapacityInput", pm.coolingCapacity);
-
+    setValue("ratedPowerInput", technical.ratedPower);
+    setValue("speedInput", technical.operatingSpeed);
+    setValue("fuelInput", technical.fuelType);
+    setValue("oilCapacityInput", technical.lubeOilCapacity);
+    setValue("coolingCapacityInput", technical.coolingCapacity);
 
     /* Meter */
-
-    setValue(
-        "currentHourMeterInput",
-        pm.currentHourMeter
-    );
-
-    setValue(
-        "lastOverhaulInput",
-        pm.lastOverhaulMeter
-    );
-
-    setValue(
-        "avgHoursInput",
-        pm.avgRunningHours
-    );
-
-    setValue(
-        "targetOilTempInput",
-        pm.targetOilTemp
-    );
-
-    setValue(
-        "targetOilPressInput",
-        pm.targetOilPress
-    );
-
+    setValue("currentHourMeterInput", technical.currentHourMeter);
+    setValue("lastOverhaulInput", technical.lastOverhaulMeter);
+    setValue("avgHoursInput", technical.avgRunningHours);
+    setValue("targetOilTempInput", technical.targetOilTemp);
+    setValue("targetOilPressInput", technical.targetOilPress);
 
     /* PM Summary */
-
-    setValue(
-        "pmFrequencySummaryInput",
-        pm.pmFrequencySummary
-    );
-
-    setValue(
-        "lastPMDateInput",
-        pm.lastPMDate
-    );
-
-    setValue(
-        "nextPMDateInput",
-        pm.nextPMDueDate
-    );
-
-    setValue(
-        "assignedGroupInput",
-        pm.assignedGroup
-    );
-
-    setValue(
-        "workOrderInput",
-        pm.workOrder
-    );
-
-    setValue(
-        "assetNotes",
-        pm.notes
-    );
-
+    setValue("pmFrequencySummaryInput", pm.pmFrequencySummary);
+    setValue("lastPMDateInput", pm.lastPMDate);
+    setValue("nextPMDateInput", pm.nextPMDueDate);
+    setValue("assignedGroupInput", pm.assignedGroup);
+    setValue("workOrderInput", pm.workOrder);
+    setValue("assetNotes", pm.notes);
 
     /* Inspection */
+    setValue("locInput", pm.assetLocation);
+    setValue("unitInput", pm.assetTag);
+    setValue("serialInspectionInput", pm.serial);
+    setValue("hourMeterInput", technical.currentHourMeter);
+    setValue("inspectionPMId", pm.pmId);
 
-    setValue(
-        "locInput",
-        pm.assetLocation
-    );
+    const footerPMId = document.getElementById("footerPMId");
+    if (footerPMId) footerPMId.textContent = pm.pmId || "";
 
-    setValue(
-        "unitInput",
-        pm.assetTag
-    );
+    const pmSource = document.getElementById("pmSource");
+    if (pmSource) {
+        pmSource.textContent = "Loaded from PM ID: " + (pm.pmId || "---") + " | Equipment: " + (pm.equipmentType || "---");
+    }
 
-    setValue(
-        "serialInspectionInput",
-        pm.serial
-    );
-
-    setValue(
-        "hourMeterInput",
-        pm.currentHourMeter
-    );
-
-    setValue(
-        "inspectionPMId",
-        pm.pmId
-    );
-
-
-    document.getElementById("footerPMId")
-        .textContent =
-        pm.pmId;
-
-
-    document.getElementById("pmSource")
-        .textContent =
-        "Loaded from PM ID: " + pm.pmId;
-
+    /* equipmentType controls the equipment-specific portions of both tabs. */
+    updateEquipmentTypeUI(pm);
 
     renderMaterials(pm.materials);
-
-    // Prepare the third tab for the newly loaded PM.
     loadPMAttachments(pm.pmId);
 
-
-    updateQRStatus(
-        "loaded",
-        "PM " + pm.pmId + " loaded from URL"
-    );
-
+    updateQRStatus("loaded", "PM " + pm.pmId + " loaded from URL");
 
     showDiagnostics(
         "success",
         "PM Data Loaded Successfully",
         [
             "PM ID: " + pm.pmId,
+            "Equipment Type: " + (pm.equipmentType || "Not specified"),
             "Asset: " + pm.asset,
             "Location: " + pm.assetLocation,
             "Job Plan: " + pm.jobPlan,
@@ -3112,9 +3689,7 @@ function populatePM(pm) {
         ],
         pm.pmId
     );
-
 }
-
 
 /* ============================================================
    SET VALUE
@@ -3534,47 +4109,202 @@ function loadCurrentPMAttachments() {
 
     loadPMAttachments(pmId);
 }
-
 async function loadPMDatabase() {
-    try {
-        updateQRStatus("", "Loading PM database...");
 
-        const response = await fetch(
-            "./data/pm-data.json?v=" + Date.now(),
-            {
-                cache: "no-store"
-            }
+    /*
+     * The application now loads only the JSON file belonging
+     * to the PM ID supplied in the URL.
+     *
+     * Example:
+     *   index.html?pm=2803
+     *   -> data/2803-data.json
+     */
+
+    try {
+
+        updateQRStatus(
+            "",
+            "Loading PM data..."
         );
 
-        if (!response.ok) {
-            throw new Error("HTTP " + response.status);
+        const identifier =
+            getPMIdentifierFromURL();
+
+        const requestedPM =
+            identifier.pm ||
+            identifier.id ||
+            identifier.asset;
+
+        if (!requestedPM) {
+
+            updateQRStatus(
+                "warning",
+                "No PM ID in URL"
+            );
+
+            showDiagnostics(
+                "info",
+                "Application Ready",
+                [
+                    "No PM parameter was supplied.",
+                    "Use ?pm=2803 to load PM 2803.",
+                    "Example: ?pm=2803"
+                ]
+            );
+
+            return;
         }
 
-        pmDatabase = await response.json();
+        /*
+         * For the new arrangement, the PM identifier is the
+         * filename prefix:
+         *
+         *   2803 -> 2803-data.json
+         *
+         * encodeURIComponent prevents special characters from
+         * being interpreted as part of the path.
+         */
+        const pmId =
+            String(requestedPM).trim();
+
+        const dataURL =
+            "./data/" +
+            encodeURIComponent(pmId) +
+            "-data.json?v=" +
+            Date.now();
+
+        currentPMFile =
+            "./data/" +
+            pmId +
+            "-data.json";
+
+        const response =
+            await fetch(
+                dataURL,
+                {
+                    cache: "no-store"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status +
+                " - " +
+                pmId +
+                "-data.json"
+            );
+        }
+
+        const data =
+            await response.json();
+
+        /*
+         * Supported file formats:
+         *   { "2803": { ...PM record... } }
+         *   { "pmId": "2803", ...PM record... }
+         *   [ { ...PM record... } ]
+         */
+        let pmRecord = data;
+
+        if (Array.isArray(data)) {
+            if (data.length === 0) {
+                throw new Error("The PM JSON file contains no records.");
+            }
+            pmRecord = data[0];
+        }
+
+        if (!pmRecord || typeof pmRecord !== "object" || Array.isArray(pmRecord)) {
+            throw new Error("Invalid PM JSON structure.");
+        }
+
+        /* Unwrap the PM-ID object used by 2803-data.json. */
+        const requestedKey = String(pmId).trim();
+
+        if (
+            pmRecord[requestedKey] &&
+            typeof pmRecord[requestedKey] === "object" &&
+            !Array.isArray(pmRecord[requestedKey])
+        ) {
+            pmRecord = pmRecord[requestedKey];
+        } else {
+            const rootKeys = Object.keys(pmRecord);
+            if (
+                rootKeys.length === 1 &&
+                pmRecord[rootKeys[0]] &&
+                typeof pmRecord[rootKeys[0]] === "object" &&
+                !Array.isArray(pmRecord[rootKeys[0]]) &&
+                (pmRecord[rootKeys[0]].pmId || pmRecord[rootKeys[0]].PM_ID)
+            ) {
+                pmRecord = pmRecord[rootKeys[0]];
+            }
+        }
+
+        if (!pmRecord || typeof pmRecord !== "object" || Array.isArray(pmRecord)) {
+            throw new Error("Invalid PM record after JSON wrapper processing.");
+        }
+
+        /*
+         * Keep the existing application architecture working:
+         * pmDatabase contains the currently loaded PM only.
+         */
+        const actualPMId =
+            String(
+                pmRecord.pmId ??
+                pmRecord.PM_ID ??
+                pmRecord.id ??
+                pmId
+            ).trim();
+
+        if (!pmRecord.pmId) {
+            pmRecord.pmId = actualPMId;
+        }
+
+        pmDatabase = {};
+        pmDatabase[actualPMId] = pmRecord;
 
         console.log(
-            "PM database loaded:",
-            Object.keys(pmDatabase).length,
-            "records"
+            "PM file loaded:",
+            currentPMFile,
+            pmRecord
         );
 
-        loadPMFromURL();
+        /*
+         * Populate the form directly from the selected file.
+         */
+        populatePM(pmRecord);
 
     } catch (error) {
 
-        console.error("PM database loading error:", error);
+        console.error(
+            "PM data loading error:",
+            error
+        );
+
+        pmDatabase = {};
 
         updateQRStatus(
             "error",
-            "PM Database unavailable"
+            "PM Data unavailable"
         );
+
+        const requestedPM =
+            getPMIdentifierFromURL().pm ||
+            getPMIdentifierFromURL().id ||
+            getPMIdentifierFromURL().asset ||
+            "---";
 
         showDiagnostics(
             "error",
-            "PM Database Error",
+            "PM Data Error",
             [
-                "Unable to load data/pm-data.json",
-                "Please check that the JSON file exists.",
+                "Unable to load the PM data file.",
+                "Requested PM: " + requestedPM,
+                "Expected file: data/" +
+                    requestedPM +
+                    "-data.json",
+                "Please check that the file exists.",
                 "Error: " + error.message
             ]
         );
@@ -3587,66 +4317,15 @@ async function loadPMDatabase() {
 
 function loadPMFromURL() {
 
-    const identifier =
-        getPMIdentifierFromURL();
-
-    const hasParameter =
-        identifier.pm ||
-        identifier.id ||
-        identifier.asset;
-
-    if (!hasParameter) {
-
-        updateQRStatus(
-            "warning",
-            "No PM ID in URL"
-        );
-
-        showDiagnostics(
-            "info",
-            "Application Ready",
-            [
-                "No PM parameter was supplied.",
-                "Use ?pm=2803 to load PM 2803.",
-                "Example: ?pm=2803"
-            ]
-        );
-
-        return;
-    }
-
-    const pm =
-        findPM(identifier);
-
-    if (!pm) {
-
-        updateQRStatus(
-            "error",
-            "PM record not found"
-        );
-
-        showDiagnostics(
-            "error",
-            "PM Record Not Found",
-            [
-                "The requested PM record does not exist in the current PM database.",
-                "Requested PM: " +
-                (
-                    identifier.pm ||
-                    identifier.id ||
-                    identifier.asset
-                ),
-                "For PM 2803 use ?pm=2803."
-            ]
-        );
-
-        return;
-    }
-
-    populatePM(pm);
-
+    /*
+     * Kept as a public compatibility function because other parts
+     * of the application may call loadPMFromURL().
+     *
+     * The actual loading is now performed by loadPMDatabase(),
+     * which fetches [pmid]-data.json directly.
+     */
+    loadPMDatabase();
 }
-
 
 /* ============================================================
    PRINT ACTIVE TAB
@@ -3733,7 +4412,7 @@ function saveInspectionPDF() {
         "Unknown";
 
     const fileName =
-        `Engine_Inspection_PM_${pmId}_${sanitizeFileName(unitNo)}_${dateVal}.pdf`;
+        `Equipment_Inspection_PM_${pmId}_${sanitizeFileName(unitNo)}_${dateVal}.pdf`;
 
     const actions =
         element.querySelector(".actions");
@@ -3816,7 +4495,7 @@ function sendFormViaEmail() {
         "Unknown";
 
     const fileName =
-        `Engine_Inspection_PM_${pmId}_${sanitizeFileName(unitNo)}_${dateVal}.pdf`;
+        `Equipment_Inspection_PM_${pmId}_${sanitizeFileName(unitNo)}_${dateVal}.pdf`;
 
     document.getElementById("modalFileName")
         .textContent =
@@ -3851,13 +4530,13 @@ function sendFormViaEmail() {
 
             const subject =
                 encodeURIComponent(
-                    `Engine Inspection Checklist - PM ${pmId} - Unit: ${unitNo}`
+                    `Equipment Inspection Checklist - PM ${pmId} - Unit: ${unitNo}`
                 );
 
             const body =
                 encodeURIComponent(
                     `Dear Team,\n\n` +
-                    `Please find attached the Engine Inspection & Maintenance Checklist (Form 440-1-G).\n\n` +
+                    `Please find attached the Equipment Inspection & Preventive Maintenance Checklist.\n\n` +
                     `Details:\n` +
                     `- PM ID: ${pmId}\n` +
                     `- Location: ${locVal}\n` +
@@ -3925,6 +4604,7 @@ function saveExecutionLocally() {
         date: getValue("dateInput"),
         inspector: getValue("inspectionInspector"),
         departmentHead: getValue("departmentHead"),
+        equipmentType: getValue("equipmentTypeInput"),
         checklist: collectChecklistData()
     };
 
@@ -3952,22 +4632,43 @@ function saveExecutionLocally() {
 ============================================================ */
 
 function collectChecklistData() {
-
     const data = [];
 
+    /* GAS ENGINE uses the original Form 440-1-G fields. */
     for (let i = 1; i <= 27; i++) {
         const checkbox = document.getElementById("check" + i);
         const result = document.getElementById("result" + i);
 
-        data.push({
-            item: i,
-            completed: checkbox ? checkbox.checked : false,
-            result: result ? result.value : ""
-        });
+        if (checkbox || result) {
+            data.push({
+                type: "legacy",
+                item: i,
+                completed: checkbox ? checkbox.checked : false,
+                result: result ? result.value : ""
+            });
+        }
     }
 
-    return data;
+    /* All other equipment types use the generated checklist. */
+    document
+        .querySelectorAll("#dynamicInspectionBody tr")
+        .forEach((row, index) => {
+            const checkbox = row.querySelector('input[type="checkbox"]');
+            const result = row.querySelector('input[type="text"]');
 
+            if (checkbox || result) {
+                data.push({
+                    type: "equipment-specific",
+                    item: index + 1,
+                    completed: checkbox ? checkbox.checked : false,
+                    result: result ? result.value : "",
+                    unit: result ? (result.dataset.unit || "") : "",
+                    equipmentType: checkbox ? (checkbox.dataset.equipmentType || "") : ""
+                });
+            }
+        });
+
+    return data;
 }
 
 
@@ -3976,7 +4677,6 @@ function collectChecklistData() {
 ============================================================ */
 
 function clearExecutionForm() {
-
     const confirmed =
         confirm(
             "Clear inspection execution data?\n\n" +
@@ -3987,18 +4687,16 @@ function clearExecutionForm() {
         return;
     }
 
+    /* Clear legacy GAS ENGINE checklist fields. */
     for (let i = 1; i <= 27; i++) {
         const checkbox = document.getElementById("check" + i);
-        if (checkbox) {
-            checkbox.checked = false;
-        }
+        if (checkbox) checkbox.checked = false;
 
         const result = document.getElementById("result" + i);
-        if (result) {
-            result.value = "";
-        }
+        if (result) result.value = "";
     }
 
+    /* Clear special GAS ENGINE readings. */
     const fields = [
         "inspectionInspector",
         "departmentHead",
@@ -4012,8 +4710,20 @@ function clearExecutionForm() {
 
     fields.forEach(id => {
         const element = document.getElementById(id);
-        if (element) {
-            element.value = "";
+        if (element) element.value = "";
+    });
+
+    /* Clear cylinder readings in the GAS ENGINE compression row. */
+    document.querySelectorAll(".cylinder-grid input").forEach(input => {
+        input.value = "";
+    });
+
+    /* Clear every equipment-specific generated checklist. */
+    document.querySelectorAll("#dynamicInspectionBody input").forEach(input => {
+        if (input.type === "checkbox") {
+            input.checked = false;
+        } else {
+            input.value = "";
         }
     });
 
@@ -4022,10 +4732,9 @@ function clearExecutionForm() {
         "Execution Form Cleared",
         [
             "PM master data remains loaded.",
-            "Inspection execution fields have been cleared."
+            "All checklist execution fields for the selected equipment type have been cleared."
         ]
     );
-
 }
 
 
