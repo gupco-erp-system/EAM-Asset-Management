@@ -7,7 +7,11 @@
 <title>EAM Asset Management & Engine Inspection System</title>
 
 <!-- html2pdf -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+</script>
+<link rel="stylesheet" href="style.css">
+    <!-- Include Papa Parse for CSV handling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <style>
 /* Login Overlay Styles */
@@ -1126,6 +1130,7 @@ textarea {
 </head>
 
 <body>
+
 <!-- Login Screen Overlay -->
 <div id="loginOverlay">
   <div class="login-card">
@@ -1144,7 +1149,7 @@ textarea {
     </form>
   </div>
 </div>
-<script src="script-login.js"></script>
+ 
 
 <div class="hamburger-wrapper">
 
@@ -1215,6 +1220,8 @@ textarea {
                 Enterprise Asset Management • Preventive Maintenance • Engine Inspection
             </p>
         </div>
+
+<h1 id="welcomeHeading">Welcome, <span id="userFullNameDisplay"></span></h1>
 
         <!-- Kept hidden for JavaScript compatibility; the old green status box is no longer displayed. -->
         <div id="qrStatus" class="qr-status" aria-hidden="true">
@@ -3061,7 +3068,6 @@ textarea {
 
 
 <script>
-
 "use strict";
 
 const USERS_CSV_URL = "./users.csv"; // Path to your users.csv file
@@ -3108,7 +3114,8 @@ async function handleLogin(e) {
         if (isAuthenticated) {
             // Hide the login overlay upon success
             document.getElementById("loginOverlay").style.display = "none";
-            
+            // Saves whatever full name is stored in the CSV for this user
+    		sessionStorage.setItem("userFullName", matchedUser.fullname.trim());
             // Optional: Call your main app's initialization function here
             // e.g., initApp();
         } else {
@@ -3124,7 +3131,10 @@ async function handleLogin(e) {
 }
 
 document.getElementById("loginForm").addEventListener("submit", handleLogin);
-
+const fullName = sessionStorage.getItem("userFullName");
+    if (fullName) {
+        document.getElementById("userFullNameDisplay").textContent = fullName;
+    }
 
 /* ============================================================
    PM DATA
