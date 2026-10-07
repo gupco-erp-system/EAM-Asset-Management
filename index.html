@@ -1215,7 +1215,7 @@ textarea {
                 Enterprise Asset Management • Preventive Maintenance • Engine Inspection
             </p>
         </div>
-
+<div id="welcomeMessage" style="display:none; font-size:18px; font-weight:bold; color:#123b63; text-align:center; margin-bottom:15px;"></div>
         <!-- Kept hidden for JavaScript compatibility; the old green status box is no longer displayed. -->
         <div id="qrStatus" class="qr-status" aria-hidden="true">
             <span class="status-dot"></span>
@@ -3066,65 +3066,83 @@ textarea {
 
 const USERS_CSV_URL = "./users.csv"; // Path to your users.csv file
 
-async function handleLogin(e) {
-    e.preventDefault();
-    const userIn = document.getElementById("username").value.trim();
-    const passIn = document.getElementById("password").value.trim();
-    const errorBox = document.getElementById("loginError");
+function handleLogin(e) {
+    if (e) e.preventDefault();
     
-    errorBox.style.display = "none";
+    const userIn = document.getElementById("usernameInput").value.trim();
+    const passIn = document.getElementById("passwordInput").value.trim();
+    const loginError = document.getElementById("loginError");
+    
+    loginError.style.display = "none";
 
-    try {
-        const response = await fetch(USERS_CSV_URL);
-        if (!response.ok) throw new Error("Could not load users.csv");
-        
-        const csvText = await response.text();
-        const lines = csvText.split(/\r?\n/);
-        
-        let isAuthenticated = false;
+    fetch("users.csv")
+        .then(response => {
+            if (!response.ok) throw new Error("CSV file not found");
+            return response.text();
+        })
+        .then(csvText => {
+            const lines = csvText.split(/\r?\n/);
+            let isAuthenticated = false;
+            let userFullName = "";
 
-        for (let i = 0; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
-            
-            // Assuming comma-separated format: username,password
-            const parts = line.split(",").map(p => p.trim());
-            if (parts.length >= 2) {
-                const csvUser = parts[0];
-                const csvPass = parts[1];
+            if (lines.length > 0) {
+                // Parse headers from the first line
+                const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+                
+                // Get indexes dynamically based on header names (or default to 0, 1, 2)
+                const userIdx = headers.indexOf("username") !== -1 ? headers.indexOf("username") : 0;
+                const passIdx = headers.indexOf("password") !== -1 ? headers.indexOf("password") : 1;
+                const nameIdx = headers.indexOf("fullname") !== -1 ? headers.indexOf("fullname") : 2;
 
-                // Skip header row if labeled 'username' or 'user'
-                if (i === 0 && (csvUser.toLowerCase() === "username" || csvUser.toLowerCase() === "user")) {
-                    continue;
-                }
+                // Loop through data rows starting from row index 1
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
 
-                if (csvUser === userIn && csvPass === passIn) {
-                    isAuthenticated = true;
-                    break;
+                    const parts = line.split(",").map(p => p.trim());
+                    
+                    if (parts.length > Math.max(userIdx, passIdx, nameIdx)) {
+                        const csvUser = parts[userIdx];
+                        const csvPass = parts[passIdx];
+
+                        if (csvUser === userIn && csvPass === passIn) {
+                            isAuthenticated = true;
+                            userFullName = parts[nameIdx];
+                            break;
+                        }
+                    }
                 }
             }
-        }
 
-        if (isAuthenticated) {
-            // Hide the login overlay upon success
-            document.getElementById("loginOverlay").style.display = "none";
-            
-            // Optional: Call your main app's initialization function here
-            // e.g., initApp();
-        } else {
-            errorBox.textContent = "Invalid username or password.";
-            errorBox.style.display = "block";
-        }
+            if (isAuthenticated) {
+                // Hide the form and login title
+                document.getElementById("loginForm").style.display = "none";
+                const cardHeader = document.querySelector(".login-card h2");
+                if (cardHeader) cardHeader.style.display = "none";
 
-    } catch (err) {
-        console.error("Login verification error:", err);
-        errorBox.textContent = "Error reading users.csv file. Make sure it exists in the same folder.";
-        errorBox.style.display = "block";
-    }
+                // Show welcome message
+                const welcomeEl = document.getElementById("welcomeMessage");
+                if (welcomeEl) {
+                    welcomeEl.textContent = "Welcome, " + userFullName;
+                    welcomeEl.style.display = "block";
+                }
+
+                // Hide login overlay after 1.5 seconds
+                setTimeout(() => {
+                    document.getElementById("loginOverlay").style.display = "none";
+                }, 1500);
+
+            } else {
+                loginError.textContent = "Invalid username or password.";
+                loginError.style.display = "block";
+            }
+        })
+        .catch(err => {
+            console.error("Error reading users.csv:", err);
+            loginError.textContent = "Error loading user data.";
+            loginError.style.display = "block";
+        });
 }
-
-document.getElementById("loginForm").addEventListener("submit", handleLogin);
-
 
 /* ============================================================
    PM DATA
