@@ -3068,73 +3068,143 @@ textarea {
 
 
 <script>
+
 "use strict";
 
-const USERS_CSV_URL = "./users.csv"; // Path to your users.csv file
+const USERS_CSV_URL = "./users.csv";
 
 async function handleLogin(e) {
     e.preventDefault();
+
     const userIn = document.getElementById("username").value.trim();
     const passIn = document.getElementById("password").value.trim();
     const errorBox = document.getElementById("loginError");
-    
+    const fullNameDisplay = document.getElementById("userFullNameDisplay");
+
     errorBox.style.display = "none";
 
     try {
         const response = await fetch(USERS_CSV_URL);
-        if (!response.ok) throw new Error("Could not load users.csv");
-        
+
+        if (!response.ok) {
+            throw new Error("Could not load users.csv");
+        }
+
         const csvText = await response.text();
+
         const lines = csvText.split(/\r?\n/);
-        
-        let isAuthenticated = false;
+
+        let matchedUser = null;
 
         for (let i = 0; i < lines.length; i++) {
+
             const line = lines[i].trim();
+
             if (!line) continue;
-            
-            // Assuming comma-separated format: username,password
+
             const parts = line.split(",").map(p => p.trim());
-            if (parts.length >= 2) {
-                const csvUser = parts[0];
-                const csvPass = parts[1];
 
-                // Skip header row if labeled 'username' or 'user'
-                if (i === 0 && (csvUser.toLowerCase() === "username" || csvUser.toLowerCase() === "user")) {
-                    continue;
-                }
+            // Expected:
+            // Username,Password,FullName
+            if (parts.length < 2) continue;
 
-                if (csvUser === userIn && csvPass === passIn) {
-                    isAuthenticated = true;
-                    break;
-                }
+            const csvUser = parts[0];
+            const csvPass = parts[1];
+            const csvFullName = parts[2] || "";
+
+            // Skip header
+            if (
+                i === 0 &&
+                (
+                    csvUser.toLowerCase() === "username" ||
+                    csvUser.toLowerCase() === "user"
+                )
+            ) {
+                continue;
+            }
+
+            if (csvUser === userIn && csvPass === passIn) {
+
+                matchedUser = {
+                    username: csvUser,
+                    password: csvPass,
+                    fullname: csvFullName
+                };
+
+                break;
             }
         }
 
-        if (isAuthenticated) {
-            // Hide the login overlay upon success
+        if (matchedUser) {
+
+            const fullName =
+                matchedUser.fullname.trim() ||
+                matchedUser.username;
+
+            // Save logged-in user information
+            sessionStorage.setItem("userFullName", fullName);
+            sessionStorage.setItem("username", matchedUser.username);
+
+            // IMPORTANT:
+            // Update Welcome heading immediately after login
+            if (fullNameDisplay) {
+                fullNameDisplay.textContent = fullName;
+            }
+
+            // Hide login screen
             document.getElementById("loginOverlay").style.display = "none";
-            // Saves whatever full name is stored in the CSV for this user
-    		sessionStorage.setItem("userFullName", matchedUser.fullname.trim());
-            // Optional: Call your main app's initialization function here
-            // e.g., initApp();
+
+            console.log("Login successful");
+            console.log("Username:", matchedUser.username);
+            console.log("Full Name:", fullName);
+
         } else {
+
             errorBox.textContent = "Invalid username or password.";
             errorBox.style.display = "block";
         }
 
     } catch (err) {
+
         console.error("Login verification error:", err);
-        errorBox.textContent = "Error reading users.csv file. Make sure it exists in the same folder.";
+
+        errorBox.textContent =
+            "Error reading users.csv file. Make sure it exists in the same folder.";
+
         errorBox.style.display = "block";
     }
 }
 
-document.getElementById("loginForm").addEventListener("submit", handleLogin);
-const fullName = sessionStorage.getItem("userFullName");
+
+// Login form
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", handleLogin);
+
+
+// Restore previous login if the page is refreshed
+document.addEventListener("DOMContentLoaded", function () {
+
+    const fullName =
+        sessionStorage.getItem("userFullName");
+
     if (fullName) {
-        document.getElementById("userFullNameDisplay").textContent = fullName;
+
+        const display =
+            document.getElementById("userFullNameDisplay");
+
+        if (display) {
+            display.textContent = fullName;
+        }
+
+        const loginOverlay =
+            document.getElementById("loginOverlay");
+
+        if (loginOverlay) {
+            loginOverlay.style.display = "none";
+        }
     }
+});
 
 /* ============================================================
    PM DATA
