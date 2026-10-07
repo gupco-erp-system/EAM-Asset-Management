@@ -1130,28 +1130,26 @@ textarea {
 </head>
 
 <body>
-<div class="login-container">
-        <h2>Welcome Back</h2>
-        
-        <!-- Form correctly hooks up the onsubmit event -->
-        <form id="loginForm" onsubmit="handleLogin(event)">
-            <div class="login-field">
-                <label for="usernameInput">Username</label>
-                <input type="text" id="usernameInput" required placeholder="Enter username">
-            </div>
-            
-            <div class="login-field" style="margin-bottom: 20px;">
-                <label for="passwordInput">Password</label>
-                <input type="password" id="passwordInput" required placeholder="Enter password">
-            </div>
-            
-            <div id="loginError" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
-            
-            <button type="submit" class="login-btn">Login</button>
-        </form>
-    </div>
 
-    <script src="script-login.js"></script>
+<!-- Login Screen Overlay -->
+<div id="loginOverlay">
+  <div class="login-card">
+    <h2>System Login</h2>
+    <div id="loginError" class="login-error">Invalid username or password.</div>
+    <form id="loginForm">
+      <div class="login-field">
+        <label>Username</label>
+        <input type="text" id="username" required placeholder="Enter username">
+      </div>
+      <div class="login-field" style="margin-bottom: 20px;">
+        <label>Password</label>
+        <input type="password" id="password" required placeholder="Enter password">
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+  </div>
+</div>
+ 
 
 <div class="hamburger-wrapper">
 
@@ -3070,7 +3068,69 @@ textarea {
 
 
 <script>
+"use strict";
 
+const USERS_CSV_URL = "./users.csv"; // Path to your users.csv file
+
+async function handleLogin(e) {
+    e.preventDefault();
+    const userIn = document.getElementById("username").value.trim();
+    const passIn = document.getElementById("password").value.trim();
+    const errorBox = document.getElementById("loginError");
+    
+    errorBox.style.display = "none";
+
+    try {
+        const response = await fetch(USERS_CSV_URL);
+        if (!response.ok) throw new Error("Could not load users.csv");
+        
+        const csvText = await response.text();
+        const lines = csvText.split(/\r?\n/);
+        
+        let isAuthenticated = false;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            // Assuming comma-separated format: username,password
+            const parts = line.split(",").map(p => p.trim());
+            if (parts.length >= 2) {
+                const csvUser = parts[0];
+                const csvPass = parts[1];
+
+                // Skip header row if labeled 'username' or 'user'
+                if (i === 0 && (csvUser.toLowerCase() === "username" || csvUser.toLowerCase() === "user")) {
+                    continue;
+                }
+
+                if (csvUser === userIn && csvPass === passIn) {
+                    isAuthenticated = true;
+                    break;
+                }
+            }
+        }
+
+        if (isAuthenticated) {
+            // Hide the login overlay upon success
+            document.getElementById("loginOverlay").style.display = "none";
+            // Saves whatever full name is stored in the CSV for this user
+    		sessionStorage.setItem("userFullName", matchedUser.fullname.trim());
+            // Optional: Call your main app's initialization function here
+            // e.g., initApp();
+        } else {
+            errorBox.textContent = "Invalid username or password.";
+            errorBox.style.display = "block";
+        }
+
+    } catch (err) {
+        console.error("Login verification error:", err);
+        errorBox.textContent = "Error reading users.csv file. Make sure it exists in the same folder.";
+        errorBox.style.display = "block";
+    }
+}
+
+document.getElementById("loginForm").addEventListener("submit", handleLogin);
 const fullName = sessionStorage.getItem("userFullName");
     if (fullName) {
         document.getElementById("userFullNameDisplay").textContent = fullName;
