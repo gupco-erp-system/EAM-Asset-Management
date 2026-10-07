@@ -7,7 +7,11 @@
 <title>EAM Asset Management & Engine Inspection System</title>
 
 <!-- html2pdf -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+</script>
+<link rel="stylesheet" href="style.css">
+    <!-- Include Papa Parse for CSV handling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <style>
 /* Login Overlay Styles */
@@ -1126,25 +1130,28 @@ textarea {
 </head>
 
 <body>
-<!-- Login Screen Overlay -->
-<div id="loginOverlay">
-  <div class="login-card">
-    <h2>System Login</h2>
-    <div id="loginError" class="login-error">Invalid username or password.</div>
-    <form id="loginForm">
-      <div class="login-field">
-        <label>Username</label>
-        <input type="text" id="username" required placeholder="Enter username">
-      </div>
-      <div class="login-field" style="margin-bottom: 20px;">
-        <label>Password</label>
-        <input type="password" id="password" required placeholder="Enter password">
-      </div>
-      <button type="submit" class="login-btn">Login</button>
-    </form>
-  </div>
-</div>
+<div class="login-container">
+        <h2>Welcome Back</h2>
+        
+        <!-- Form correctly hooks up the onsubmit event -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="login-field">
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" required placeholder="Enter username">
+            </div>
+            
+            <div class="login-field" style="margin-bottom: 20px;">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" required placeholder="Enter password">
+            </div>
+            
+            <div id="loginError" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
+            
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+    </div>
 
+    <script src="script-login.js"></script>
 
 <div class="hamburger-wrapper">
 
@@ -1215,7 +1222,9 @@ textarea {
                 Enterprise Asset Management • Preventive Maintenance • Engine Inspection
             </p>
         </div>
-<div id="welcomeMessage" style="display:none; font-size:18px; font-weight:bold; color:#123b63; text-align:center; margin-bottom:15px;"></div>
+
+<h1 id="welcomeHeading">Welcome, <span id="userFullNameDisplay"></span></h1>
+
         <!-- Kept hidden for JavaScript compatibility; the old green status box is no longer displayed. -->
         <div id="qrStatus" class="qr-status" aria-hidden="true">
             <span class="status-dot"></span>
@@ -3062,87 +3071,10 @@ textarea {
 
 <script>
 
-"use strict";
-
-const USERS_CSV_URL = "./users.csv"; // Path to your users.csv file
-
-function handleLogin(e) {
-    if (e) e.preventDefault();
-    
-    const userIn = document.getElementById("usernameInput").value.trim();
-    const passIn = document.getElementById("passwordInput").value.trim();
-    const loginError = document.getElementById("loginError");
-    
-    loginError.style.display = "none";
-
-    fetch("users.csv")
-        .then(response => {
-            if (!response.ok) throw new Error("CSV file not found");
-            return response.text();
-        })
-        .then(csvText => {
-            const lines = csvText.split(/\r?\n/);
-            let isAuthenticated = false;
-            let userFullName = "";
-
-            if (lines.length > 0) {
-                // Parse headers from the first line
-                const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
-                
-                // Get indexes dynamically based on header names (or default to 0, 1, 2)
-                const userIdx = headers.indexOf("username") !== -1 ? headers.indexOf("username") : 0;
-                const passIdx = headers.indexOf("password") !== -1 ? headers.indexOf("password") : 1;
-                const nameIdx = headers.indexOf("fullname") !== -1 ? headers.indexOf("fullname") : 2;
-
-                // Loop through data rows starting from row index 1
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (!line) continue;
-
-                    const parts = line.split(",").map(p => p.trim());
-                    
-                    if (parts.length > Math.max(userIdx, passIdx, nameIdx)) {
-                        const csvUser = parts[userIdx];
-                        const csvPass = parts[passIdx];
-
-                        if (csvUser === userIn && csvPass === passIn) {
-                            isAuthenticated = true;
-                            userFullName = parts[nameIdx];
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (isAuthenticated) {
-                // Hide the form and login title
-                document.getElementById("loginForm").style.display = "none";
-                const cardHeader = document.querySelector(".login-card h2");
-                if (cardHeader) cardHeader.style.display = "none";
-
-                // Show welcome message
-                const welcomeEl = document.getElementById("welcomeMessage");
-                if (welcomeEl) {
-                    welcomeEl.textContent = "Welcome, " + userFullName;
-                    welcomeEl.style.display = "block";
-                }
-
-                // Hide login overlay after 1.5 seconds
-                setTimeout(() => {
-                    document.getElementById("loginOverlay").style.display = "none";
-                }, 1500);
-
-            } else {
-                loginError.textContent = "Invalid username or password.";
-                loginError.style.display = "block";
-            }
-        })
-        .catch(err => {
-            console.error("Error reading users.csv:", err);
-            loginError.textContent = "Error loading user data.";
-            loginError.style.display = "block";
-        });
-}
+const fullName = sessionStorage.getItem("userFullName");
+    if (fullName) {
+        document.getElementById("userFullNameDisplay").textContent = fullName;
+    }
 
 /* ============================================================
    PM DATA
