@@ -3144,6 +3144,7 @@ async function handleLogin(e) {
             sessionStorage.setItem("isEAMAdmin", "true");
             if (fullNameDisplay) fullNameDisplay.textContent = adminUser.fullname;
             document.getElementById("loginOverlay").style.display = "none";
+            document.getElementById("logoutBtn").style.display = "block";
             configureAdminVisibility(true);
             initializeSettings();
             return;
@@ -3270,6 +3271,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (loginOverlay) {
             loginOverlay.style.display = "none";
+        }
+
+        // Show Logout whenever an existing session is restored, including admin.
+        const logoutButton = document.getElementById("logoutBtn");
+        if (logoutButton) {
+            logoutButton.style.display = "block";
         }
     }
 });
