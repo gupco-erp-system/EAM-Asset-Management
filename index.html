@@ -1158,6 +1158,23 @@ textarea {
 .settings-custom-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin:12px 0; }
 .settings-custom-field { border:1px solid #cbd5e1; padding:10px; border-radius:8px; background:#f8fafc; }
 @media(max-width:640px){.settings-shell{padding:12px}.settings-table{font-size:12px}}
+	.logout-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.logout-btn:hover {
+    background: #b02a37;
+}
 
 </style>
 
@@ -1190,6 +1207,10 @@ textarea {
 ========================================================= -->
 
 <header class="app-header">
+
+<button id="logoutBtn" onclick="logoutUser()" class="logout-btn" style="display: none;">
+    Logout
+</button>
 
     <div class="app-header-content">
 
@@ -3198,7 +3219,8 @@ async function handleLogin(e) {
 
             // Hide login screen
             document.getElementById("loginOverlay").style.display = "none";
-
+			document.getElementById("logoutBtn").style.display = "block";
+			
             console.log("Login successful");
             console.log("Username:", matchedUser.username);
             console.log("Full Name:", fullName);
@@ -3252,7 +3274,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+function logoutUser() {
+    sessionStorage.removeItem("userFullName");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("isEAMAdmin");
 
+    window.location.reload();
+}
+	
 /* ============================================================
    ADMINISTRATOR SETTINGS (manual export workflow)
 ============================================================ */
