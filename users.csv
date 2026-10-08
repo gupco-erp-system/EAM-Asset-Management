@@ -1,4 +1,6 @@
 ﻿username,password,fullname,mobile,email
+admin,BCS@2026,User with all administrator's rules,,khoshoueyae@gupco.net
+readonly,readonly,User without editing  rules,,khoshoueyae@gupco.net
 fsaez,DRAGON2025,Faisa Omar Saez,,fsaez@dragonoil.com
 davi1y,E0200,JAMES Daviesj,,davi1y@dragonoil.com
 robip,E0201,Peter Robinson,,robip@dragonoil.com
