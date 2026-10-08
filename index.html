@@ -1133,6 +1133,32 @@ textarea {
     flex: 1;
 }
 
+
+/* Administrator Settings */
+#settingsTabButton { display:none; }
+#tab-settings { direction:ltr; text-align:left; }
+.settings-shell { max-width:1200px; margin:18px auto; padding:22px; background:#fff; border:1px solid #d1d5db; border-radius:12px; box-shadow:0 4px 16px rgba(15,23,42,.08); }
+.settings-shell h2 { color:#123b63; margin:0 0 8px; }
+.settings-note { color:#475569; background:#eff6ff; border-left:4px solid #2563eb; padding:12px; border-radius:6px; margin:12px 0 18px; }
+.settings-subnav { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.settings-subnav button,.settings-action { border:0; border-radius:6px; padding:9px 13px; background:#1e3a8a; color:#fff; cursor:pointer; font:inherit; }
+.settings-subnav button.active { background:#0f766e; }
+.settings-pane { display:none; padding-top:8px; }
+.settings-pane.active { display:block; }
+.settings-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+.settings-grid label,.settings-pane label { display:block; font-weight:700; margin:8px 0 4px; }
+.settings-pane input,.settings-pane textarea,.settings-pane select { width:100%; padding:9px; border:1px solid #cbd5e1; border-radius:6px; font:inherit; }
+.settings-pane textarea { min-height:120px; }
+.settings-table { width:100%; border-collapse:collapse; margin:12px 0; }
+.settings-table th,.settings-table td { border:1px solid #d1d5db; padding:8px; text-align:left; vertical-align:middle; }
+.settings-table th { background:#f1f5f9; }
+.settings-actions { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.settings-status { margin:10px 0; font-weight:700; color:#0f766e; }
+.settings-small { color:#64748b; font-size:13px; }
+.settings-custom-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin:12px 0; }
+.settings-custom-field { border:1px solid #cbd5e1; padding:10px; border-radius:8px; background:#f8fafc; }
+@media(max-width:640px){.settings-shell{padding:12px}.settings-table{font-size:12px}}
+
 </style>
 
 </head>
@@ -1231,6 +1257,45 @@ textarea {
         3. المرفقات / Attachments
     </button>
 
+    <button id="settingsTabButton" class="tab-btn" onclick="switchTab('tab-settings', this); initializeSettings();">
+        ⚙ Administrator Settings
+    </button>
+
+</div>
+
+<div id="tab-settings" class="tab-content">
+  <div class="settings-shell">
+    <h2>Administrator Settings</h2>
+    <p class="settings-small">Edit data in the browser, download the updated files, then upload/replace them in your GitHub repository manually.</p>
+    <div class="settings-note"><strong>Important:</strong> GitHub Pages is static hosting. These tools download changes; they do not write to GitHub automatically. Administrator login in a browser-only app is not secure access control because its credentials are visible in the page source.</div>
+    <div class="settings-subnav">
+      <button class="active" onclick="switchSettingsPane('settings-users',this)">1. Users (users.csv)</button>
+      <button onclick="switchSettingsPane('settings-attachments',this)">2. Attachments by PM ID</button>
+      <button onclick="switchSettingsPane('settings-fields',this)">3. Tab 1 &amp; Tab 2 Fields</button>
+    </div>
+    <section id="settings-users" class="settings-pane active">
+      <h3>Manage users.csv</h3>
+      <p class="settings-small">Expected columns: Username, Password, FullName. Keep the header row.</p>
+      <div class="settings-actions"><button class="settings-action" onclick="loadUsersForSettings()">Reload users.csv</button><button class="settings-action" onclick="addUserRow()">＋ Add user</button><button class="settings-action" onclick="downloadUsersCSV()">Download users.csv</button></div>
+      <div id="usersEditorStatus" class="settings-status" role="status"></div>
+      <div style="overflow-x:auto"><table class="settings-table"><thead><tr><th>Username</th><th>Password</th><th>Full Name</th><th>Action</th></tr></thead><tbody id="usersEditorBody"></tbody></table></div>
+    </section>
+    <section id="settings-attachments" class="settings-pane">
+      <h3>Manage attachment list for a PM ID</h3>
+      <p class="settings-small">Enter the filenames that should be listed for this PM, one per line. This downloads <code>attachments/&lt;PM ID&gt;/index.json</code>. Actual PDF/image files must be uploaded to that folder separately; this does not upload file contents.</p>
+      <div class="settings-grid"><div><label for="settingsAttachmentPM">PM ID</label><input id="settingsAttachmentPM" placeholder="e.g. 2803"></div><div><label for="settingsAttachmentNames">Attachment filenames (one per line)</label><textarea id="settingsAttachmentNames" placeholder="inspection.pdf&#10;engine-photo.jpg"></textarea></div></div>
+      <div class="settings-actions"><button class="settings-action" onclick="loadAttachmentListForSettings()">Load list</button><button class="settings-action" onclick="downloadAttachmentManifest()">Download index.json</button></div>
+      <div id="attachmentsEditorStatus" class="settings-status" role="status"></div>
+    </section>
+    <section id="settings-fields" class="settings-pane">
+      <h3>Manage fields and descriptions</h3>
+      <p class="settings-small">Change a field description, hide an existing field, or add a custom text field to Tab 1 or Tab 2. Download <code>eam-settings.json</code> and upload it beside index.html. Custom fields are displayed in a separate section at the bottom of the selected tab.</p>
+      <div class="settings-actions"><button class="settings-action" onclick="scanFormFields()">Refresh field list</button><button class="settings-action" onclick="addCustomField()">＋ Add custom field</button><button class="settings-action" onclick="downloadEAMSettings()">Download eam-settings.json</button></div>
+      <div id="fieldsEditorStatus" class="settings-status" role="status"></div>
+      <div style="overflow-x:auto"><table class="settings-table"><thead><tr><th>Tab</th><th>Field ID</th><th>Description / Label</th><th>Visible</th></tr></thead><tbody id="fieldsEditorBody"></tbody></table></div>
+      <h4>Custom fields</h4><div id="customFieldsEditor"></div>
+    </section>
+  </div>
 </div>
 
 
@@ -1962,6 +2027,7 @@ textarea {
 
     </div>
 
+<div id="customFieldsTab1" class="settings-custom-fields"></div>
 </div>
 </div>
 
@@ -2933,6 +2999,7 @@ textarea {
 
     </div>
 
+<div id="customFieldsTab2" class="settings-custom-fields"></div>
 </div>
 </div>
 
@@ -3047,6 +3114,19 @@ async function handleLogin(e) {
     errorBox.style.display = "none";
 
     try {
+        // Admin entry requested for this static application.
+        // This is convenience gating only, not secure authentication.
+        if (userIn === "admin" && passIn === "BCS@2026") {
+            const adminUser = { username: "admin", fullname: "Administrator" };
+            sessionStorage.setItem("userFullName", adminUser.fullname);
+            sessionStorage.setItem("username", adminUser.username);
+            sessionStorage.setItem("isEAMAdmin", "true");
+            if (fullNameDisplay) fullNameDisplay.textContent = adminUser.fullname;
+            document.getElementById("loginOverlay").style.display = "none";
+            configureAdminVisibility(true);
+            initializeSettings();
+            return;
+        }
         const response = await fetch(USERS_CSV_URL);
 
         if (!response.ok) {
@@ -3107,6 +3187,8 @@ async function handleLogin(e) {
             // Save logged-in user information
             sessionStorage.setItem("userFullName", fullName);
             sessionStorage.setItem("username", matchedUser.username);
+            sessionStorage.removeItem("isEAMAdmin");
+            configureAdminVisibility(false);
 
             // IMPORTANT:
             // Update Welcome heading immediately after login
@@ -3153,6 +3235,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (fullName) {
 
+        configureAdminVisibility(sessionStorage.getItem("isEAMAdmin") === "true" && sessionStorage.getItem("username") === "admin");
         const display =
             document.getElementById("userFullNameDisplay");
 
@@ -3168,6 +3251,251 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+
+
+/* ============================================================
+   ADMINISTRATOR SETTINGS (manual export workflow)
+============================================================ */
+let settingsUsersRows = [];
+let eamSettings = { version: 1, fields: {}, customFields: [] };
+let settingsInitialized = false;
+
+function configureAdminVisibility(isAdmin) {
+    const button = document.getElementById("settingsTabButton");
+    if (button) button.style.display = isAdmin ? "inline-flex" : "none";
+    if (!isAdmin && document.getElementById("tab-settings")?.classList.contains("active")) {
+        switchTab("tab-asset", document.querySelector('.tabs-nav .tab-btn'));
+    }
+}
+
+function switchSettingsPane(paneId, button) {
+    document.querySelectorAll(".settings-pane").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".settings-subnav button").forEach(b => b.classList.remove("active"));
+    document.getElementById(paneId)?.classList.add("active");
+    button?.classList.add("active");
+    if (paneId === "settings-fields") scanFormFields();
+}
+
+async function initializeSettings() {
+    if (sessionStorage.getItem("isEAMAdmin") !== "true" || sessionStorage.getItem("username") !== "admin") {
+        configureAdminVisibility(false); return;
+    }
+    configureAdminVisibility(true);
+    if (settingsInitialized) return;
+    settingsInitialized = true;
+    await Promise.all([loadUsersForSettings(), loadEAMSettings()]);
+    scanFormFields();
+}
+
+function setSettingsStatus(id, message, isError=false) {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = message; el.style.color = isError ? "#b91c1c" : "#0f766e"; }
+}
+
+async function loadUsersForSettings() {
+    try {
+        const response = await fetch(USERS_CSV_URL + "?v=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        const csv = await response.text();
+        let parsed;
+        if (window.Papa) parsed = Papa.parse(csv, { skipEmptyLines: true }).data;
+        else parsed = csv.split(/\r?\n/).filter(Boolean).map(line => line.split(","));
+        if (!parsed.length) parsed = [["Username","Password","FullName"]];
+        const header = parsed[0].map(v => String(v || "").trim().toLowerCase());
+        const hasHeader = header.some(v => ["username","user"].includes(v));
+        settingsUsersRows = (hasHeader ? parsed.slice(1) : parsed).map(row => ({
+            username: String(row[0] ?? ""), password: String(row[1] ?? ""), fullname: String(row[2] ?? "")
+        })).filter(row => row.username || row.password || row.fullname);
+        renderUsersEditor();
+        setSettingsStatus("usersEditorStatus", `Loaded ${settingsUsersRows.length} user(s).`);
+    } catch (error) {
+        settingsUsersRows = [];
+        renderUsersEditor();
+        setSettingsStatus("usersEditorStatus", "Could not load users.csv: " + error.message + ". You can still add users, then download the file.", true);
+    }
+}
+
+function renderUsersEditor() {
+    const body = document.getElementById("usersEditorBody");
+    if (!body) return;
+    body.innerHTML = "";
+    settingsUsersRows.forEach((row, index) => {
+        const tr = document.createElement("tr");
+        ["username","password","fullname"].forEach(key => {
+            const td = document.createElement("td");
+            const input = document.createElement("input");
+            input.value = row[key] || "";
+            input.type = key === "password" ? "text" : "text";
+            input.setAttribute("aria-label", key);
+            input.addEventListener("input", () => { settingsUsersRows[index][key] = input.value; });
+            td.appendChild(input); tr.appendChild(td);
+        });
+        const action = document.createElement("td");
+        const remove = document.createElement("button"); remove.className = "settings-action"; remove.textContent = "Remove";
+        remove.addEventListener("click", () => { settingsUsersRows.splice(index,1); renderUsersEditor(); });
+        action.appendChild(remove); tr.appendChild(action); body.appendChild(tr);
+    });
+}
+
+function addUserRow() {
+    settingsUsersRows.push({ username:"", password:"", fullname:"" });
+    renderUsersEditor();
+    const inputs = document.querySelectorAll("#usersEditorBody tr:last-child input"); inputs[0]?.focus();
+}
+
+function csvEscape(value) {
+    const text = String(value ?? "");
+    return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+}
+
+function downloadTextFile(filename, content, mime="text/plain;charset=utf-8") {
+    const blob = new Blob(["\ufeff", content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+
+function downloadUsersCSV() {
+    const rows = [["Username","Password","FullName"], ...settingsUsersRows.map(r => [r.username,r.password,r.fullname])];
+    const csv = rows.map(row => row.map(csvEscape).join(",")).join("\r\n") + "\r\n";
+    downloadTextFile("users.csv", csv, "text/csv;charset=utf-8");
+    setSettingsStatus("usersEditorStatus", "Downloaded users.csv. Replace the repository file with this download.");
+}
+
+async function loadAttachmentListForSettings() {
+    const pmId = document.getElementById("settingsAttachmentPM")?.value.trim();
+    if (!pmId) { setSettingsStatus("attachmentsEditorStatus", "Enter a PM ID first.", true); return; }
+    try {
+        const url = `./attachments/${encodeURIComponent(pmId)}/index.json?v=${Date.now()}`;
+        const response = await fetch(url, { cache:"no-store" });
+        if (!response.ok) throw new Error("No index.json found (HTTP " + response.status + ")");
+        const data = await response.json();
+        const names = Array.isArray(data) ? data : (Array.isArray(data.files) ? data.files : []);
+        document.getElementById("settingsAttachmentNames").value = names.join("\n");
+        setSettingsStatus("attachmentsEditorStatus", `Loaded ${names.length} filename(s) for PM ${pmId}.`);
+    } catch (error) {
+        document.getElementById("settingsAttachmentNames").value = "";
+        setSettingsStatus("attachmentsEditorStatus", "Could not load manifest: " + error.message + ". Enter filenames below to create one.", true);
+    }
+}
+
+function downloadAttachmentManifest() {
+    const pmId = document.getElementById("settingsAttachmentPM")?.value.trim();
+    if (!pmId) { setSettingsStatus("attachmentsEditorStatus", "Enter a PM ID first.", true); return; }
+    const names = document.getElementById("settingsAttachmentNames").value.split(/\r?\n/).map(v => v.trim()).filter(Boolean);
+    if (names.some(name => name.includes("/") || name.includes("\\") || name === "." || name === "..")) {
+        setSettingsStatus("attachmentsEditorStatus", "Enter filenames only, without folder paths.", true); return;
+    }
+    downloadTextFile("index.json", JSON.stringify({ files:names }, null, 2) + "\n", "application/json;charset=utf-8");
+    setSettingsStatus("attachmentsEditorStatus", `Downloaded index.json for attachments/${pmId}/. Upload it into that PM folder; upload/remove the actual attachment files separately.`);
+}
+
+async function loadEAMSettings() {
+    try {
+        const response = await fetch("./eam-settings.json?v=" + Date.now(), { cache:"no-store" });
+        if (response.ok) {
+            const loaded = await response.json();
+            eamSettings = { version:1, fields:loaded.fields || {}, customFields:Array.isArray(loaded.customFields) ? loaded.customFields : [] };
+        }
+    } catch (_) { /* First run: use default settings. */ }
+    applyEAMSettings();
+}
+
+function getFieldLabel(element) {
+    if (!element) return "";
+    const explicit = element.id ? document.querySelector(`label[for="${CSS.escape(element.id)}"]`) : null;
+    if (explicit) return explicit.textContent.trim();
+    const parentLabel = element.closest("label");
+    if (parentLabel) return parentLabel.textContent.trim();
+    const cell = element.closest("td");
+    if (cell?.previousElementSibling?.tagName === "TH") return cell.previousElementSibling.textContent.trim();
+    const group = element.closest(".field-group,.pm-field,.asset-card");
+    const label = group?.querySelector("label,h3,h4");
+    return label?.textContent.trim() || element.id || element.name || element.tagName.toLowerCase();
+}
+
+function getFieldContainer(element) {
+    return element.closest("tr,.field-group,.pm-field,.asset-card,.form-group") || element.parentElement;
+}
+
+function scanFormFields() {
+    const body = document.getElementById("fieldsEditorBody"); if (!body) return;
+    body.innerHTML = "";
+    const found = [];
+    [["Tab 1", "tab-asset"],["Tab 2", "tab-checklist"]].forEach(([tabName, tabId]) => {
+        const tab = document.getElementById(tabId); if (!tab) return;
+        tab.querySelectorAll("input[id],select[id],textarea[id]").forEach(el => {
+            if (el.type === "hidden" || el.closest("#tab-settings") || el.dataset.customField === "true") return;
+            found.push({tabName, id:el.id, element:el, label:getFieldLabel(el)});
+        });
+    });
+    found.forEach(item => {
+        const config = eamSettings.fields[item.id] || {};
+        const tr = document.createElement("tr");
+        [item.tabName,item.id].forEach(value => { const td=document.createElement("td"); td.textContent=value; tr.appendChild(td); });
+        const labelCell=document.createElement("td"); const labelInput=document.createElement("input");
+        labelInput.value=config.label ?? item.label;
+        labelInput.addEventListener("change",()=>{eamSettings.fields[item.id]={...(eamSettings.fields[item.id]||{}),label:labelInput.value}; applyEAMSettings();});
+        labelCell.appendChild(labelInput); tr.appendChild(labelCell);
+        const visibleCell=document.createElement("td"); const checkbox=document.createElement("input"); checkbox.type="checkbox"; checkbox.checked=config.hidden !== true;
+        checkbox.addEventListener("change",()=>{eamSettings.fields[item.id]={...(eamSettings.fields[item.id]||{}),hidden:!checkbox.checked}; applyEAMSettings();});
+        visibleCell.appendChild(checkbox); tr.appendChild(visibleCell); body.appendChild(tr);
+    });
+    renderCustomFieldsEditor();
+    setSettingsStatus("fieldsEditorStatus", `Found ${found.length} existing fields. Changes apply in this browser and are included in eam-settings.json.`);
+}
+
+function addCustomField() {
+    const tab = prompt("Add field to which tab? Enter 1 or 2:", "1");
+    if (tab !== "1" && tab !== "2") return;
+    const label = prompt("Field description / label:", "New field");
+    if (!label || !label.trim()) return;
+    const id = "custom_" + Date.now().toString(36);
+    eamSettings.customFields.push({ id, tab:Number(tab), label:label.trim(), type:"text", hidden:false });
+    applyEAMSettings(); scanFormFields();
+}
+
+function renderCustomFieldsEditor() {
+    const root=document.getElementById("customFieldsEditor"); if(!root) return;
+    root.innerHTML="";
+    eamSettings.customFields.forEach((field,index)=>{
+        const row=document.createElement("div"); row.className="settings-grid"; row.style.margin="8px 0";
+        const tab=document.createElement("select"); tab.innerHTML='<option value="1">Tab 1 - Asset Data</option><option value="2">Tab 2 - Inspection</option>'; tab.value=String(field.tab); tab.addEventListener("change",()=>{field.tab=Number(tab.value);applyEAMSettings();});
+        const label=document.createElement("input"); label.value=field.label; label.setAttribute("aria-label","Custom field label"); label.addEventListener("change",()=>{field.label=label.value;applyEAMSettings();});
+        const remove=document.createElement("button"); remove.className="settings-action"; remove.textContent="Remove field"; remove.addEventListener("click",()=>{eamSettings.customFields.splice(index,1);applyEAMSettings();scanFormFields();});
+        row.append(tab,label,remove); root.appendChild(row);
+    });
+}
+
+function applyEAMSettings() {
+    Object.entries(eamSettings.fields || {}).forEach(([id,config])=>{
+        const el=document.getElementById(id); if(!el) return;
+        const container=getFieldContainer(el);
+        if (container) container.style.display=config.hidden ? "none" : "";
+        if (config.label) {
+            const explicit=el.id ? document.querySelector(`label[for="${CSS.escape(el.id)}"]`) : null;
+            const parentLabel=el.closest("label");
+            const cell=el.closest("td");
+            const target=explicit || parentLabel || (cell?.previousElementSibling?.tagName==="TH" ? cell.previousElementSibling : null);
+            if(target) target.textContent=config.label;
+        }
+    });
+    [1,2].forEach(tabNo=>{
+        const root=document.getElementById(`customFieldsTab${tabNo}`); if(!root)return; root.innerHTML="";
+        eamSettings.customFields.filter(f=>Number(f.tab)===tabNo && !f.hidden).forEach(field=>{
+            const wrap=document.createElement("div"); wrap.className="custom-field-card"; wrap.style.cssText="background:#fff;border:1px solid #cbd5e1;border-radius:7px;padding:10px;";
+            const label=document.createElement("label"); label.textContent=field.label; label.style.display="block";
+            const input=document.createElement("input"); input.type="text"; input.id=field.id; input.dataset.customField="true"; input.style.cssText="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:5px;";
+            wrap.append(label,input); root.appendChild(wrap);
+        });
+    });
+}
+
+function downloadEAMSettings() {
+    downloadTextFile("eam-settings.json", JSON.stringify(eamSettings,null,2)+"\n", "application/json;charset=utf-8");
+    setSettingsStatus("fieldsEditorStatus", "Downloaded eam-settings.json. Upload it beside index.html in your repository.");
+}
+
 
 /* ============================================================
    PM DATA
@@ -4427,13 +4755,15 @@ async function loadPMAttachments(pmId) {
     );
 
     try {
-        /*
-         * Preferred method for GitHub Pages:
-         * query the repository contents directly.
-         */
-        const files =
-            await fetchAttachmentsFromGitHub(pmId);
-
+        /* Prefer index.json when present so its file list can be maintained manually. */
+        try {
+            const manifestFiles = await fetchAttachmentsFromManifest(pmId);
+            renderAttachments(manifestFiles, pmId);
+            return;
+        } catch (manifestFirstError) {
+            /* No manifest: list files directly from the public GitHub repository. */
+        }
+        const files = await fetchAttachmentsFromGitHub(pmId);
         renderAttachments(files, pmId);
 
     } catch (githubError) {
