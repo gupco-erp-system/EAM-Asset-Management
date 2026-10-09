@@ -1354,6 +1354,19 @@ textarea {
     background: #b02a37;
 }
 
+
+
+/* PM materials catalog additions */
+#subtab-pm-materials { margin: 12px 0; }
+#catalogTable { min-width: 900px; }
+#catalogTable th { white-space: normal; }
+#catalogTable .catalog-filter { min-width: 85px; }
+#catalogTable td.catalog-arabic { direction: rtl; text-align: right; min-width: 220px; }
+#catalogTable td.catalog-english { min-width: 220px; }
+#catalogTable input[type="checkbox"] { width: 17px; height: 17px; }
+.catalog-status-error { color: #b91c1c !important; }
+.catalog-qty { width: 85px !important; min-width: 70px; }
+
 </style>
 
 </head>
@@ -2157,8 +2170,19 @@ textarea {
         class="materials-total">
     </div>
 
-<!-- Sub-tab 2: PM Required Materials Catalog -->
-    <div id="subtab-pm-materials" class="sub-tab-content">
+<!-- PM materials sub-tabs inside Main TAB 1 -->
+    <div class="sub-tabs-nav" role="tablist" aria-label="PM materials tabs">
+        <button type="button" class="sub-tab-btn active" id="pmCatalogTabButton"
+            onclick="switchPMMaterialsSubTab('catalog', this)">
+            Materials Catalog / كتالوج المواد
+        </button>
+        <button type="button" class="sub-tab-btn" id="pmDefinedTabButton"
+            onclick="switchPMMaterialsSubTab('defined', this)">
+            PM List / قائمة مواد الصيانة
+        </button>
+    </div>
+
+    <div id="subtab-pm-materials" class="sub-tab-content active">
         <div class="section-title">
             PM Required Materials Catalog (CSV)
             <span style="float:left;">كتالوج المواد والصيانة</span>
@@ -2166,32 +2190,16 @@ textarea {
         <p style="font-size:13px; color:#475569;">Loaded dynamically from `items_arabic.csv`. Edit Arabic descriptions inline or search items, then select items to add to the checklist.</p>
         
         <div class="catalog-search-bar">
-            <input type="text" id="catalogGlobalSearch" placeholder="Search catalog across all columns..." oninput="filterCatalogTable()">
-            <button class="btn btn-primary" onclick="addSelectedCatalogItemsToCheckout()">Add Selected to Checklist / إضافة إلى قائمة الفحص</button>
+            <input type="text" id="catalogGlobalSearch" placeholder="Search all columns / بحث في كل الأعمدة..." oninput="filterCatalogTable()">
+            <button type="button" class="btn btn-primary" onclick="addSelectedCatalogItemsToCheckout()">Add to Checklist / إضافة إلى قائمة الفحص</button>
+            <button type="button" class="btn btn-secondary" onclick="loadMaterialsCatalog(true)">Reload CSV / إعادة تحميل</button>
         </div>
-
-        <div id="catalogStatus" style="font-weight:bold; margin-bottom:8px; color:#0f766e;">Loading items_arabic.csv...</div>
-
+        <div id="catalogStatus" role="status" style="font-weight:bold; margin-bottom:8px; color:#0f766e;">Ready to load items_arabic.csv.</div>
         <div class="catalog-table-wrapper">
             <table class="catalog-table" id="catalogTable">
-                <thead>
-                    <tr>
-                        <th style="width:5%;"><input type="checkbox" id="selectAllCatalog" onclick="toggleSelectAllCatalog(this)"></th>
-                        <th style="width:15%;">Item No.</th>
-                        <th style="width:35%;">English Description</th>
-                        <th style="width:35%;">Arabic Description</th>
-                        <th style="width:10%;">Required Qty</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th><input type="text" placeholder="Filter No." oninput="filterCatalogTable()"></th>
-                        <th><input type="text" placeholder="Filter English" oninput="filterCatalogTable()"></th>
-                        <th><input type="text" placeholder="Filter Arabic" oninput="filterCatalogTable()"></th>
-                        <th></th>
-                    </tr>
-                </thead>
+                <thead id="catalogTableHead"></thead>
                 <tbody id="catalogTableBody">
-                    <tr><td colspan="5" style="text-align:center;">Catalog not loaded yet. Click the sub-tab to load.</td></tr>
+                    <tr><td style="text-align:center;">Select this tab to load items_arabic.csv.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -3362,8 +3370,6 @@ textarea {
 
 const USERS_CSV_URL = "./users.csv";
 
-let catalogLoadedData = [];
-
 async function handleLogin(e) {
     e.preventDefault();
 
@@ -3802,10 +3808,8 @@ let currentPM = null;
    TAB SWITCHING
 ============================================================ */
 
-/* ============================================================
-   TAB SWITCHING (تم دمج دالتك الأساسية هنا مع التحقق الآمن)
-============================================================ */
 function switchTab(tabId, btnElement) {
+
     document
         .querySelectorAll(".tab-content")
         .forEach(tab => {
@@ -3828,116 +3832,9 @@ function switchTab(tabId, btnElement) {
     if (btnElement) {
         btnElement.classList.add("active");
     }
+
 }
 
-// Handle Sub-Tabs inside Tab 1
-function switchSubTab(subTabId, btnEl) {
-    document.querySelectorAll(".sub-tab-content").forEach(el => el.classList.remove("active"));
-    document.querySelectorAll(".sub-tab-btn").forEach(el => el.classList.remove("active"));
-    document.getElementById(subTabId).classList.add("active");
-    if (btnEl) {
-        btnEl.classList.add("active");
-    }
-}
-
-// Load items_arabic.csv dynamically
-async function loadBilingualCatalog() {
-    if (catalogLoadedData.length > 0) return; // already loaded
-    const statusEl = document.getElementById("catalogStatus");
-    statusEl.textContent = "Fetching items_arabic.csv...";
-
-    try {
-        const response = await fetch("./items_arabic.csv");
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        const csvText = await response.text();
-        
-        Papa.parse(csvText, {
-            header: true,
-            skipEmptyLines: true,
-            complete: function(results) {
-                catalogLoadedData = results.data;
-                statusEl.textContent = `Loaded ${catalogLoadedData.length} items successfully from items_arabic.csv.`;
-                renderCatalogTable(catalogLoadedData);
-            },
-            error: function(err) {
-                throw err;
-            }
-        });
-    } catch (err) {
-        statusEl.textContent = "Error loading items_arabic.csv: " + err.message + ". Make sure the file exists in the repository folder.";
-        statusEl.style.color = "#dc2626";
-    }
-}
-
-function renderCatalogTable(data) {
-    const tbody = document.getElementById("catalogTableBody");
-    tbody.innerHTML = "";
-    data.forEach((row, idx) => {
-        const tr = document.createElement("tr");
-        const itemNo = row["Item No."] || row["ItemNo"] || row["Item Number"] || row["item_no"] || "";
-        const descEn = row["English Description"] || row["Description"] || row["desc_en"] || "";
-        const descAr = row["Arabic Description"] || row["desc_ar"] || "";
-
-        tr.innerHTML = `
-            <td><input type="checkbox" class="catalog-row-select" data-index="${idx}"></td>
-            <td>${escapeHTML(itemNo)}</td>
-            <td>${escapeHTML(descEn)}</td>
-            <td><input type="text" value="${escapeHTML(descAr)}" oninput="catalogLoadedData[${idx}]['Arabic Description'] = this.value"></td>
-            <td><input type="number" value="1" min="1" style="width:70px;" id="catQty_${idx}"></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function filterCatalogTable() {
-    const globalQuery = document.getElementById("catalogGlobalSearch").value.toLowerCase();
-    const rows = document.querySelectorAll("#catalogTableBody tr");
-    rows.forEach((tr) => {
-        const text = tr.textContent.toLowerCase();
-        tr.style.display = text.includes(globalQuery) ? "" : "none";
-    });
-}
-
-function toggleSelectAllCatalog(masterCheckbox) {
-    document.querySelectorAll(".catalog-row-select").forEach(cb => cb.checked = masterCheckbox.checked);
-}
-
-// Add selected materials to Main TAB 2 Checklist Table & Tab 1 Assigned Materials
-function addSelectedCatalogItemsToCheckout() {
-    const selectedCheckboxes = document.querySelectorAll(".catalog-row-select:checked");
-    if (selectedCheckboxes.length === 0) {
-        alert("Please select at least one material item.");
-        return;
-    }
-
-    const checklistBody = document.getElementById("checklistMaterialsBody");
-    if (checklistBody.querySelector("td[colspan]")) {
-        checklistBody.innerHTML = ""; // clear empty message
-    }
-
-    selectedCheckboxes.forEach(cb => {
-        const idx = cb.dataset.index;
-        const row = catalogLoadedData[idx];
-        const itemNo = row["Item No."] || row["ItemNo"] || row["Item Number"] || row["item_no"] || "";
-        const descEn = row["English Description"] || row["Description"] || row["desc_en"] || "";
-        const descAr = row["Arabic Description"] || row["desc_ar"] || "";
-        const qty = document.getElementById(`catQty_${idx}`).value || "1";
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>📍</td>
-            <td>${escapeHTML(qty)}</td>
-            <td>EA</td>
-            <td>${escapeHTML(itemNo)}</td>
-            <td>${escapeHTML(descEn)}</td>
-            <td>${escapeHTML(descAr)}</td>
-        `;
-        checklistBody.appendChild(tr);
-    });
-
-    alert("Selected materials added to the bottom of Form 440-1-G in Main TAB 2!");
-    switchTab('tab-checklist', document.querySelectorAll('.tab-btn')[1]);
-}
 
 /* ============================================================
    DIAGNOSTICS (Image on Left, Filling the box area)
@@ -5957,6 +5854,285 @@ function initHamburger() {
 
 function closeMenu() {
     document.getElementById("nav-menu").classList.remove("active");
+}
+
+
+/* ============================================================
+   PM REQUIRED MATERIALS CSV CATALOG
+   Loads ./items_arabic.csv, builds per-column filters, and appends
+   selected rows to the existing Form 440-1-G materials table.
+============================================================ */
+let pmCatalogRows = [];
+let pmCatalogHeaders = [];
+let pmCatalogFilteredIndexes = [];
+let pmCatalogLoaded = false;
+let pmCatalogLoading = false;
+const pmCatalogSelected = new Map();
+
+function switchPMMaterialsSubTab(which, button) {
+    document.querySelectorAll('#tab-asset .sub-tab-btn').forEach(b => b.classList.remove('active'));
+    if (button) button.classList.add('active');
+    const catalog = document.getElementById('subtab-pm-materials');
+    if (catalog) catalog.classList.toggle('active', which === 'catalog');
+    // The existing PM-defined materials table is above this sub-tab area and remains intact.
+    if (which === 'catalog' && !pmCatalogLoaded && !pmCatalogLoading) loadMaterialsCatalog();
+}
+
+function setCatalogStatus(message, isError) {
+    const el = document.getElementById('catalogStatus');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle('catalog-status-error', !!isError);
+    el.style.color = isError ? '#b91c1c' : '#0f766e';
+}
+
+function normalizeCatalogKey(value) {
+    return String(value == null ? '' : value).trim().toLowerCase()
+        .replace(/[\s_\-./()]+/g, '');
+}
+
+function findCatalogColumn(patterns, fallbackIndex) {
+    for (let i = 0; i < pmCatalogHeaders.length; i++) {
+        const key = normalizeCatalogKey(pmCatalogHeaders[i]);
+        if (patterns.some(p => p.test(key))) return i;
+    }
+    return fallbackIndex == null ? -1 : fallbackIndex;
+}
+
+function catalogValue(row, index) {
+    return index >= 0 ? String(row[index] == null ? '' : row[index]).trim() : '';
+}
+
+function getCatalogColumnIndexes() {
+    return {
+        item: findCatalogColumn([/^(itemno|itemnumber|itemcode|itemid|catalogno|catalognumber|partno|partnumber|materialno|materialnumber|code|رقمالصنف|رقمالمادة)$/]),
+        english: findCatalogColumn([/^(englishdescription|descriptionenglish|itemdescription|description|itemname|materialdescription|english|descriptionen)$/]),
+        arabic: findCatalogColumn([/^(arabicdescription|descriptionarabic|arabicname|arabic|الوصفالعربي|الوصفتفصيليعربي)$/]),
+        unit: findCatalogColumn([/^(unit|uom|unitofmeasure|measureunit|الوحدة)$/]),
+        qty: findCatalogColumn([/^(quantity|qty|requiredqty|الكمية)$/])
+    };
+}
+
+async function loadMaterialsCatalog(forceReload) {
+    if (pmCatalogLoading) return;
+    if (pmCatalogLoaded && !forceReload) return;
+    pmCatalogLoading = true;
+    setCatalogStatus('Loading ./items_arabic.csv ...', false);
+    try {
+        const url = new URL('./items_arabic.csv', window.location.href);
+        if (forceReload) url.searchParams.set('_', Date.now());
+        const response = await fetch(url.href, { cache: forceReload ? 'no-store' : 'default' });
+        if (!response.ok) throw new Error('HTTP ' + response.status + ' while loading items_arabic.csv');
+        const csvText = (await response.text()).replace(/^\uFEFF/, '');
+        if (!csvText.trim()) throw new Error('The CSV file is empty.');
+        let parsed;
+        if (window.Papa && typeof Papa.parse === 'function') {
+            parsed = Papa.parse(csvText, { header: false, skipEmptyLines: 'greedy', dynamicTyping: false });
+            if (parsed.errors && parsed.errors.length) {
+                const serious = parsed.errors.filter(e => e.code !== 'UndetectableDelimiter');
+                if (serious.length) console.warn('CSV parsing warnings:', serious.slice(0, 5));
+            }
+            parsed = parsed.data;
+        } else {
+            throw new Error('CSV parser is unavailable. Check the Papa Parse script connection.');
+        }
+        if (!parsed.length || parsed.length < 2) throw new Error('No data rows were found in the CSV.');
+        pmCatalogHeaders = parsed[0].map((h, i) => String(h == null || h === '' ? 'Column ' + (i + 1) : h).trim());
+        pmCatalogRows = parsed.slice(1).filter(row => row.some(cell => String(cell == null ? '' : cell).trim() !== ''));
+        if (!pmCatalogRows.length) throw new Error('The CSV contains a header but no material records.');
+        pmCatalogLoaded = true;
+        buildCatalogTable();
+        filterCatalogTable();
+        setCatalogStatus('Loaded ' + pmCatalogRows.length.toLocaleString() + ' materials from items_arabic.csv. Use the filter box below each column to search.', false);
+    } catch (error) {
+        console.error('Materials CSV load failed:', error);
+        pmCatalogLoaded = false;
+        setCatalogStatus('Could not load items_arabic.csv. Confirm the file is in the same GitHub Pages folder as index.html and that its filename/capitalization is exact. ' + error.message, true);
+        const body = document.getElementById('catalogTableBody');
+        if (body) body.innerHTML = '<tr><td colspan="20" style="text-align:center;color:#b91c1c;">CSV loading failed. Check the filename and GitHub Pages URL, then use Reload CSV.</td></tr>';
+    } finally {
+        pmCatalogLoading = false;
+    }
+}
+
+function buildCatalogTable() {
+    const head = document.getElementById('catalogTableHead');
+    if (!head) return;
+    const cols = getCatalogColumnIndexes();
+    const top = document.createElement('tr');
+    const selectTh = document.createElement('th');
+    selectTh.innerHTML = '<input type="checkbox" id="selectAllCatalog" title="Select visible rows" aria-label="Select visible rows">';
+    selectTh.querySelector('input').addEventListener('change', function () {
+        pmCatalogFilteredIndexes.forEach(i => {
+            const key = String(i);
+            if (this.checked) {
+                const cb = document.querySelector('[data-catalog-select="' + key + '"]');
+                if (cb) { cb.checked = true; pmCatalogSelected.set(key, true); }
+            } else {
+                pmCatalogSelected.delete(key);
+                const cb = document.querySelector('[data-catalog-select="' + key + '"]');
+                if (cb) cb.checked = false;
+            }
+        });
+    });
+    top.appendChild(selectTh);
+    pmCatalogHeaders.forEach((header, i) => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        if (i === cols.arabic) th.dir = 'rtl';
+        top.appendChild(th);
+    });
+    const qtyTh = document.createElement('th');
+    qtyTh.textContent = 'Required Qty / الكمية المطلوبة';
+    top.appendChild(qtyTh);
+    head.replaceChildren(top);
+
+    const filters = document.createElement('tr');
+    const empty = document.createElement('th');
+    empty.textContent = 'Filter';
+    filters.appendChild(empty);
+    pmCatalogHeaders.forEach((header, i) => {
+        const th = document.createElement('th');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'catalog-filter';
+        input.placeholder = 'Search ' + header;
+        input.setAttribute('aria-label', 'Search column ' + header);
+        input.dataset.catalogFilter = String(i);
+        input.addEventListener('input', filterCatalogTable);
+        th.appendChild(input);
+        filters.appendChild(th);
+    });
+    const qtyFilter = document.createElement('th');
+    qtyFilter.textContent = 'Qty';
+    filters.appendChild(qtyFilter);
+    head.appendChild(filters);
+}
+
+function filterCatalogTable() {
+    if (!pmCatalogLoaded) return;
+    const global = (document.getElementById('catalogGlobalSearch')?.value || '').trim().toLowerCase();
+    const filters = Array.from(document.querySelectorAll('[data-catalog-filter]'))
+        .map(input => [Number(input.dataset.catalogFilter), input.value.trim().toLowerCase()])
+        .filter(pair => pair[1]);
+    pmCatalogFilteredIndexes = [];
+    pmCatalogRows.forEach((row, index) => {
+        const globalMatch = !global || row.some(v => String(v == null ? '' : v).toLowerCase().includes(global));
+        const columnMatch = filters.every(([col, value]) => String(row[col] == null ? '' : row[col]).toLowerCase().includes(value));
+        if (globalMatch && columnMatch) pmCatalogFilteredIndexes.push(index);
+    });
+    renderCatalogRows();
+    const status = document.getElementById('catalogStatus');
+    if (status) status.textContent = 'Showing ' + pmCatalogFilteredIndexes.length.toLocaleString() + ' of ' + pmCatalogRows.length.toLocaleString() + ' materials.';
+}
+
+function renderCatalogRows() {
+    const body = document.getElementById('catalogTableBody');
+    if (!body) return;
+    const cols = getCatalogColumnIndexes();
+    const fragment = document.createDocumentFragment();
+    const visible = pmCatalogFilteredIndexes.slice(0, 500);
+    visible.forEach(index => {
+        const row = pmCatalogRows[index];
+        const tr = document.createElement('tr');
+        const selectTd = document.createElement('td');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.dataset.catalogSelect = String(index);
+        cb.checked = pmCatalogSelected.has(String(index));
+        cb.addEventListener('change', () => {
+            if (cb.checked) pmCatalogSelected.set(String(index), true);
+            else pmCatalogSelected.delete(String(index));
+        });
+        selectTd.appendChild(cb);
+        tr.appendChild(selectTd);
+        row.forEach((value, colIndex) => {
+            const td = document.createElement('td');
+            td.textContent = String(value == null ? '' : value);
+            if (colIndex === cols.arabic) { td.dir = 'rtl'; td.className = 'catalog-arabic'; }
+            if (colIndex === cols.english) td.className = 'catalog-english';
+            tr.appendChild(td);
+        });
+        const qtyTd = document.createElement('td');
+        const qty = document.createElement('input');
+        qty.type = 'number';
+        qty.min = '0.001';
+        qty.step = 'any';
+        qty.value = pmCatalogSelected.get('qty:' + index) || '1';
+        qty.className = 'catalog-qty';
+        qty.setAttribute('aria-label', 'Required quantity');
+        qty.addEventListener('input', () => pmCatalogSelected.set('qty:' + index, qty.value));
+        qtyTd.appendChild(qty);
+        tr.appendChild(qtyTd);
+        fragment.appendChild(tr);
+    });
+    body.replaceChildren(fragment);
+    if (pmCatalogFilteredIndexes.length > visible.length) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = pmCatalogHeaders.length + 2;
+        td.textContent = 'Showing first 500 matching rows. Refine the filters to narrow the results.';
+        td.style.textAlign = 'center';
+        tr.appendChild(td);
+        body.appendChild(tr);
+    } else if (!visible.length) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = pmCatalogHeaders.length + 2;
+        td.textContent = 'No materials match these filters.';
+        td.style.textAlign = 'center';
+        tr.appendChild(td);
+        body.appendChild(tr);
+    }
+}
+
+function addSelectedCatalogItemsToCheckout() {
+    if (!pmCatalogLoaded) {
+        alert('The materials catalog is not loaded. Open the catalog tab or reload items_arabic.csv first.');
+        loadMaterialsCatalog();
+        return;
+    }
+    const cols = getCatalogColumnIndexes();
+    const selected = Array.from(pmCatalogSelected.keys()).filter(key => /^\d+$/.test(key));
+    if (!selected.length) {
+        alert('Please select at least one material and enter its required quantity.');
+        return;
+    }
+    const target = document.getElementById('checklistMaterialsBody');
+    if (!target) {
+        alert('The selected-materials table in Form 440-1-G was not found. No changes were made.');
+        return;
+    }
+    if (target.querySelector('td[colspan="6"]')) target.innerHTML = '';
+    selected.forEach(key => {
+        const index = Number(key);
+        const row = pmCatalogRows[index];
+        if (!row) return;
+        const itemNo = catalogValue(row, cols.item) || catalogValue(row, 0);
+        const english = catalogValue(row, cols.english);
+        const arabic = catalogValue(row, cols.arabic);
+        const unit = catalogValue(row, cols.unit);
+        const qty = Number(pmCatalogSelected.get('qty:' + index) || 1);
+        if (!Number.isFinite(qty) || qty <= 0) return;
+        // Avoid duplicate catalog item rows; update quantity instead.
+        const existing = Array.from(target.querySelectorAll('tr')).find(tr => tr.dataset.itemNo === itemNo && itemNo);
+        if (existing) {
+            const qtyCell = existing.querySelector('[data-material-qty]');
+            if (qtyCell) qtyCell.textContent = String((Number(qtyCell.textContent) || 0) + qty);
+            return;
+        }
+        const tr = document.createElement('tr');
+        tr.dataset.itemNo = itemNo;
+        [target.querySelectorAll('tr').length + 1, qty, unit, itemNo, english, arabic].forEach((value, cellIndex) => {
+            const td = document.createElement('td');
+            td.textContent = String(value == null ? '' : value);
+            if (cellIndex === 1) td.dataset.materialQty = 'true';
+            if (cellIndex === 5) { td.dir = 'rtl'; td.style.textAlign = 'right'; }
+            tr.appendChild(td);
+        });
+        target.appendChild(tr);
+    });
+    alert('Selected materials have been added to Form 440-1-G.');
 }
 
 </script>
