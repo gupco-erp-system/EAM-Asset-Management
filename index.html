@@ -1365,12 +1365,92 @@ textarea {
 .pm-catalog-modal-header h2 { margin:0; font-size:20px; }
 .pm-catalog-modal-close { border:0; border-radius:7px; background:#dc3545; color:#fff; font-size:22px; line-height:1; padding:8px 13px; cursor:pointer; }
 .pm-catalog-modal-body { padding:14px 18px; overflow:auto; flex:1; min-height:0; }
-#catalogTable { min-width:900px; width:100%; }
-#catalogTable th { white-space:normal; position:sticky; top:0; z-index:1; }
-#catalogTable .catalog-filter { min-width:85px; width:100%; box-sizing:border-box; }
-#catalogTable td.catalog-arabic { direction:rtl; text-align:right; min-width:220px; }
-#catalogTable td.catalog-english { min-width:220px; }
-#catalogTable input[type="checkbox"] { width:17px; height:17px; }
+
+/* Materials Catalog Modal: column widths and description wrapping */
+#catalogTable {
+    width: 100%;
+    min-width: 1450px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+#catalogTable th {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#catalogTable td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    vertical-align: top;
+}
+
+#catalogTable th:nth-child(1),
+#catalogTable td:nth-child(1) { width: 3%; }
+
+#catalogTable th:nth-child(2),
+#catalogTable td:nth-child(2) { width: 7%; }
+
+#catalogTable th:nth-child(3),
+#catalogTable td:nth-child(3) { width: 7%; }
+
+#catalogTable th:nth-child(4),
+#catalogTable td:nth-child(4) { width: 15%; }
+
+#catalogTable th:nth-child(5),
+#catalogTable td:nth-child(5) { width: 15%; }
+
+#catalogTable th:nth-child(6),
+#catalogTable td:nth-child(6) { width: 6%; }
+
+#catalogTable th:nth-child(7),
+#catalogTable td:nth-child(7) { width: 6%; }
+
+#catalogTable th:nth-child(8),
+#catalogTable td:nth-child(8) { width: 7%; }
+
+#catalogTable th:nth-child(9),
+#catalogTable td:nth-child(9) { width: 9%; }
+
+#catalogTable th:nth-child(10),
+#catalogTable td:nth-child(10) { width: 5%; }
+
+#catalogTable th:nth-child(11),
+#catalogTable td:nth-child(11) { width: 6%; }
+
+#catalogTable th:nth-child(12),
+#catalogTable td:nth-child(12) { width: 7%; }
+
+#catalogTable th:nth-child(13),
+#catalogTable td:nth-child(13) { width: 7%; }
+
+#catalogTable td.catalog-english {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: left;
+}
+
+#catalogTable td.catalog-arabic {
+    min-width: 0;
+    direction: rtl;
+    text-align: right;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+#catalogTable .catalog-filter {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 11px;
+    padding: 4px;
+}
+
 .catalog-status-error { color:#b91c1c !important; }
 .catalog-qty { width:85px !important; min-width:70px; }
 @media(max-width:700px) { .pm-catalog-modal { padding:0; } .pm-catalog-modal-dialog { width:100vw; height:100vh; max-height:100vh; border-radius:0; } .pm-catalog-modal-body { padding:10px; } .pm-catalog-modal-header h2 { font-size:16px; } }
