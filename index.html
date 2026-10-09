@@ -2198,7 +2198,7 @@ textarea {
                     <div class="catalog-search-bar">
                         <input type="text" id="catalogGlobalSearch" placeholder="Search all columns / بحث في كل الأعمدة..." oninput="filterCatalogTable()">
                         <button type="button" class="btn btn-primary" onclick="addSelectedCatalogItemsToCheckout()">Add to Checklist / إضافة إلى قائمة الفحص</button>
-                        <button type="button" class="btn btn-secondary" onclick="loadMaterialsCatalog(true)">Reload CSV / إعادة تحميل</button>
+                        <button type="button" class="btn btn-secondary" id="reloadMaterialsCsvButton" onclick="loadMaterialsCatalog(true)" style="display:none" aria-hidden="true">Reload CSV / إعادة تحميل</button>
                     </div>
                     <div id="catalogStatus" role="status" aria-live="polite" style="font-weight:bold;margin-bottom:8px;color:#0f766e;">Ready to load items_arabic.csv.</div>
                     <div class="catalog-table-wrapper" style="max-height:calc(94vh - 210px);overflow:auto;">
@@ -3545,6 +3545,12 @@ let settingsInitialized = false;
 function configureAdminVisibility(isAdmin) {
     const button = document.getElementById("settingsTabButton");
     if (button) button.style.display = isAdmin ? "inline-flex" : "none";
+    const reloadMaterialsButton = document.getElementById("reloadMaterialsCsvButton");
+    if (reloadMaterialsButton) {
+        reloadMaterialsButton.style.display = isAdmin ? "inline-flex" : "none";
+        reloadMaterialsButton.setAttribute("aria-hidden", isAdmin ? "false" : "true");
+        reloadMaterialsButton.disabled = !isAdmin;
+    }
     if (!isAdmin && document.getElementById("tab-settings")?.classList.contains("active")) {
         switchTab("tab-asset", document.querySelector('.tabs-nav .tab-btn'));
     }
@@ -5980,11 +5986,12 @@ function buildCatalogTable() {
     const head = document.getElementById('catalogTableHead');
     if (!head) return;
     const cols = getCatalogColumnIndexes();
+    const itemColumnIndex = cols.item >= 0 ? cols.item : 0;
     const top = document.createElement('tr');
     const selectTh = document.createElement('th');
     selectTh.innerHTML = '<input type="checkbox" id="selectAllCatalog" title="Select visible rows" aria-label="Select visible rows">';
     selectTh.querySelector('input').addEventListener('change', function () {
-        pmCatalogFilteredIndexes.forEach(i => {
+        pmCatalogFilteredIndexes.slice(0, 500).forEach(i => {
             const key = String(i);
             if (this.checked) {
                 const cb = document.querySelector('[data-catalog-select="' + key + '"]');
@@ -6002,10 +6009,12 @@ function buildCatalogTable() {
         th.textContent = header;
         if (i === cols.arabic) th.dir = 'rtl';
         top.appendChild(th);
+        if (i === itemColumnIndex) {
+            const qtyTh = document.createElement('th');
+            qtyTh.textContent = 'Required Qty / الكمية المطلوبة';
+            top.appendChild(qtyTh);
+        }
     });
-    const qtyTh = document.createElement('th');
-    qtyTh.textContent = 'Required Qty / الكمية المطلوبة';
-    top.appendChild(qtyTh);
     head.replaceChildren(top);
 
     const filters = document.createElement('tr');
@@ -6023,10 +6032,12 @@ function buildCatalogTable() {
         input.addEventListener('input', filterCatalogTable);
         th.appendChild(input);
         filters.appendChild(th);
+        if (i === itemColumnIndex) {
+            const qtyFilter = document.createElement('th');
+            qtyFilter.textContent = 'Qty';
+            filters.appendChild(qtyFilter);
+        }
     });
-    const qtyFilter = document.createElement('th');
-    qtyFilter.textContent = 'Qty';
-    filters.appendChild(qtyFilter);
     head.appendChild(filters);
 }
 
@@ -6051,6 +6062,7 @@ function renderCatalogRows() {
     const body = document.getElementById('catalogTableBody');
     if (!body) return;
     const cols = getCatalogColumnIndexes();
+    const itemColumnIndex = cols.item >= 0 ? cols.item : 0;
     const fragment = document.createDocumentFragment();
     const visible = pmCatalogFilteredIndexes.slice(0, 500);
     visible.forEach(index => {
@@ -6067,24 +6079,29 @@ function renderCatalogRows() {
         });
         selectTd.appendChild(cb);
         tr.appendChild(selectTd);
+
+        const appendQuantityCell = () => {
+            const qtyTd = document.createElement('td');
+            const qty = document.createElement('input');
+            qty.type = 'number';
+            qty.min = '0.001';
+            qty.step = 'any';
+            qty.value = pmCatalogSelected.get('qty:' + index) || '1';
+            qty.className = 'catalog-qty';
+            qty.setAttribute('aria-label', 'Required quantity');
+            qty.addEventListener('input', () => pmCatalogSelected.set('qty:' + index, qty.value));
+            qtyTd.appendChild(qty);
+            tr.appendChild(qtyTd);
+        };
+
         row.forEach((value, colIndex) => {
             const td = document.createElement('td');
             td.textContent = String(value == null ? '' : value);
             if (colIndex === cols.arabic) { td.dir = 'rtl'; td.className = 'catalog-arabic'; }
             if (colIndex === cols.english) td.className = 'catalog-english';
             tr.appendChild(td);
+            if (colIndex === itemColumnIndex) appendQuantityCell();
         });
-        const qtyTd = document.createElement('td');
-        const qty = document.createElement('input');
-        qty.type = 'number';
-        qty.min = '0.001';
-        qty.step = 'any';
-        qty.value = pmCatalogSelected.get('qty:' + index) || '1';
-        qty.className = 'catalog-qty';
-        qty.setAttribute('aria-label', 'Required quantity');
-        qty.addEventListener('input', () => pmCatalogSelected.set('qty:' + index, qty.value));
-        qtyTd.appendChild(qty);
-        tr.appendChild(qtyTd);
         fragment.appendChild(tr);
     });
     body.replaceChildren(fragment);
