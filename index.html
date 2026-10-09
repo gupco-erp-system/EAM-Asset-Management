@@ -1356,16 +1356,24 @@ textarea {
 
 
 
-/* PM materials catalog additions */
-#subtab-pm-materials { margin: 12px 0; }
-#catalogTable { min-width: 900px; }
-#catalogTable th { white-space: normal; }
-#catalogTable .catalog-filter { min-width: 85px; }
-#catalogTable td.catalog-arabic { direction: rtl; text-align: right; min-width: 220px; }
-#catalogTable td.catalog-english { min-width: 220px; }
-#catalogTable input[type="checkbox"] { width: 17px; height: 17px; }
-.catalog-status-error { color: #b91c1c !important; }
-.catalog-qty { width: 85px !important; min-width: 70px; }
+/* PM materials catalog wide modal */
+#subtab-pm-materials { margin: 0; }
+.pm-catalog-modal { display:none; position:fixed; inset:0; z-index:10000; background:rgba(15,23,42,.72); padding:2vh 2vw; box-sizing:border-box; }
+.pm-catalog-modal.open { display:flex; align-items:center; justify-content:center; }
+.pm-catalog-modal-dialog { width:96vw; max-width:1800px; height:94vh; max-height:94vh; background:#fff; color:#1f2937; border-radius:12px; box-shadow:0 20px 70px rgba(0,0,0,.35); display:flex; flex-direction:column; overflow:hidden; }
+.pm-catalog-modal-header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 20px; background:#f1f5f9; border-bottom:1px solid #cbd5e1; }
+.pm-catalog-modal-header h2 { margin:0; font-size:20px; }
+.pm-catalog-modal-close { border:0; border-radius:7px; background:#dc3545; color:#fff; font-size:22px; line-height:1; padding:8px 13px; cursor:pointer; }
+.pm-catalog-modal-body { padding:14px 18px; overflow:auto; flex:1; min-height:0; }
+#catalogTable { min-width:900px; width:100%; }
+#catalogTable th { white-space:normal; position:sticky; top:0; z-index:1; }
+#catalogTable .catalog-filter { min-width:85px; width:100%; box-sizing:border-box; }
+#catalogTable td.catalog-arabic { direction:rtl; text-align:right; min-width:220px; }
+#catalogTable td.catalog-english { min-width:220px; }
+#catalogTable input[type="checkbox"] { width:17px; height:17px; }
+.catalog-status-error { color:#b91c1c !important; }
+.catalog-qty { width:85px !important; min-width:70px; }
+@media(max-width:700px) { .pm-catalog-modal { padding:0; } .pm-catalog-modal-dialog { width:100vw; height:100vh; max-height:100vh; border-radius:0; } .pm-catalog-modal-body { padding:10px; } .pm-catalog-modal-header h2 { font-size:16px; } }
 
 </style>
 
@@ -2170,38 +2178,37 @@ textarea {
         class="materials-total">
     </div>
 
-<!-- PM materials sub-tabs inside Main TAB 1 -->
-    <div class="sub-tabs-nav" role="tablist" aria-label="PM materials tabs">
-        <button type="button" class="sub-tab-btn active" id="pmCatalogTabButton"
-            onclick="switchPMMaterialsSubTab('catalog', this)">
+<!-- PM Required Materials catalog launcher -->
+    <div class="sub-tabs-nav" role="group" aria-label="PM materials catalog">
+        <button type="button" class="sub-tab-btn" id="pmCatalogTabButton" onclick="openMaterialsCatalogModal()">
             Materials Catalog / كتالوج المواد
-        </button>
-        <button type="button" class="sub-tab-btn" id="pmDefinedTabButton"
-            onclick="switchPMMaterialsSubTab('defined', this)">
-            PM List / قائمة مواد الصيانة
         </button>
     </div>
 
-    <div id="subtab-pm-materials" class="sub-tab-content active">
-        <div class="section-title">
-            PM Required Materials Catalog (CSV)
-            <span style="float:left;">كتالوج المواد والصيانة</span>
-        </div>
-        <p style="font-size:13px; color:#475569;">Loaded dynamically from `items_arabic.csv`. Edit Arabic descriptions inline or search items, then select items to add to the checklist.</p>
-        
-        <div class="catalog-search-bar">
-            <input type="text" id="catalogGlobalSearch" placeholder="Search all columns / بحث في كل الأعمدة..." oninput="filterCatalogTable()">
-            <button type="button" class="btn btn-primary" onclick="addSelectedCatalogItemsToCheckout()">Add to Checklist / إضافة إلى قائمة الفحص</button>
-            <button type="button" class="btn btn-secondary" onclick="loadMaterialsCatalog(true)">Reload CSV / إعادة تحميل</button>
-        </div>
-        <div id="catalogStatus" role="status" style="font-weight:bold; margin-bottom:8px; color:#0f766e;">Ready to load items_arabic.csv.</div>
-        <div class="catalog-table-wrapper">
-            <table class="catalog-table" id="catalogTable">
-                <thead id="catalogTableHead"></thead>
-                <tbody id="catalogTableBody">
-                    <tr><td style="text-align:center;">Select this tab to load items_arabic.csv.</td></tr>
-                </tbody>
-            </table>
+    <!-- Wide modal: catalog and search controls stay outside the main form layout -->
+    <div id="pmMaterialsCatalogModal" class="pm-catalog-modal" role="dialog" aria-modal="true" aria-labelledby="pmCatalogModalTitle" onclick="if(event.target===this) closeMaterialsCatalogModal()">
+        <div class="pm-catalog-modal-dialog">
+            <div class="pm-catalog-modal-header">
+                <h2 id="pmCatalogModalTitle">PM Required Materials Catalog / كتالوج المواد المطلوبة للصيانة</h2>
+                <button type="button" class="pm-catalog-modal-close" onclick="closeMaterialsCatalogModal()" aria-label="Close catalog">×</button>
+            </div>
+            <div class="pm-catalog-modal-body">
+                <div id="subtab-pm-materials" class="sub-tab-content active">
+                    <p style="font-size:13px;color:#475569;">Loaded dynamically from <code>items_arabic.csv</code>. Search any column, select the required items, and enter quantities. Click Add to Checklist to transfer your selections to Form 440-1-G.</p>
+                    <div class="catalog-search-bar">
+                        <input type="text" id="catalogGlobalSearch" placeholder="Search all columns / بحث في كل الأعمدة..." oninput="filterCatalogTable()">
+                        <button type="button" class="btn btn-primary" onclick="addSelectedCatalogItemsToCheckout()">Add to Checklist / إضافة إلى قائمة الفحص</button>
+                        <button type="button" class="btn btn-secondary" onclick="loadMaterialsCatalog(true)">Reload CSV / إعادة تحميل</button>
+                    </div>
+                    <div id="catalogStatus" role="status" aria-live="polite" style="font-weight:bold;margin-bottom:8px;color:#0f766e;">Ready to load items_arabic.csv.</div>
+                    <div class="catalog-table-wrapper" style="max-height:calc(94vh - 210px);overflow:auto;">
+                        <table class="catalog-table" id="catalogTable">
+                            <thead id="catalogTableHead"></thead>
+                            <tbody id="catalogTableBody"><tr><td style="text-align:center;">Open the catalog to load items_arabic.csv.</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -5869,14 +5876,28 @@ let pmCatalogLoaded = false;
 let pmCatalogLoading = false;
 const pmCatalogSelected = new Map();
 
-function switchPMMaterialsSubTab(which, button) {
-    document.querySelectorAll('#tab-asset .sub-tab-btn').forEach(b => b.classList.remove('active'));
-    if (button) button.classList.add('active');
-    const catalog = document.getElementById('subtab-pm-materials');
-    if (catalog) catalog.classList.toggle('active', which === 'catalog');
-    // The existing PM-defined materials table is above this sub-tab area and remains intact.
-    if (which === 'catalog' && !pmCatalogLoaded && !pmCatalogLoading) loadMaterialsCatalog();
+function openMaterialsCatalogModal() {
+    const modal = document.getElementById('pmMaterialsCatalogModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (!pmCatalogLoaded && !pmCatalogLoading) loadMaterialsCatalog();
+    window.setTimeout(() => document.getElementById('catalogGlobalSearch')?.focus(), 50);
 }
+
+function closeMaterialsCatalogModal() {
+    const modal = document.getElementById('pmMaterialsCatalogModal');
+    if (modal) modal.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function switchPMMaterialsSubTab(which) {
+    if (which === 'catalog') openMaterialsCatalogModal();
+}
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeMaterialsCatalogModal();
+});
 
 function setCatalogStatus(message, isError) {
     const el = document.getElementById('catalogStatus');
@@ -6132,6 +6153,7 @@ function addSelectedCatalogItemsToCheckout() {
         });
         target.appendChild(tr);
     });
+    closeMaterialsCatalogModal();
     alert('Selected materials have been added to Form 440-1-G.');
 }
 
