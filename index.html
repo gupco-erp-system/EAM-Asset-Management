@@ -714,7 +714,9 @@ textarea {
 }
 
 .catalog-table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
     border-collapse: collapse;
     font-size: 12px;
 }
@@ -725,6 +727,27 @@ textarea {
     padding: 6px;
     text-align: left;
     vertical-align: middle;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    min-width: 105px;
+    max-width: 300px;
+}
+
+/* Keep selection and quantity columns compact, not the CSV data columns. */
+.catalog-table th:first-child,
+.catalog-table td:first-child {
+    min-width: 34px;
+    width: 34px;
+    max-width: 34px;
+    text-align: center;
+}
+
+.catalog-table th.catalog-qty-column,
+.catalog-table td.catalog-qty-column {
+    min-width: 105px;
+    width: 105px;
+    max-width: 125px;
 }
 
 .catalog-table th {
@@ -736,7 +759,9 @@ textarea {
 
 .catalog-table input[type="text"],
 .catalog-table input[type="number"] {
+    box-sizing: border-box;
     width: 100%;
+    min-width: 0;
     padding: 4px;
     font-size: 12px;
 }
@@ -1366,77 +1391,79 @@ textarea {
 .pm-catalog-modal-close { border:0; border-radius:7px; background:#dc3545; color:#fff; font-size:22px; line-height:1; padding:8px 13px; cursor:pointer; }
 .pm-catalog-modal-body { padding:14px 18px; overflow:auto; flex:1; min-height:0; }
 
-/* Materials Catalog Modal: column widths and description wrapping */
-#catalogTable {
+/* Materials Catalog Modal: responsive columns, horizontal scrolling, and wrapping */
+.catalog-table-wrapper {
     width: 100%;
-    min-width: 1450px;
-    table-layout: fixed;
+    max-width: 100%;
+    overflow: auto !important;
+    overscroll-behavior: contain;
+}
+
+#catalogTable,
+.catalog-table {
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
     border-collapse: collapse;
 }
 
-#catalogTable th {
-    white-space: normal;
-    overflow-wrap: anywhere;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
-#catalogTable td {
+#catalogTable th,
+#catalogTable td,
+.catalog-table th,
+.catalog-table td {
+    box-sizing: border-box;
+    min-width: 110px;
+    max-width: 320px;
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: normal;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
-#catalogTable th:nth-child(1),
-#catalogTable td:nth-child(1) { width: 3%; }
+/* Keep the selection checkbox column compact. */
+#catalogTable th:first-child,
+#catalogTable td:first-child,
+.catalog-table th:first-child,
+.catalog-table td:first-child {
+    min-width: 38px;
+    width: 38px;
+    max-width: 38px;
+    text-align: center;
+}
 
-#catalogTable th:nth-child(2),
-#catalogTable td:nth-child(2) { width: 7%; }
+/* Keep the separate Required Qty input readable and compact. */
+#catalogTable th.catalog-qty-column,
+#catalogTable td.catalog-qty-column,
+.catalog-table th.catalog-qty-column,
+.catalog-table td.catalog-qty-column {
+    min-width: 110px;
+    width: 110px;
+    max-width: 130px;
+}
 
-#catalogTable th:nth-child(3),
-#catalogTable td:nth-child(3) { width: 7%; }
+#catalogTable th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
 
-#catalogTable th:nth-child(4),
-#catalogTable td:nth-child(4) { width: 15%; }
-
-#catalogTable th:nth-child(5),
-#catalogTable td:nth-child(5) { width: 15%; }
-
-#catalogTable th:nth-child(6),
-#catalogTable td:nth-child(6) { width: 6%; }
-
-#catalogTable th:nth-child(7),
-#catalogTable td:nth-child(7) { width: 6%; }
-
-#catalogTable th:nth-child(8),
-#catalogTable td:nth-child(8) { width: 7%; }
-
-#catalogTable th:nth-child(9),
-#catalogTable td:nth-child(9) { width: 9%; }
-
-#catalogTable th:nth-child(10),
-#catalogTable td:nth-child(10) { width: 5%; }
-
-#catalogTable th:nth-child(11),
-#catalogTable td:nth-child(11) { width: 6%; }
-
-#catalogTable th:nth-child(12),
-#catalogTable td:nth-child(12) { width: 7%; }
-
-#catalogTable th:nth-child(13),
-#catalogTable td:nth-child(13) { width: 7%; }
+#catalogTable .catalog-filter,
+.catalog-table input[type="text"],
+.catalog-table input[type="number"] {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+}
 
 #catalogTable td.catalog-english {
-    min-width: 0;
+    min-width: 110px;
     white-space: normal;
     overflow-wrap: anywhere;
     text-align: left;
 }
 
 #catalogTable td.catalog-arabic {
-    min-width: 0;
+    min-width: 140px;
     direction: rtl;
     text-align: right;
     white-space: normal;
@@ -2274,7 +2301,7 @@ textarea {
             </div>
             <div class="pm-catalog-modal-body">
                 <div id="subtab-pm-materials" class="sub-tab-content active">
-                    <p style="font-size:13px;color:#475569;">Loaded dynamically from <code>items_arabic.csv</code>. Search any column, select the required items, and enter quantities. Click Add to Checklist to transfer your selections to Form 440-1-G.</p>
+                    <p style="font-size:13px;color:#475569;">Loaded dynamically from <code>items_arabic.csv</code>. Search the displayed columns, select the required items, enter quantities in the separate Required Qty field, and click Add to Checklist to transfer selections to Form 440-1-G.</p>
                     <div class="catalog-search-bar">
                         <input type="text" id="catalogGlobalSearch" placeholder="Search all columns / بحث في كل الأعمدة..." oninput="filterCatalogTable()">
                         <button type="button" class="btn btn-primary" onclick="addSelectedCatalogItemsToCheckout()">Add to Checklist / إضافة إلى قائمة الفحص</button>
@@ -6016,8 +6043,20 @@ function getCatalogColumnIndexes() {
         english: findCatalogColumn([/^(englishdescription|descriptionenglish|itemdescription|description|itemname|materialdescription|english|descriptionen)$/]),
         arabic: findCatalogColumn([/^(arabicdescription|descriptionarabic|arabicname|arabic|الوصفالعربي|الوصفتفصيليعربي)$/]),
         unit: findCatalogColumn([/^(unit|uom|unitofmeasure|measureunit|الوحدة)$/]),
-        qty: findCatalogColumn([/^(quantity|qty|requiredqty|الكمية)$/])
+        qty: -1
     };
+}
+
+// Hide the removed CSV quantity column and columns that contain no data.
+// The separate Required Qty input below remains available for each material.
+function getVisibleCatalogColumnIndexes() {
+    return pmCatalogHeaders.map((header, index) => ({ header, index }))
+        .filter(({ header, index }) => {
+            const key = normalizeCatalogKey(header);
+            if (/^(qtyrequired|qtyreqired|requiredqty|quantityrequired|الكميةالمطلوبة)$/.test(key) || key.includes('qtyreq')) return false;
+            return pmCatalogRows.some(row => String(row[index] == null ? '' : row[index]).trim() !== '');
+        })
+        .map(({ index }) => index);
 }
 
 async function loadMaterialsCatalog(forceReload) {
@@ -6065,55 +6104,64 @@ async function loadMaterialsCatalog(forceReload) {
 function buildCatalogTable() {
     const head = document.getElementById('catalogTableHead');
     if (!head) return;
+
     const cols = getCatalogColumnIndexes();
-    const itemColumnIndex = cols.item >= 0 ? cols.item : 0;
+    const visibleColumns = getVisibleCatalogColumnIndexes();
+    const itemColumnIndex = cols.item >= 0 ? cols.item : visibleColumns[0];
     const top = document.createElement('tr');
+
     const selectTh = document.createElement('th');
     selectTh.innerHTML = '<input type="checkbox" id="selectAllCatalog" title="Select visible rows" aria-label="Select visible rows">';
     selectTh.querySelector('input').addEventListener('change', function () {
         pmCatalogFilteredIndexes.slice(0, 500).forEach(i => {
             const key = String(i);
+            const cb = document.querySelector('[data-catalog-select="' + key + '"]');
             if (this.checked) {
-                const cb = document.querySelector('[data-catalog-select="' + key + '"]');
                 if (cb) { cb.checked = true; pmCatalogSelected.set(key, true); }
             } else {
                 pmCatalogSelected.delete(key);
-                const cb = document.querySelector('[data-catalog-select="' + key + '"]');
                 if (cb) cb.checked = false;
             }
         });
     });
     top.appendChild(selectTh);
-    pmCatalogHeaders.forEach((header, i) => {
+
+    visibleColumns.forEach(i => {
         const th = document.createElement('th');
-        th.textContent = header;
+        th.textContent = pmCatalogHeaders[i];
         if (i === cols.arabic) th.dir = 'rtl';
         top.appendChild(th);
+
         if (i === itemColumnIndex) {
             const qtyTh = document.createElement('th');
+            qtyTh.className = 'catalog-qty-column';
             qtyTh.textContent = 'Required Qty / الكمية المطلوبة';
             top.appendChild(qtyTh);
         }
     });
+
     head.replaceChildren(top);
 
     const filters = document.createElement('tr');
     const empty = document.createElement('th');
     empty.textContent = 'Filter';
     filters.appendChild(empty);
-    pmCatalogHeaders.forEach((header, i) => {
+
+    visibleColumns.forEach(i => {
         const th = document.createElement('th');
         const input = document.createElement('input');
         input.type = 'text';
         input.className = 'catalog-filter';
-        input.placeholder = 'Search ' + header;
-        input.setAttribute('aria-label', 'Search column ' + header);
+        input.placeholder = 'Search ' + pmCatalogHeaders[i];
+        input.setAttribute('aria-label', 'Search column ' + pmCatalogHeaders[i]);
         input.dataset.catalogFilter = String(i);
         input.addEventListener('input', filterCatalogTable);
         th.appendChild(input);
         filters.appendChild(th);
+
         if (i === itemColumnIndex) {
             const qtyFilter = document.createElement('th');
+            qtyFilter.className = 'catalog-qty-column';
             qtyFilter.textContent = 'Qty';
             filters.appendChild(qtyFilter);
         }
@@ -6141,10 +6189,13 @@ function filterCatalogTable() {
 function renderCatalogRows() {
     const body = document.getElementById('catalogTableBody');
     if (!body) return;
+
     const cols = getCatalogColumnIndexes();
-    const itemColumnIndex = cols.item >= 0 ? cols.item : 0;
+    const visibleColumns = getVisibleCatalogColumnIndexes();
+    const itemColumnIndex = cols.item >= 0 ? cols.item : visibleColumns[0];
     const fragment = document.createDocumentFragment();
     const visible = pmCatalogFilteredIndexes.slice(0, 500);
+
     visible.forEach(index => {
         const row = pmCatalogRows[index];
         const tr = document.createElement('tr');
@@ -6160,35 +6211,37 @@ function renderCatalogRows() {
         selectTd.appendChild(cb);
         tr.appendChild(selectTd);
 
-        const appendQuantityCell = () => {
-            const qtyTd = document.createElement('td');
-            const qty = document.createElement('input');
-            qty.type = 'number';
-            qty.min = '0.001';
-            qty.step = 'any';
-            qty.value = pmCatalogSelected.get('qty:' + index) || '1';
-            qty.className = 'catalog-qty';
-            qty.setAttribute('aria-label', 'Required quantity');
-            qty.addEventListener('input', () => pmCatalogSelected.set('qty:' + index, qty.value));
-            qtyTd.appendChild(qty);
-            tr.appendChild(qtyTd);
-        };
-
-        row.forEach((value, colIndex) => {
+        visibleColumns.forEach(colIndex => {
             const td = document.createElement('td');
-            td.textContent = String(value == null ? '' : value);
+            td.textContent = String(row[colIndex] == null ? '' : row[colIndex]);
             if (colIndex === cols.arabic) { td.dir = 'rtl'; td.className = 'catalog-arabic'; }
             if (colIndex === cols.english) td.className = 'catalog-english';
             tr.appendChild(td);
-            if (colIndex === itemColumnIndex) appendQuantityCell();
+
+            if (colIndex === itemColumnIndex) {
+                const qtyTd = document.createElement('td');
+                qtyTd.className = 'catalog-qty-column';
+                const qty = document.createElement('input');
+                qty.type = 'number';
+                qty.min = '0.001';
+                qty.step = 'any';
+                qty.value = pmCatalogSelected.get('qty:' + index) || '1';
+                qty.className = 'catalog-qty';
+                qty.setAttribute('aria-label', 'Required quantity');
+                qty.addEventListener('input', () => pmCatalogSelected.set('qty:' + index, qty.value));
+                qtyTd.appendChild(qty);
+                tr.appendChild(qtyTd);
+            }
         });
         fragment.appendChild(tr);
     });
+
     body.replaceChildren(fragment);
+    const totalColumns = visibleColumns.length + 2; // checkbox + CSV columns + quantity input
     if (pmCatalogFilteredIndexes.length > visible.length) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
-        td.colSpan = pmCatalogHeaders.length + 2;
+        td.colSpan = totalColumns;
         td.textContent = 'Showing first 500 matching rows. Refine the filters to narrow the results.';
         td.style.textAlign = 'center';
         tr.appendChild(td);
@@ -6196,7 +6249,7 @@ function renderCatalogRows() {
     } else if (!visible.length) {
         const tr = document.createElement('tr');
         const td = document.createElement('td');
-        td.colSpan = pmCatalogHeaders.length + 2;
+        td.colSpan = totalColumns;
         td.textContent = 'No materials match these filters.';
         td.style.textAlign = 'center';
         tr.appendChild(td);
@@ -6213,7 +6266,7 @@ function addSelectedCatalogItemsToCheckout() {
     const cols = getCatalogColumnIndexes();
     const selected = Array.from(pmCatalogSelected.keys()).filter(key => /^\d+$/.test(key));
     if (!selected.length) {
-        alert('Please select at least one material and enter its required quantity.');
+        alert('Please select at least one material.');
         return;
     }
     const target = document.getElementById('checklistMaterialsBody');
