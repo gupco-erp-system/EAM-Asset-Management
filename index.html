@@ -4124,17 +4124,16 @@ function openMaximoPMWorkOrder() {
     }
 
     const url =
-        "http://gupmaxapp14:9080/maximo/ui/login" +
-        "?login=url" +
-        "&event=loadapp" +
-        "&value=wotrack" +
-        "&username=myID" +
-        "&password=myPassword" +
-        "&additionalevent=useqbe" +
-        "&additionaleventvalue=" +
-        encodeURIComponent("pmnum=" + pmId + " and status=WSCHED");
+    "http://gupmaxapp14:9080/maximo/ui/login" +
+    "?login=url" +
+    "&event=loadapp" +
+    "&value=wotrack" +
+    "&additionalevent=useqbe" +
+    "&additionaleventvalue=" +
+    encodeURIComponent(`pmnum=${pmId} and status='WSCHED'`);
 
-    window.open(url, "_blank");
+window.open(url, "_blank");
+
 }
 
 /* ============================================================
