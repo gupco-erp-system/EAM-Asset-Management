@@ -4115,19 +4115,27 @@ function findPM(identifier) {
    UPDATE IBM Maximo button link
 ============================================================ */
 function openMaximoPMWorkOrder() {
+  
     const pmId = document.getElementById("pmIdInput")?.value.trim();
+
     if (!pmId) {
-        alert("No PM ID is currently loaded.");
+        alert("PM ID is empty.");
         return;
     }
-    
-    // Construct the query matching Maximo's exact syntax requirements
-    const queryString = `status = 'WSCHED' and historyflag = 0 and istask = 0 and pmnum = '${pmId}'`;
-    const qbeValue = encodeURIComponent(queryString);
-    
-    const maximoURL = `http://gupmaxapp14:9080/maximo/ui/login?login=url&event=loadapp&value=wotrack&additionalevent=useqbe&additionaleventvalue=${qbeValue}&forcereload=true`;
-    
-    window.open(maximoURL, "_blank");
+
+    const url =
+        "http://gupmaxapp14:9080/maximo/ui/login" +
+        "?login=url" +
+        "&event=loadapp" +
+        "&value=wotrack" +
+        "&username=myID" +
+        "&password=myPassword" +
+        "&additionalevent=useqbe" +
+        "&additionaleventvalue=" +
+        encodeURIComponent("pmnum=" + pmId) +
+        "&forcereload=true";
+
+    window.open(url, "_blank");
 }
 
 /* ============================================================
