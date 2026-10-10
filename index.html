@@ -4120,7 +4120,12 @@ function openMaximoPMWorkOrder() {
         alert("No PM ID is currently loaded.");
         return;
     }
-    const maximoURL = `http://gupmaxapp14:9080/maximo/ui/login?login=url&event=loadapp&value=wotrack&username=khoshoueyae&password=aya112345&additionalevent=useqbe&additionaleventvalue=pmnum%3D${encodeURIComponent(pmId)}&forcereload=true`;
+    
+    // Encodes 'pmnum=1017' properly as 'pmnum%3D1017' without duplicating
+    const qbeValue = encodeURIComponent("pmnum=" + pmId);
+    
+    const maximoURL = `http://gupmaxapp14:9080/maximo/ui/login?login=url&event=loadapp&value=wotrack&additionalevent=useqbe&additionaleventvalue=${qbeValue}&forcereload=true`;
+    
     window.open(maximoURL, "_blank");
 }
 
