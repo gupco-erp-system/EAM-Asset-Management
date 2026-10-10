@@ -4121,8 +4121,8 @@ function openMaximoPMWorkOrder() {
         return;
     }
     
-    // Encodes 'pmnum=1017' properly as 'pmnum%3D1017' without duplicating
-    const qbeValue = encodeURIComponent("pmnum=" + pmId);
+    // Encodes the query to filter by both PM number and WSCHED status
+    const qbeValue = encodeURIComponent(`pmnum=${pmId} and status=WSCHED`);
     
     const maximoURL = `http://gupmaxapp14:9080/maximo/ui/login?login=url&event=loadapp&value=wotrack&additionalevent=useqbe&additionaleventvalue=${qbeValue}&forcereload=true`;
     
