@@ -4121,8 +4121,9 @@ function openMaximoPMWorkOrder() {
         return;
     }
     
-    // Encodes the query to filter by both PM number and WSCHED status
-    const qbeValue = encodeURIComponent(`pmnum=${pmId} and status=WSCHED`);
+    // Construct the query matching Maximo's exact syntax requirements
+    const queryString = `status = 'WSCHED' and historyflag = 0 and istask = 0 and pmnum = '${pmId}'`;
+    const qbeValue = encodeURIComponent(queryString);
     
     const maximoURL = `http://gupmaxapp14:9080/maximo/ui/login?login=url&event=loadapp&value=wotrack&additionalevent=useqbe&additionaleventvalue=${qbeValue}&forcereload=true`;
     
