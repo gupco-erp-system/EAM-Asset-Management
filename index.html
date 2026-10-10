@@ -1778,17 +1778,14 @@ textarea {
         <div class="pm-grid">
 
             <div class="pm-field">
-
-                <label>
-                    PM ID
-                </label>
-
-                <input
-                    id="pmIdInput"
-                    type="text"
-                    readonly>
-
-            </div>
+    <label>
+        PM ID <button type="button" onclick="openMaximoPMWorkOrder()" title="Open Work Orders in Maximo" style="background:none; border:none; padding:0; cursor:pointer; vertical-align:middle; float:left;"><img src="./images/maximo-icon.png" alt="Maximo" style="width:20px; height:20px;"></button>
+    </label>
+    <input
+        id="pmIdInput"
+        type="text"
+        readonly>
+</div>
 
 
             <div class="pm-field">
@@ -4112,6 +4109,19 @@ function findPM(identifier) {
     }
 
     return null;
+}
+
+/* ============================================================
+   UPDATE IBM Maximo button link
+============================================================ */
+function openMaximoPMWorkOrder() {
+    const pmId = document.getElementById("pmIdInput")?.value.trim();
+    if (!pmId) {
+        alert("No PM ID is currently loaded.");
+        return;
+    }
+    const maximoURL = `http://gupmaxapp14:9080/maximo/ui/login?login=url&event=loadapp&value=wotrack&username=khoshoueyae&password=aya112345&additionalevent=useqbe&additionaleventvalue=pmnum%3D${encodeURIComponent(pmId)}&forcereload=true`;
+    window.open(maximoURL, "_blank");
 }
 
 /* ============================================================
