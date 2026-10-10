@@ -4132,8 +4132,7 @@ function openMaximoPMWorkOrder() {
         "&password=myPassword" +
         "&additionalevent=useqbe" +
         "&additionaleventvalue=" +
-        encodeURIComponent("pmnum=" + pmId) +
-        "&forcereload=true";
+        encodeURIComponent("pmnum=" + pmId + " and status=WSCHED");
 
     window.open(url, "_blank");
 }
