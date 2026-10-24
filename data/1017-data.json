@@ -23,7 +23,7 @@
   "workOrder": "WO-PM-1017",
   "notes": "PM loaded automatically from QR-linked PM record.",
   "engineParameters": {
-    "ratedPower": "1480 HP / 1100 KW",
+    "ratedPower": "402 HP / 300 KW",
     "operatingSpeed": "1800 RPM",
     "fuelType": "Diesel",
     "lubeOilCapacity": "340 Liters",
