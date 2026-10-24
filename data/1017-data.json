@@ -24,7 +24,7 @@
   "notes": "PM loaded automatically from QR-linked PM record.",
   "engineParameters": {
     "ratedPower": "1480 HP / 1100 KW",
-    "operatingSpeed": "1200 RPM",
+    "operatingSpeed": "1800 RPM",
     "fuelType": "Diesel",
     "lubeOilCapacity": "340 Liters",
     "coolingCapacity": "450 Liters",
